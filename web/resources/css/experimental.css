@@ -1,0 +1,75 @@
+.block{
+    display: block;
+    background-color: #d8d7b8;
+    border: 5px solid #557534;
+    border-radius: 10px 10px 10px 10px;
+    margin:auto;
+    width:900px;
+}
+.form-inline {
+    display: flex;
+    flex-basis: auto;
+    flex-flow: row wrap;
+    align-items: center;
+    width: 100%;
+    margin: 10px;
+}
+
+/* Add some margins for each label */
+.form-inline label {
+    margin: 5px 10px 5px 0;
+    background-color: #d8d7b8;
+    height: 100%;
+    width: 130px;
+    font-weight: bold;
+    font-size: 28px;
+    font-family: helvetica;
+    text-align: left;
+}
+
+/* Style the input fields */
+.form-inline input {
+    vertical-align: middle;
+    margin: 5px 10px 5px 0;
+    padding: 10px;
+    border: 2px solid #557534;
+    border-radius: 10px;
+    text-indent: 5px;
+    background-color: #d8d7b8;
+    font-size: 26px;
+    font-family: helvetica;
+}
+.form-inline select {
+    vertical-align: middle;
+    margin: 5px 10px 5px 0;
+    padding: 10px;
+    border: 2px solid #557534;
+    border-radius: 10px;
+    text-indent: 5px;
+    background-color: #d8d7b8;
+    font-size: 26px;
+    font-family: helvetica;
+}
+/* Style the submit button */
+.form-inline button {
+    background-color: #557534; /* Green */
+    border: none;
+    border-radius: 15px 15px 15px 15px;
+    color: #d8d7b8;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    font-family: 'Lora', serif;
+}
+
+.form-inline button:hover {
+    background: #096c0c;
+}
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
