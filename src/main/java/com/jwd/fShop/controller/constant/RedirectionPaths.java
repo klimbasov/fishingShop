@@ -19,4 +19,5 @@ public class RedirectionPaths {
     public static final String TO_ADMINISTRATION = URI + "administration";
     public static final String TO_ERROR = URI + "error";
     public static final String TO_CHANGE_USER = URI + CommandsAlias.Get.TO_CHANGE_USER;
+    public static final String TO_CHANGE_PRODUCT = URI + CommandsAlias.Get.TO_CHANGE_PRODUCT;
 }

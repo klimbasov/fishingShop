@@ -9,7 +9,6 @@ public class CommandsAlias {
         public static final String TO_ORDER = "order";
         public static final String TO_PROFILE = "profile";
         public static final String TO_USERS = "users";
-        public static final String TO_SING_OUT = "signOut";
         public static final String TO_SING_IN = "signIn";
         public static final String TO_SING_UP = "signUp";
         public static final String TO_ADD_PRODUCT = "addProduct";
@@ -18,6 +17,7 @@ public class CommandsAlias {
         public static final String TO_CHANGE_USER = "changeUser";
         public static final String TO_ERROR = "error";
         public static final String TO_USER = "user";
+        public static final String TO_CHANGE_PRODUCT = "changeProduct";
     }
 
     public static class Post {
@@ -27,7 +27,7 @@ public class CommandsAlias {
         public static final String SING_UP = "signUp";
         public static final String ORDER = "order";
         public static final String TO_BASKET = "toBasket";
-        public static final String UPDATE_PRODUCT = "updateProduct";
+        public static final String CHANGE_PRODUCT = "changeProduct";
         public static final String CHANGE_PASSWORD = "changePassword";
         public static final String CHANGE_USERNAME = "changeUsername";
         public static final String CHANGE_ROLE = "changeRole";

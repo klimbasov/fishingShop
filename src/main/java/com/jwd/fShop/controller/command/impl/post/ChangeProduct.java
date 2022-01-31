@@ -2,11 +2,12 @@ package com.jwd.fShop.controller.command.impl.post;
 
 import com.jwd.fShop.controller.command.Command;
 import com.jwd.fShop.controller.command.impl.AbstractCommand;
-import com.jwd.fShop.controller.constant.Attributes;
+import com.jwd.fShop.controller.constant.Messages;
 import com.jwd.fShop.controller.constant.RedirectionPaths;
 import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
 import com.jwd.fShop.controller.exception.InvalidArgumentException;
+import com.jwd.fShop.controller.util.AttributeSetter;
 import com.jwd.fShop.controller.util.ParameterParser;
 import com.jwd.fShop.domain.Product;
 import com.jwd.fShop.domain.Role;
@@ -20,20 +21,21 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-public class AddProduct extends AbstractCommand implements Command {
+public class ChangeProduct extends AbstractCommand implements Command {
 
-    public AddProduct() {
+    public ChangeProduct() {
         super(Role.ADMIN);
     }
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws CommandException {
+        int id = 0;
         try {
             validateRole(req, resp);
 
+            id = ParameterParser.parseInt(req.getParameter("id"));
             boolean visibility = nonNull(req.getParameter("visibility"));
             String name = req.getParameter("name");
             String type = req.getParameter("type");
@@ -52,16 +54,15 @@ public class AddProduct extends AbstractCommand implements Command {
                     setVisible(visibility).
                     build();
 
-            productService.add(product);
-
-            req.getSession().setAttribute(Attributes.ATTRIBUTE_MESSAGE, "Product saved successfully");
-            resp.sendRedirect(RedirectionPaths.TO_ADD_PRODUCT);
+            productService.changeById(product, id);
+            AttributeSetter.setMessage(req.getSession(), Messages.PRODUCT_CHANGING_SUCCESS);
+            resp.sendRedirect(RedirectionPaths.TO_CHANGE_PRODUCT + "&id=" + id);
         } catch (AccessViolationException | IOException | FatalServiceException exception) {
             throw new CommandException("in AddProductCommand, while building product", exception);
         } catch (ServiceException | InvalidArgumentException exception) {
-            req.getSession().setAttribute(Attributes.ATTRIBUTE_MESSAGE, "Product was not saved.");
+            AttributeSetter.setMessage(req.getSession(), Messages.PRODUCT_CHANGING_FAULT);
             try {
-                resp.sendRedirect(RedirectionPaths.TO_ADD_PRODUCT);
+                resp.sendRedirect(RedirectionPaths.TO_CHANGE_PRODUCT + "&id=" + id);
             } catch (IOException e) {
                 throw new CommandException("in AddProductCommand, while building product", exception);
             }

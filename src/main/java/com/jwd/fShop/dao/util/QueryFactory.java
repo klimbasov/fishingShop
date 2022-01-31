@@ -262,6 +262,9 @@ public class QueryFactory {
             if (productFilter.isLowPrice()) {
                 setStatementPair(sql, " AND ", " WHERE ", ProductSqlNames.PRICE_COLUMN_NAME, " >= ?", isNotFirstElement);
             }
+            if (productFilter.isVisibility()) {
+                setStatementPair(sql, " AND ", " WHERE ", ProductSqlNames.VISIBLE_COLUMN_NAME, " = ?", isNotFirstElement);
+            }
             return sql;
         }
     }

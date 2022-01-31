@@ -9,12 +9,14 @@ public class ProductFilter {
     private static final Float DEFAULT_LOW_PRICE = null;
     private static final Float DEFAULT_HIGH_PRICE = null;
     private static final Integer DEFAULT_PRODUCT_TYPE = null;
+    private static final Boolean DEFAULT_VISIBILITY = null;
 
     private final String name;
     private final Integer id;
     private final Float lowPrice;
     private final Float highPrice;
     private final Integer productType;
+    private final Boolean visibility;
 
     ProductFilter(final Builder builder) {
         this.name = builder.name;
@@ -22,6 +24,7 @@ public class ProductFilter {
         this.lowPrice = builder.lowPrice;
         this.highPrice = builder.highPrice;
         this.productType = builder.productType;
+        this.visibility = builder.visibility;
     }
 
     public String getName() {
@@ -44,6 +47,10 @@ public class ProductFilter {
         return productType;
     }
 
+    public Boolean getVisibility(){
+        return visibility;
+    }
+
     public boolean isName() {
         return !Objects.equals(name, DEFAULT_NAME);
     }
@@ -64,6 +71,10 @@ public class ProductFilter {
         return !Objects.equals(productType, DEFAULT_PRODUCT_TYPE);
     }
 
+    public boolean isVisibility() {
+        return !Objects.equals(visibility, DEFAULT_VISIBILITY);
+    }
+
     public static class Builder {
 
         private String name;
@@ -71,6 +82,7 @@ public class ProductFilter {
         private Float lowPrice;
         private Float highPrice;
         private Integer productType;
+        private Boolean visibility;
 
         {
             name = DEFAULT_NAME;
@@ -78,9 +90,9 @@ public class ProductFilter {
             lowPrice = DEFAULT_LOW_PRICE;
             highPrice = DEFAULT_HIGH_PRICE;
             productType = DEFAULT_PRODUCT_TYPE;
+            visibility = DEFAULT_VISIBILITY;
         }
 
-        //todo check if initialisation block works correctly
         public Builder() {
 
         }
@@ -103,6 +115,11 @@ public class ProductFilter {
 
         public Builder setProductType(Integer productType) {
             this.productType = productType;
+            return this;
+        }
+
+        public Builder setVisibility(Boolean visible) {
+            visibility = visible;
             return this;
         }
 

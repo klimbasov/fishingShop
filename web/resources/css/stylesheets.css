@@ -285,7 +285,7 @@ button#selected{
     background: #096c0c;
 }
 
-                                                                         /* Registration & logination*/
+                                                                         /* Registration & authorization*/
 .registration_block{
     display: block;
     position:fixed;
@@ -324,7 +324,7 @@ button#selected{
     margin-right: 10px;
     background-color: #d8d7b8;
     height: 100%;
-    width: 130px;
+    min-width: 130px;
     font-weight: bold;
     font-size: 28px;
     font-family: helvetica;
@@ -455,6 +455,11 @@ button#selected{
     font-size: 26px;
     font-family: helvetica;
 }
+.addProduct input[type=checkbox]{
+    height: 100%;
+    width: 100%;
+
+}
 .addProduct span{
     flex: 1;
     display: inline-block;
@@ -465,7 +470,8 @@ button#selected{
     font-weight: bold;
     font-size: 28px;
     font-family: helvetica;
-    text-align: center;
+    text-align: left;
+    min-width: 120px;
 }
 .addProduct button[type=submit]{
     background-color: #557534; /* Green */

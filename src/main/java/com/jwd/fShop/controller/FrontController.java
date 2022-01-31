@@ -1,7 +1,9 @@
 package com.jwd.fShop.controller;
 
+import com.jwd.fShop.controller.command.Command;
 import com.jwd.fShop.controller.command.CommandHolder;
 import com.jwd.fShop.controller.constant.Attributes;
+import com.jwd.fShop.controller.constant.ExceptionMessages;
 import com.jwd.fShop.controller.exception.CommandException;
 import com.jwd.fShop.controller.util.AttributeSetter;
 import jakarta.servlet.ServletException;
@@ -12,6 +14,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+
+import static java.util.Objects.nonNull;
 
 public class FrontController extends HttpServlet {
     private static final Logger logger = LogManager.getRootLogger();
@@ -32,8 +36,14 @@ public class FrontController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         try {
-            String command = req.getParameter(Attributes.ATTRIBUTE_COMMAND_GET);
-            commandHolder.getGetCommandByAlias(command).execute(req, resp);
+            String alias = req.getParameter(Attributes.ATTRIBUTE_COMMAND_GET);
+            Command command = commandHolder.getGetCommandByAlias(alias);
+            if(nonNull(command)){
+                command.execute(req, resp);
+            }
+            else{
+                throw new CommandException(ExceptionMessages.COMMAND_NOT_FOUND);
+            }
         } catch (CommandException exception) {
             exceptionHandler(req, resp, exception);
         }
@@ -42,8 +52,14 @@ public class FrontController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         try {
-            String commandName = req.getParameter(Attributes.ATTRIBUTE_COMMAND_POST);
-            commandHolder.getPostCommandByAlias(commandName).execute(req, resp);
+            String alias = req.getParameter(Attributes.ATTRIBUTE_COMMAND_POST);
+            Command command = commandHolder.getPostCommandByAlias(alias);
+            if(nonNull(command)){
+                command.execute(req, resp);
+            }
+            else{
+                throw new CommandException(ExceptionMessages.COMMAND_NOT_FOUND);
+            }
         } catch (CommandException exception) {
             exceptionHandler(req, resp, exception);
         }

@@ -29,6 +29,7 @@ public class CommandHolder {
         commandMapPost.put(CommandsAlias.Post.CHANGE_ROLE, new ChangeRole());
         commandMapPost.put(CommandsAlias.Post.EMPTY_BASKET, new EmptyBasket());
         commandMapPost.put(CommandsAlias.Post.CHANGE_LOCALE, new ChangeLocale());
+        commandMapPost.put(CommandsAlias.Post.CHANGE_PRODUCT, new ChangeProduct());
     }
 
     private void initMapGet() {
@@ -50,6 +51,7 @@ public class CommandHolder {
         commandMapGet.put(CommandsAlias.Get.TO_ERROR, new ShowError());
         commandMapGet.put(CommandsAlias.Get.TO_CHANGE_USER, new ShowChangeUser());
         commandMapGet.put(CommandsAlias.Get.TO_USER, new ShowUser());
+        commandMapGet.put(CommandsAlias.Get.TO_CHANGE_PRODUCT, new ShowChangeProduct());
     }
 
 

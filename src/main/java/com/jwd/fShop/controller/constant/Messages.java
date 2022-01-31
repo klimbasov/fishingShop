@@ -9,4 +9,8 @@ public class Messages {
     public static final String PASSWORD_CHANGING_FAULT = "Password can not be changed to required variant. Check signature carefully.";
     public static final String USERNAME_CHANGING_FAULT = "Username can not be changed to required variant. Check signature carefully.";
     public static final String ROLE_CHANGING_FAULT = "Role can not be changed to required variant. Check signature carefully.";
+    public static final String PRODUCT_NOT_FOUND = "There is no such product.";
+    public static final String PRODUCT_CHANGING_SUCCESS = "Product changed successfully";
+    public static final String PRODUCT_CHANGING_FAULT = "Some parameters had invalid value. Product was not changed.";
+
 }

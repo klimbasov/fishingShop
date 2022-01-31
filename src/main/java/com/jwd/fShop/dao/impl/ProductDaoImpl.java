@@ -81,6 +81,9 @@ public class ProductDaoImpl implements ProductDao {
         if (productFilter.isLowPrice()) {
             preparedStatement.setFloat(counter++, productFilter.getLowPrice());
         }
+        if (productFilter.isVisibility()){
+            preparedStatement.setBoolean(counter++, productFilter.getVisibility());
+        }
         return counter;
     }
 
