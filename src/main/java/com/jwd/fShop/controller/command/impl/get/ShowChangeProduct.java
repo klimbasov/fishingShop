@@ -28,16 +28,16 @@ public class ShowChangeProduct extends AbstractCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws CommandException {
-        try{
+        try {
             validateRole(req, resp);
 
             int id = ParameterParser.parseInt(req.getParameter("id"));
             String[] types = ServiceHolder.getInstance().getTypeService().getNames();
             Product product = ServiceHolder.getInstance().getProductService().getById(id);
-            if(nonNull(product)){
+            if (nonNull(product)) {
                 req.setAttribute(Attributes.ATTRIBUTE_TYPE_NAMES, types);
                 req.setAttribute("product", product);
-            }else {
+            } else {
                 AttributeSetter.setMessage(req.getSession(), Messages.PRODUCT_NOT_FOUND);
             }
             req.getRequestDispatcher("WEB-INF/pages/changeProduct.jsp").forward(req, resp);

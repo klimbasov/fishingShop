@@ -19,7 +19,7 @@ public class LocaleFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        if (isNull(Config.get(session, Config.FMT_LOCALE))){
+        if (isNull(Config.get(session, Config.FMT_LOCALE))) {
             Locale locale = LocaleHolder.getInstance().gaeDefault();
             Config.set(session, Config.FMT_LOCALE, locale);
         }

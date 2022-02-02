@@ -2,14 +2,20 @@ package com.jwd.fShop.controller.command.impl.get;
 
 import com.jwd.fShop.controller.command.Command;
 import com.jwd.fShop.controller.command.impl.AbstractCommand;
+import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
+import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.ParameterParser;
 import com.jwd.fShop.domain.Product;
 import com.jwd.fShop.domain.Role;
 import com.jwd.fShop.service.ProductService;
+import com.jwd.fShop.service.exception.ServiceException;
 import com.jwd.fShop.service.serviceHolder.ServiceHolder;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 
 public class ShowProduct extends AbstractCommand implements Command {
 
@@ -28,7 +34,11 @@ public class ShowProduct extends AbstractCommand implements Command {
 
             req.setAttribute("product", product);
             req.getRequestDispatcher("WEB-INF/pages/product.jsp").forward(req, resp);
-        } catch (Exception exception) {
+        } catch (IOException |
+                AccessViolationException |
+                ServiceException |
+                InvalidArgumentException |
+                ServletException exception) {
             throw new CommandException("in " + this.getClass().getName() + " : in execute() while forwarding request", exception);
         }
     }

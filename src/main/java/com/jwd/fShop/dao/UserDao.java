@@ -17,33 +17,30 @@ import java.util.List;
 public interface UserDao {
     /**
      * Used to add user to the database table.
-     *
-     * @param user
-     * @throws DaoException
+     * @param user user to save
+     * @throws DaoException if some kind of exception occurred while execution or invalid argument was passed.
+     * Usually warps cause exception.
      */
     void save(User user) throws DaoException;
 
     /**
      * Used to get list of all users by filter object.
-     *
-     * @param filter
-     * @throws DaoException
+     * @param filter filter object specifies parameters range search for
+     * @throws DaoException if some kind of exception occurred while execution or invalid argument was passed.
+     * Usually warps cause exception.
      */
     LinkedList<User> get(UserFilter filter) throws DaoException;
 
-    //boolean deleteUser(int id) throws DaoException;
-
     /**
      * Used to update some existing user. User argument's id field must be initialised.
-     *
      * @param user - User object, carrying parameters to update. ID must be initialized.
-     * @throws DaoException
+     * @throws DaoException if some kind of exception occurred while execution or invalid argument was passed.
+     * Usually warps cause exception.
      */
     void update(User user, int id) throws DaoException;
 
     /**
      * Used to get list of some range of users by filter object.
-     *
      * @param filter - filter required user parameters;
      * @param offset - logical ordinal number of user set. Translated to offset as setSize * setNumber;
      * @param size   - size of user set.
@@ -54,7 +51,6 @@ public interface UserDao {
 
     /**
      * Used to get quantity of existing sets for the specified filter.
-     *
      * @param filter - carrying filtering parameters;
      * @return Quantity of sets for the specified filter.
      */

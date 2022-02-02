@@ -5,13 +5,13 @@
   Time: 2:19 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <fmt:setBundle basename = "locale/locale" var = "orderPageLang"/>
 <ul class="product_list" id="list">
-    <c:forEach var="product" items="${products}" >
+    <c:forEach var="product" items="${requestScope.products}" >
         <li>
 
             <div class='product_list info_group'>
@@ -32,7 +32,7 @@
                 </div>
 
             </div>
-            <img src='resources/images/tick.jpg'>
+            <img alt="" src='resources/images/tick.jpg'>
         </li>
     </c:forEach>
 </ul>

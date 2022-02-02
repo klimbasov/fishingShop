@@ -6,6 +6,7 @@ import com.jwd.fShop.dao.connectionPool.ConnectionWrapper;
 import com.jwd.fShop.dao.constant.OrdersProductsSqlNames;
 import com.jwd.fShop.dao.constant.UsersOrdersSqlNames;
 import com.jwd.fShop.dao.exception.ConnectionPoolException;
+import com.jwd.fShop.dao.exception.ConnectionWrapperException;
 import com.jwd.fShop.dao.exception.DaoException;
 import com.jwd.fShop.dao.exception.FatalDaoException;
 import com.jwd.fShop.dao.util.QueryFactory;
@@ -14,6 +15,7 @@ import com.jwd.fShop.domain.ProductBunch;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -63,7 +65,7 @@ public class OrderDaoImpl implements OrderDao {
 
             connectionWrapper.commit();
 
-        } catch (Exception exception) {
+        } catch (SQLException | ConnectionWrapperException exception) {
             throw new DaoException("In " + this.getClass().getName() + " in void save(Order)", exception);
         }
     }
@@ -99,8 +101,8 @@ public class OrderDaoImpl implements OrderDao {
             }
 
 
-        } catch (Exception exception) {
-            throw new DaoException("", exception);
+        } catch (SQLException | ConnectionWrapperException exception) {
+            throw new DaoException(exception);
         }
         return order;
     }
@@ -127,8 +129,8 @@ public class OrderDaoImpl implements OrderDao {
                     );
                 }
             }
-        } catch (Exception exception) {
-            throw new DaoException("", exception);
+        } catch (SQLException | ConnectionWrapperException exception) {
+            throw new DaoException(exception);
         }
         return orders;
     }
@@ -159,8 +161,8 @@ public class OrderDaoImpl implements OrderDao {
                 }
             }
 
-        } catch (Exception exception) {
-            throw new DaoException("", exception);
+        } catch (SQLException | ConnectionWrapperException exception) {
+            throw new DaoException(exception);
         }
         return orders;
     }
@@ -181,7 +183,7 @@ public class OrderDaoImpl implements OrderDao {
                 quantity = resultSet.getInt(1);
             }
 
-        } catch (Exception exception) {
+        } catch (SQLException | ConnectionWrapperException exception) {
             throw new DaoException("in ProductDaoImpl: in getSetQuantity(UserFilter, int)", exception);
         }
         return quantity;

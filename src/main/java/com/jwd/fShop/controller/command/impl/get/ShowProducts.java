@@ -3,19 +3,23 @@ package com.jwd.fShop.controller.command.impl.get;
 import com.jwd.fShop.controller.command.Command;
 import com.jwd.fShop.controller.command.impl.AbstractCommand;
 import com.jwd.fShop.controller.constant.Attributes;
+import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
+import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.AttributeSetter;
 import com.jwd.fShop.controller.util.ParameterParser;
 import com.jwd.fShop.domain.Product;
 import com.jwd.fShop.domain.ProductFilter;
 import com.jwd.fShop.domain.Role;
 import com.jwd.fShop.service.ProductService;
+import com.jwd.fShop.service.exception.ServiceException;
 import com.jwd.fShop.service.serviceHolder.ServiceHolder;
-import com.mysql.cj.Session;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import java.io.IOException;
 import java.util.List;
 
 import static java.util.Objects.nonNull;
@@ -44,7 +48,7 @@ public class ShowProducts extends AbstractCommand implements Command {
             try {
                 lowPrice = Float.parseFloat(req.getParameter("lowPrice"));
             } catch (NumberFormatException | NullPointerException e) {
-
+//todo refactor this
             }
             try {
                 highPrice = Float.parseFloat(req.getParameter("highPrice"));
@@ -52,14 +56,14 @@ public class ShowProducts extends AbstractCommand implements Command {
             }
 
             ProductFilter.Builder builder = new ProductFilter.Builder();
-            if(nonNull(session)){
+            if (nonNull(session)) {
                 Role role = (Role) session.getAttribute(Attributes.ATTRIBUTE_ROLE);
-                if(nonNull(role)){
-                    if(role == Role.USER){
+                if (nonNull(role)) {
+                    if (role == Role.USER) {
                         builder.setVisibility(true);
                     }
                 }
-            }else {
+            } else {
                 builder.setVisibility(true);
             }
             ProductFilter filter = builder.
@@ -76,7 +80,7 @@ public class ShowProducts extends AbstractCommand implements Command {
             req.setAttribute("lowPrice", lowPrice);
             req.setAttribute("highPrice", highPrice);
             req.getRequestDispatcher("WEB-INF/pages/products.jsp").forward(req, resp);
-        } catch (Exception exception) {
+        } catch (IOException | AccessViolationException | ServiceException | InvalidArgumentException | ServletException exception) {
             throw new CommandException("In " + this.getClass().getName() + " : in execute().", exception);
         }
     }

@@ -20,7 +20,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public class AddProduct extends AbstractCommand implements Command {

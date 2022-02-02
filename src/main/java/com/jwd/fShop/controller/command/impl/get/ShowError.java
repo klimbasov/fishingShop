@@ -23,7 +23,7 @@ public class ShowError extends AbstractCommand implements Command {
 
             req.getRequestDispatcher("WEB-INF/pages/error/error.jsp").forward(req, resp);
         } catch (ServletException | IOException | AccessViolationException exception) {
-
+//todo fatal command exception
         }
     }
 }

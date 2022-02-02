@@ -38,10 +38,9 @@ public class FrontController extends HttpServlet {
         try {
             String alias = req.getParameter(Attributes.ATTRIBUTE_COMMAND_GET);
             Command command = commandHolder.getGetCommandByAlias(alias);
-            if(nonNull(command)){
+            if (nonNull(command)) {
                 command.execute(req, resp);
-            }
-            else{
+            } else {
                 throw new CommandException(ExceptionMessages.COMMAND_NOT_FOUND);
             }
         } catch (CommandException exception) {
@@ -54,10 +53,9 @@ public class FrontController extends HttpServlet {
         try {
             String alias = req.getParameter(Attributes.ATTRIBUTE_COMMAND_POST);
             Command command = commandHolder.getPostCommandByAlias(alias);
-            if(nonNull(command)){
+            if (nonNull(command)) {
                 command.execute(req, resp);
-            }
-            else{
+            } else {
                 throw new CommandException(ExceptionMessages.COMMAND_NOT_FOUND);
             }
         } catch (CommandException exception) {

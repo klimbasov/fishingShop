@@ -116,7 +116,7 @@ public class QueryFactory {
             boolean isNotFirstElement = false;
             StringBuilder sql = new StringBuilder();
             sql.append(base);
-            if (userFilter.isUserSubname()) {
+            if (userFilter.getUserSubName()) {
                 if (userFilter.isFullName()) {
                     setStatementPair(sql, " AND ", " WHERE ", UserSqlNames.USERNAME_COLUMN_NAME, " = ?", false);
                 } else {

@@ -5,7 +5,7 @@
   Time: 3:32 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
@@ -23,8 +23,8 @@
             </form>
         </li>
         <span>
-            <fmt:message key = "label.order" bundle = "${orderLang}"/> ${totalPrice} $
-            </span>
+            <fmt:message key = "label.order" bundle = "${orderLang}"/> ${requestScope.totalPrice} $
+        </span>
         <li>
             <form method="post">
                 <input type="hidden" name="command" value="emptyBasket"/>

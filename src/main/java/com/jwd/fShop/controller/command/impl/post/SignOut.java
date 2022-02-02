@@ -3,10 +3,14 @@ package com.jwd.fShop.controller.command.impl.post;
 import com.jwd.fShop.controller.command.Command;
 import com.jwd.fShop.controller.command.impl.AbstractCommand;
 import com.jwd.fShop.controller.constant.RedirectionPaths;
+import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
+import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.domain.Role;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 
 public class SignOut extends AbstractCommand implements Command {
     public SignOut() {
@@ -20,7 +24,7 @@ public class SignOut extends AbstractCommand implements Command {
 
             req.getSession().invalidate();
             resp.sendRedirect(RedirectionPaths.TO_INDEX);
-        } catch (Exception e) {
+        } catch (IOException | AccessViolationException | InvalidArgumentException e) {
             throw new CommandException("In " + this.getClass().getName() + " while forwarding.", e);
         }
     }

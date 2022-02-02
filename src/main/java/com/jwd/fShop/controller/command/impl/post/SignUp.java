@@ -4,16 +4,20 @@ import com.jwd.fShop.controller.command.Command;
 import com.jwd.fShop.controller.command.impl.AbstractCommand;
 import com.jwd.fShop.controller.constant.Messages;
 import com.jwd.fShop.controller.constant.RedirectionPaths;
+import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
+import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.AttributeSetter;
 import com.jwd.fShop.domain.Role;
 import com.jwd.fShop.domain.User;
 import com.jwd.fShop.service.UserService;
+import com.jwd.fShop.service.exception.ServiceException;
 import com.jwd.fShop.service.serviceHolder.ServiceHolder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import static com.jwd.fShop.controller.constant.Attributes.*;
@@ -50,7 +54,7 @@ public class SignUp extends AbstractCommand implements Command {
                 resp.sendRedirect(RedirectionPaths.TO_SING_UP);
             }
 
-        } catch (Exception exception) {
+        } catch (IOException | AccessViolationException | ServiceException | InvalidArgumentException exception) {
             throw new CommandException("in " + this.getClass().getName() + " , adding user", exception);
         }
     }

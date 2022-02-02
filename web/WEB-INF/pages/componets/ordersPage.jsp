@@ -5,13 +5,13 @@
   Time: 5:57 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <fmt:setBundle basename = "locale/locale" var ="orderPageLang"/>
 <ul class="product_list" id="list">
-    <c:forEach var="order" items="${orders}" >
+    <c:forEach var="order" items="${requestScope.orders}" >
         <li>
             <div class='product_list info_group'>
                 <div class='product_list info_slot'>

@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="fShop:Web">
+    <output-path>$PROJECT_DIR$/out/artifacts/fShop_Web</output-path>
+    <root id="archive" name="fShop_Web.war">
+      <element id="artifact" artifact-name="fShop:Web exploded" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.26" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-api:2.17.1" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-core:2.17.1" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

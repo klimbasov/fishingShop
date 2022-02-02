@@ -4,6 +4,7 @@ import com.jwd.fShop.dao.UserDao;
 import com.jwd.fShop.dao.connectionPool.ConnectionPool;
 import com.jwd.fShop.dao.connectionPool.ConnectionWrapper;
 import com.jwd.fShop.dao.exception.ConnectionPoolException;
+import com.jwd.fShop.dao.exception.ConnectionWrapperException;
 import com.jwd.fShop.dao.exception.DaoException;
 import com.jwd.fShop.dao.exception.FatalDaoException;
 import com.jwd.fShop.dao.util.QueryFactory;
@@ -51,13 +52,13 @@ public class UserDaoImpl implements UserDao {
         preparedStatement.setInt(counter + 1, size);
     }
 
-    private static void setSelectParams(final PreparedStatement preparedStatement, final UserFilter userFilter) throws Exception {
+    private static void setSelectParams(final PreparedStatement preparedStatement, final UserFilter userFilter) throws SQLException {
         setSelectFilterParams(preparedStatement, userFilter);
     }
 
     private static int setSelectFilterParams(final PreparedStatement preparedStatement, final UserFilter userFilter) throws SQLException {
         int counter = 1;
-        if (userFilter.isUserSubname()) {
+        if (userFilter.getUserSubName()) {
             if (userFilter.isFullName()) {
                 preparedStatement.setString(counter++, userFilter.getUserSubname());
             } else {
@@ -103,7 +104,7 @@ public class UserDaoImpl implements UserDao {
             statement.setTime(5, user.getRegistrationTime());
 
             statement.executeUpdate();
-        } catch (Exception exception) {
+        } catch (SQLException | ConnectionWrapperException exception) {
             throw new DaoException("in ProductDaoImpl: in setUser(User) while getting connection from connection pool", exception);
         }
     }
@@ -130,7 +131,7 @@ public class UserDaoImpl implements UserDao {
                             .build());
                 }
             }
-        } catch (Exception exception) {
+        } catch (SQLException | ConnectionWrapperException exception) {
             throw new DaoException("in ProductDaoImpl: in getUser(String) while getting prepared statement", exception);
         }
         return users;
@@ -152,7 +153,7 @@ public class UserDaoImpl implements UserDao {
 
             preparedStatement.executeUpdate();
 
-        } catch (Exception exception) {
+        } catch (SQLException | ConnectionWrapperException exception) {
             throw new DaoException("in ProductDaoImpl: in getUser(String)", exception);
         }
     }
@@ -179,7 +180,7 @@ public class UserDaoImpl implements UserDao {
                             .build());
                 }
             }
-        } catch (Exception exception) {
+        } catch (SQLException | ConnectionWrapperException exception) {
             throw new DaoException("in ProductDaoImpl: in getUser(String) while getting prepared statement", exception);
         }
         return users;
@@ -199,7 +200,7 @@ public class UserDaoImpl implements UserDao {
                 quantity = resultSet.getInt(1);
             }
 
-        } catch (Exception exception) {
+        } catch (SQLException | ConnectionWrapperException exception) {
             throw new DaoException("in ProductDaoImpl: in getSetQuantity(UserFilter, int)", exception);
         }
         return quantity;

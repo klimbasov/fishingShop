@@ -71,7 +71,7 @@ public class TypeDaoImpl implements TypeDao {
 
             connectionWrapper.commit();
 
-        } catch (Exception e) {
+        } catch (SQLException | ConnectionWrapperException e) {
             throw new DaoException(" ", e);
         }
         return id;

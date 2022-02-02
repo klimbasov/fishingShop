@@ -4,17 +4,22 @@ import com.jwd.fShop.controller.command.Command;
 import com.jwd.fShop.controller.command.impl.AbstractCommand;
 import com.jwd.fShop.controller.constant.Attributes;
 import com.jwd.fShop.controller.constant.Messages;
+import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
+import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.AttributeSetter;
 import com.jwd.fShop.controller.util.ParameterParser;
 import com.jwd.fShop.domain.Product;
 import com.jwd.fShop.domain.Role;
 import com.jwd.fShop.service.ProductService;
+import com.jwd.fShop.service.exception.ServiceException;
 import com.jwd.fShop.service.serviceHolder.ServiceHolder;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -68,8 +73,12 @@ public class ShowBasket extends AbstractCommand implements Command {
             req.setAttribute(Attributes.ATTRIBUTE_PRODUCTS, products);
             req.setAttribute(Attributes.ATTRIBUTE_TOTAL_PRICE, totalPrice);
             req.getRequestDispatcher("WEB-INF/pages/basket.jsp").forward(req, resp);
-        } catch (Exception e) {
-            throw new CommandException("In " + this.getClass().getName() + ".", e);
+        } catch (IOException |
+                AccessViolationException |
+                ServiceException |
+                InvalidArgumentException |
+                ServletException exception) {
+            throw new CommandException("In " + this.getClass().getName() + ".", exception);
         }
     }
 }

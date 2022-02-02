@@ -2,6 +2,7 @@ package com.jwd.fShop.domain;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -47,7 +48,7 @@ public class Order {
     }
 
     public List<ProductBunch> getProductBunchList() {
-        return productBunchList;
+        return new LinkedList<>(productBunchList);
     }
 
     public Integer getId() {

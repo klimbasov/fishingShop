@@ -5,6 +5,7 @@ import com.jwd.fShop.dao.connectionPool.ConnectionPool;
 import com.jwd.fShop.dao.connectionPool.ConnectionWrapper;
 import com.jwd.fShop.dao.constant.ProductSqlNames;
 import com.jwd.fShop.dao.exception.ConnectionPoolException;
+import com.jwd.fShop.dao.exception.ConnectionWrapperException;
 import com.jwd.fShop.dao.exception.DaoException;
 import com.jwd.fShop.dao.exception.FatalDaoException;
 import com.jwd.fShop.dao.util.QueryFactory;
@@ -60,7 +61,7 @@ public class ProductDaoImpl implements ProductDao {
         preparedStatement.setInt(counter + 1, size);
     }
 
-    private static void setSelectParams(final PreparedStatement preparedStatement, final ProductFilter productFilter) throws Exception {
+    private static void setSelectParams(final PreparedStatement preparedStatement, final ProductFilter productFilter) throws SQLException {
         setSelectFilterParams(preparedStatement, productFilter);
     }
 
@@ -81,7 +82,7 @@ public class ProductDaoImpl implements ProductDao {
         if (productFilter.isLowPrice()) {
             preparedStatement.setFloat(counter++, productFilter.getLowPrice());
         }
-        if (productFilter.isVisibility()){
+        if (productFilter.isVisibility()) {
             preparedStatement.setBoolean(counter++, productFilter.getVisibility());
         }
         return counter;
@@ -161,7 +162,7 @@ public class ProductDaoImpl implements ProductDao {
                 productList = getListFormResultSet(resultSet);
             }
 
-        } catch (Exception exception) {
+        } catch (SQLException | ConnectionWrapperException exception) {
             throw new DaoException("in " + this.getClass().getName() + " in get(ProductFilter)", exception);
         }
 
@@ -180,7 +181,7 @@ public class ProductDaoImpl implements ProductDao {
             preparedStatement.setInt(2, id);
 
             preparedStatement.executeUpdate();
-        } catch (Exception exception) {
+        } catch (SQLException | ConnectionWrapperException exception) {
             throw new DaoException("in ProductDaoImpl: in delete(int).", exception);
         }
     }
@@ -201,7 +202,7 @@ public class ProductDaoImpl implements ProductDao {
             preparedStatement.executeUpdate();
 
 
-        } catch (Exception exception) {
+        } catch (SQLException | ConnectionWrapperException exception) {
             throw new DaoException("in " + this.getClass().getName() + " in update(Product)", exception);
         }
     }
@@ -221,7 +222,7 @@ public class ProductDaoImpl implements ProductDao {
                 productList = getListFormResultSet(resultSet);
             }
 
-        } catch (Exception exception) {
+        } catch (SQLException | ConnectionWrapperException exception) {
             throw new DaoException("in " + this.getClass().getName() + " in get(ProductFilter)", exception);
         }
 
@@ -242,7 +243,7 @@ public class ProductDaoImpl implements ProductDao {
                 quantity = resultSet.getInt(1);
             }
 
-        } catch (Exception exception) {
+        } catch (SQLException | ConnectionWrapperException exception) {
             throw new DaoException("in ProductDaoImpl: in getSetQuantity(UserFilter, int)", exception);
         }
         return quantity;

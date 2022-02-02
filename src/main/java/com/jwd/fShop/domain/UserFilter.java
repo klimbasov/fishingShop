@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class UserFilter {
     private static final int DEFAULT_ID = -1;
-    private static final String DEFAULT_USER_SUBNAME = null;
+    private static final String DEFAULT_USER_SUB_NAME = null;
     private static final String DEFAULT_HASH_PASS = null;
     private static final Date DEFAULT_LOW_DATE = null;
     private static final Date DEFAULT_HIGH_DATE = null;
@@ -16,7 +16,7 @@ public class UserFilter {
     private static final boolean DEFAULT_FULL_NAME = false;
 
     private final int id;
-    private final String userSubname;
+    private final String userSubName;
     private final String subHashPass;
     private final Date lowDate;
     private final Date highDate;
@@ -27,7 +27,7 @@ public class UserFilter {
 
     UserFilter(final Builder builder) {
         this.id = builder.id;
-        this.userSubname = builder.userSubname;
+        this.userSubName = builder.userSubName;
         this.subHashPass = builder.subHashPass;
         this.lowDate = builder.lowDate;
         this.highDate = builder.highDate;
@@ -42,7 +42,7 @@ public class UserFilter {
     }
 
     public String getUserSubname() {
-        return userSubname;
+        return userSubName;
     }
 
     public String getSubHashPass() {
@@ -73,8 +73,8 @@ public class UserFilter {
         return id != DEFAULT_ID;
     }
 
-    public boolean isUserSubname() {
-        return !Objects.equals(userSubname, DEFAULT_USER_SUBNAME);
+    public boolean getUserSubName() {
+        return !Objects.equals(userSubName, DEFAULT_USER_SUB_NAME);
     }
 
     public boolean isSubHashPass() {
@@ -109,7 +109,7 @@ public class UserFilter {
     public static class Builder {
 
         private int id;
-        private String userSubname;
+        private String userSubName;
         private String subHashPass;
         private Date lowDate;
         private Date highDate;
@@ -120,7 +120,7 @@ public class UserFilter {
 
         public Builder() {
             id = DEFAULT_ID;
-            userSubname = DEFAULT_USER_SUBNAME;
+            userSubName = DEFAULT_USER_SUB_NAME;
             subHashPass = DEFAULT_HASH_PASS;
             lowDate = DEFAULT_LOW_DATE;
             highDate = DEFAULT_HIGH_DATE;
@@ -133,8 +133,8 @@ public class UserFilter {
             return new UserFilter(this);
         }
 
-        public Builder setUserSubname(String userSubname) {
-            this.userSubname = userSubname;
+        public Builder setUserSubName(String userSubName) {
+            this.userSubName = userSubName;
             return this;
         }
 

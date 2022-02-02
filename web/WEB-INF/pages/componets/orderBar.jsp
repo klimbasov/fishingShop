@@ -5,7 +5,7 @@
   Time: 3:27 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
@@ -17,13 +17,13 @@
 <div class="search" id="search">
     <ul>
         <span>
-            <fmt:message key = "label.order_id" bundle = "${orderLang}"/>: ${order.id}
+            <fmt:message key = "label.order_id" bundle = "${orderLang}"/>: ${requestScope.order.id}
         </span>
         <span>
-            <fmt:message key = "label.orderingDate" bundle = "${orderLang}"/>: ${order.orderingDate}
+            <fmt:message key = "label.orderingDate" bundle = "${orderLang}"/>: ${requestScope.order.orderingDate}
         </span>
         <span>
-            <fmt:message key = "label.order" bundle = "${orderLang}"/> ${totalPrice} $
+            <fmt:message key = "label.order" bundle = "${orderLang}"/> ${requestScope.totalPrice} $
         </span>
     </ul>
 </div>

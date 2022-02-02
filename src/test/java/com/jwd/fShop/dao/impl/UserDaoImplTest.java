@@ -48,7 +48,7 @@ class UserDaoImplTest {
 
     }
 
-    private void createTestDatabase() throws SQLException, FileNotFoundException {
+    private void createTestDatabase() throws FileNotFoundException {
         Reader reader = new BufferedReader(new FileReader(SCRIPT_PATH));
         scriptRunner.runScript(reader);
     }
@@ -94,7 +94,7 @@ class UserDaoImplTest {
                 .build();
         List<User> expected = Arrays.asList(user1, user2, user3);
         List<User> actual;
-        UserFilter userFilter = new UserFilter.Builder().setUserSubname("user").build();
+        UserFilter userFilter = new UserFilter.Builder().setUserSubName("user").build();
 
         userDao.save(user1);
         userDao.save(user2);
@@ -120,7 +120,7 @@ class UserDaoImplTest {
         int userId;
 
         userDao.save(user);
-        userId = userDao.get(new UserFilter.Builder().setUserSubname(user.getName()).build()).get(0).getId();
+        userId = userDao.get(new UserFilter.Builder().setUserSubName(user.getName()).build()).get(0).getId();
         userDao.update(new User.Builder().setRole(expected).build(), userId);
         actual = userDao.get(new UserFilter.Builder().setId(userId).build()).get(0).getRole();
 
@@ -150,7 +150,7 @@ class UserDaoImplTest {
                 .setRegistrationDate(new Date(Date.from(Instant.now()).getTime()))
                 .setRegistrationTime(new Time(Time.from(Instant.now()).getTime()))
                 .build();
-        UserFilter userFilter = new UserFilter.Builder().setUserSubname("user").build();
+        UserFilter userFilter = new UserFilter.Builder().setUserSubName("user").build();
 
         userDao.save(user1);
         userDao.save(user2);
@@ -176,7 +176,7 @@ class UserDaoImplTest {
     void getQuantity() throws DaoException {
         int expected;
         int actual;
-        UserFilter userFilter = new UserFilter.Builder().setUserSubname("u").build();
+        UserFilter userFilter = new UserFilter.Builder().setUserSubName("u").build();
 
         expected = userDao.get(userFilter).size();
         actual = userDao.getQuantity(userFilter);

@@ -2,7 +2,6 @@ package com.jwd.fShop.dao.impl;
 
 import com.jwd.fShop.dao.OrderDao;
 import com.jwd.fShop.dao.config.DataBaseConfig;
-import com.jwd.fShop.dao.exception.ConnectionWrapperException;
 import com.jwd.fShop.dao.exception.DaoException;
 import com.jwd.fShop.dao.exception.FatalDaoException;
 import com.jwd.fShop.domain.Order;
@@ -93,7 +92,7 @@ class OrderDaoImplTest {
     }
 
     @Test
-    void getById() throws SQLException, ConnectionWrapperException, DaoException {
+    void getById() throws SQLException, DaoException {
         Order actual;
         Order expected = new Order.Builder()
                 .setOrderingDate(new Date(Date.from(Instant.now()).getTime()))

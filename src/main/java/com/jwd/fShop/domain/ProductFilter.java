@@ -47,7 +47,7 @@ public class ProductFilter {
         return productType;
     }
 
-    public Boolean getVisibility(){
+    public Boolean getVisibility() {
         return visibility;
     }
 

@@ -10,7 +10,7 @@ import static java.lang.Math.min;
 public class AttributeSetter {
     public static void setPageNavigation(HttpServletRequest request, int page, int pageAmount, int visibleRange) {
         int lowPage = 1;
-        page = page < 1 ? 1 : page;
+        page = Math.max(page, 1);
         int highPage = pageAmount;
         if (pageAmount > 2 * visibleRange + 1) {
             lowPage = max(1, min(page - visibleRange, pageAmount - 2 * visibleRange));

@@ -2,17 +2,22 @@ package com.jwd.fShop.controller.command.impl.get;
 
 import com.jwd.fShop.controller.command.Command;
 import com.jwd.fShop.controller.command.impl.AbstractCommand;
+import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
+import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.AttributeSetter;
 import com.jwd.fShop.controller.util.ParameterParser;
 import com.jwd.fShop.domain.Role;
 import com.jwd.fShop.domain.User;
 import com.jwd.fShop.domain.UserFilter;
 import com.jwd.fShop.service.UserService;
+import com.jwd.fShop.service.exception.ServiceException;
 import com.jwd.fShop.service.serviceHolder.ServiceHolder;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
 import java.util.List;
 
 public class ShowUsers extends AbstractCommand implements Command {
@@ -30,7 +35,7 @@ public class ShowUsers extends AbstractCommand implements Command {
             String subUsername = req.getParameter("subUsername");
             UserService userService = ServiceHolder.getInstance().getUserService();
             UserFilter filter = new UserFilter.Builder().
-                    setUserSubname(subUsername).
+                    setUserSubName(subUsername).
                     build();
             int pageAmount = userService.getPagesQuantity(filter);
             int page = ParameterParser.parseInt(req.getParameter("page"), 1);
@@ -39,8 +44,12 @@ public class ShowUsers extends AbstractCommand implements Command {
             AttributeSetter.setPageNavigation(req, page, pageAmount, RANGE);
             req.setAttribute("users", users);
             req.getRequestDispatcher("WEB-INF/pages/users.jsp").forward(req, resp);
-        } catch (Exception e) {
-            throw new CommandException("In " + this.getClass().getName() + " : access violation.", e);
+        } catch (IOException |
+                AccessViolationException |
+                ServiceException |
+                InvalidArgumentException |
+                ServletException exception) {
+            throw new CommandException("In " + this.getClass().getName() + " : access violation.", exception);
         }
     }
 }

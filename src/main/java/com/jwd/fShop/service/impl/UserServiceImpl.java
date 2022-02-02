@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     public User register(String name, String password, Role role) throws ServiceException {
         String hashedPassword = Hasher.hash(password);
         UserFilter filter = new UserFilter.Builder().
-                setUserSubname(name).
+                setUserSubName(name).
                 fullName(true).
                 build();
         List<User> existed;
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
     public User authorize(String name, String password) throws ServiceException {
         String hashedPassword = Hasher.hash(password);
         UserFilter filter = new UserFilter.Builder().
-                setUserSubname(name).
+                setUserSubName(name).
                 fullName(true).
                 setSubHashPass(hashedPassword).
                 build();
