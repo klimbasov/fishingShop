@@ -4,6 +4,8 @@ import com.jwd.fShop.dao.config.DataBaseConfig;
 import com.jwd.fShop.dao.exception.ConnectionPoolException;
 import com.jwd.fShop.dao.exception.DaoException;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Objects;

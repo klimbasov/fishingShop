@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 import static java.util.Objects.nonNull;
 
 public class AddProduct extends AbstractCommand implements Command {
@@ -43,7 +44,6 @@ public class AddProduct extends AbstractCommand implements Command {
 
             Product product = new Product.
                     Builder().
-                    setId(0).
                     setName(name).
                     setPrice(price).
                     setQuantity(quantity).
@@ -56,13 +56,13 @@ public class AddProduct extends AbstractCommand implements Command {
             req.getSession().setAttribute(Attributes.ATTRIBUTE_MESSAGE, "Product saved successfully");
             resp.sendRedirect(RedirectionPaths.TO_ADD_PRODUCT);
         } catch (AccessViolationException | IOException | FatalServiceException exception) {
-            throw new CommandException("in AddProductCommand, while building product", exception);
+            throw new CommandException(createExceptionMessage(), exception);
         } catch (ServiceException | InvalidArgumentException exception) {
             req.getSession().setAttribute(Attributes.ATTRIBUTE_MESSAGE, "Product was not saved.");
             try {
                 resp.sendRedirect(RedirectionPaths.TO_ADD_PRODUCT);
             } catch (IOException e) {
-                throw new CommandException("in AddProductCommand, while building product", exception);
+                throw new CommandException(createExceptionMessage(), exception);
             }
         }
     }

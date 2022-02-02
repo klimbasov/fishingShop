@@ -32,7 +32,7 @@
                             <span><fmt:message key = "label.profile.name" bundle = "${lang}"/></span>
                         </div>
                         <div class='product_info value'>
-                            <span>${requestScope.user.name}</span>
+                            <span>${requestScope.user.DTO.name}</span>
                         </div>
                     </li>
                     <li>
@@ -48,7 +48,7 @@
                             <span><fmt:message key = "label.profile.registration_date" bundle = "${lang}"/></span>
                         </div>
                         <div class='product_info value'>
-                            <span>${requestScope.user.registrationDate}</span>
+                            <span>${requestScope.user.DTO.registrationDate}</span>
                         </div>
                     </li>
                     <li>
@@ -56,7 +56,7 @@
                             <span><fmt:message key = "label.profile.registration_time" bundle = "${lang}"/></span>
                         </div>
                         <div class='product_info value'>
-                            <span>${requestScope.user.registrationTime}</span>
+                            <span>${requestScope.user.DTO.registrationTime}</span>
                         </div>
                     </li>
                 </ul>

@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.jwd.fShop.dao.util.ArgumentValidator.validate;
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 
 public class TypeDaoImpl implements TypeDao {
     private final ConnectionPool connectionPool;
@@ -25,7 +26,7 @@ public class TypeDaoImpl implements TypeDao {
         try {
             connectionPool = ConnectionPool.getInstance(path);
         } catch (ConnectionPoolException e) {
-            throw new FatalDaoException(e.getMessage());
+            throw new FatalDaoException(createExceptionMessage(),e);
         }
     }
 
@@ -44,7 +45,7 @@ public class TypeDaoImpl implements TypeDao {
                 }
             }
         } catch (SQLException | ConnectionWrapperException e) {
-            throw new DaoException(e);
+            throw new DaoException(createExceptionMessage(),e);
         }
         return typesMap;
     }
@@ -72,7 +73,7 @@ public class TypeDaoImpl implements TypeDao {
             connectionWrapper.commit();
 
         } catch (SQLException | ConnectionWrapperException e) {
-            throw new DaoException(" ", e);
+            throw new DaoException(createExceptionMessage(), e);
         }
         return id;
     }

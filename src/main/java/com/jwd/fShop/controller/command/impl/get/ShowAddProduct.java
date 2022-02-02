@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
+
 
 public class ShowAddProduct extends AbstractCommand implements Command {
 
@@ -30,7 +32,7 @@ public class ShowAddProduct extends AbstractCommand implements Command {
             req.setAttribute(Attributes.ATTRIBUTE_TYPE_NAMES, types);
             req.getRequestDispatcher("WEB-INF/pages/addProduct.jsp").forward(req, resp);
         } catch (IOException | AccessViolationException | InvalidArgumentException | ServletException exception) {
-            throw new CommandException("in " + this.getClass().getName() + " : in execute() while forwarding request", exception);
+            throw new CommandException(createExceptionMessage(), exception);
         }
     }
 }

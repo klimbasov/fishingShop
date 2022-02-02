@@ -9,7 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
-<fmt:setBundle basename = "locale/locale" var = "orderPageLang"/>
+<fmt:setBundle basename = "locale/locale" var = "userPageLang"/>
 <ul class="product_list" id="list">
     <c:forEach var="product" items="${requestScope.products}" >
         <li>
@@ -18,25 +18,25 @@
                 <div class='product_list info_slot'>
                     <a class='product_href' href="?command_get=product&id=${product.id}">
                         <span class='product_text'>
-                                ${product.name}
+                                ${product.DTO.name}
                         </span>
                     </a>
                 </div>
                 <div>
                         <span class='product_list quantity'>
-                                ${product.quantity}  <fmt:message key = "label.piece" bundle = "${orderPageLang}"/>
+                                ${product.DTO.quantity}  <fmt:message key = "label.piece" bundle = "${userPageLang}"/>
                         </span>
                 </div>
                 <div>
                         <span class='product_list price'>
-                                ${product.price} $
+                                ${product.DTO.price} $
                         </span>
                 </div>
                 <div class="search">
                         <form method="post">
                             <input type="hidden" name="command" value="outBasket">
                             <input type="hidden" name="id" value="${product.id}">
-                            <button type="submit"><fmt:message key = "label.cancel" bundle = "${orderPageLang}"/></button>
+                            <button type="submit"><fmt:message key = "label.cancel" bundle = "${userPageLang}"/></button>
                         </form>
                 </div>
             </div>

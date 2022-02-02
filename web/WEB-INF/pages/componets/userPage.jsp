@@ -9,7 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
-<fmt:setBundle basename = "locale/locale" var ="orderPageLang"/>
+<fmt:setBundle basename = "locale/locale" var ="userPageLang"/>
 <ul class="product_list" id="list">
     <c:forEach var="order" items="${requestScope.users}" >
         <li>
@@ -18,23 +18,23 @@
                 <div class='product_list info_slot'>
                     <a class='product_href' href="?command_get=user&id=${order.id}">
                         <span class='product_text'>
-                                ${order.name}
+                                ${order.DTO.name}
                         </span>
                     </a>
                 </div>
                 <div>
                         <span class='product_list quantity'>
-                                <fmt:message key = "label.profile.registration_date" bundle = "${orderPageLang}"/>: ${order.registrationDate}
+                                <fmt:message key = "label.profile.registration_date" bundle = "${userPageLang}"/>: ${order.DTO.registrationDate}
                         </span>
                 </div>
                 <div>
                         <span class='product_list quantity'>
-                                <fmt:message key = "label.profile.registration_time" bundle = "${orderPageLang}"/>: ${order.registrationTime}
+                                <fmt:message key = "label.profile.registration_time" bundle = "${userPageLang}"/>: ${order.DTO.registrationTime}
                         </span>
                 </div>
                 <div>
                         <span class='product_list quantity'>
-                                ${requestScope.product.RegistrationTime}  <fmt:message key = "label.profile.role" bundle = "${orderPageLang}"/>: ${order.role}
+                                <fmt:message key = "label.profile.role" bundle = "${userPageLang}"/>: ${order.DTO.role}
                         </span>
                 </div>
             </div>

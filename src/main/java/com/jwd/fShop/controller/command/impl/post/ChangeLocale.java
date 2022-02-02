@@ -14,6 +14,8 @@ import jakarta.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 import java.util.Locale;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
+
 public class ChangeLocale extends AbstractCommand implements Command {
 
     public ChangeLocale() {
@@ -33,7 +35,7 @@ public class ChangeLocale extends AbstractCommand implements Command {
 
             resp.sendRedirect(req.getHeader("Referer"));
         } catch (AccessViolationException | IOException exception) {
-            throw new CommandException(exception);
+            throw new CommandException(createExceptionMessage(),exception);
         }
     }
 }

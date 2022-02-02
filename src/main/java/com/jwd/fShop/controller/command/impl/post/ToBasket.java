@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 import static java.util.Objects.isNull;
 
 public class ToBasket extends AbstractCommand implements Command {
@@ -43,7 +44,7 @@ public class ToBasket extends AbstractCommand implements Command {
             basket.put(id, quantity + existing);
             resp.sendRedirect(RedirectionPaths.TO_PRODUCT + "&id=" + id);
         } catch (IOException | AccessViolationException | InvalidArgumentException exception) {
-            throw new CommandException(exception);
+            throw new CommandException(createExceptionMessage(),exception);
         }
     }
 }

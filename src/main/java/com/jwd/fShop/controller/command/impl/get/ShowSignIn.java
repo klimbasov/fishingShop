@@ -12,6 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
+
 public class ShowSignIn extends AbstractCommand implements Command {
 
     public ShowSignIn() {
@@ -25,7 +27,7 @@ public class ShowSignIn extends AbstractCommand implements Command {
 
             req.getRequestDispatcher("WEB-INF/pages/signIn.jsp").forward(req, resp);
         } catch (IOException | AccessViolationException | InvalidArgumentException | ServletException exception) {
-            throw new CommandException("in " + this.getClass().getName() + " : in execute() while forwarding request", exception);
+            throw new CommandException(createExceptionMessage(), exception);
         }
     }
 }

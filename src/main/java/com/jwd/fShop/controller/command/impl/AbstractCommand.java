@@ -7,6 +7,7 @@ import com.jwd.fShop.domain.Role;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 import static java.util.Objects.isNull;
 
 public abstract class AbstractCommand {
@@ -34,7 +35,7 @@ public abstract class AbstractCommand {
             validateSessionRole(role);
         } catch (InvalidSessionException exception) {
             resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            throw new AccessViolationException("In " + this.getClass().getName() + " : validation violation", exception);
+            throw new AccessViolationException(createExceptionMessage("validation violation"), exception);
         }
     }
 }

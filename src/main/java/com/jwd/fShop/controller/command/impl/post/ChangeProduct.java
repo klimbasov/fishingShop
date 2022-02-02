@@ -21,6 +21,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 import static java.util.Objects.nonNull;
 
 public class ChangeProduct extends AbstractCommand implements Command {
@@ -46,7 +47,6 @@ public class ChangeProduct extends AbstractCommand implements Command {
 
             Product product = new Product.
                     Builder().
-                    setId(0).
                     setName(name).
                     setPrice(price).
                     setQuantity(quantity).
@@ -58,13 +58,13 @@ public class ChangeProduct extends AbstractCommand implements Command {
             AttributeSetter.setMessage(req.getSession(), Messages.PRODUCT_CHANGING_SUCCESS);
             resp.sendRedirect(RedirectionPaths.TO_CHANGE_PRODUCT + "&id=" + id);
         } catch (AccessViolationException | IOException | FatalServiceException exception) {
-            throw new CommandException("in AddProductCommand, while building product", exception);
+            throw new CommandException(createExceptionMessage(), exception);
         } catch (ServiceException | InvalidArgumentException exception) {
             AttributeSetter.setMessage(req.getSession(), Messages.PRODUCT_CHANGING_FAULT);
             try {
                 resp.sendRedirect(RedirectionPaths.TO_CHANGE_PRODUCT + "&id=" + id);
             } catch (IOException e) {
-                throw new CommandException("in AddProductCommand, while building product", exception);
+                throw new CommandException(createExceptionMessage(), exception);
             }
         }
     }

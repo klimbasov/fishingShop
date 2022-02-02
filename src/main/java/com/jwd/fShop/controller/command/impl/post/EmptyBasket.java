@@ -12,6 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
+
 public class EmptyBasket extends AbstractCommand implements Command {
     public EmptyBasket() {
         super(Role.USER);
@@ -26,7 +28,7 @@ public class EmptyBasket extends AbstractCommand implements Command {
 
             resp.sendRedirect(RedirectionPaths.TO_BASKET);
         } catch (IOException | AccessViolationException exception) {
-            throw new CommandException(exception);
+            throw new CommandException(createExceptionMessage(),exception);
         }
     }
 }

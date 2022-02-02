@@ -8,6 +8,7 @@ import com.jwd.fShop.controller.exception.CommandException;
 import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.AttributeSetter;
 import com.jwd.fShop.controller.util.ParameterParser;
+import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Product;
 import com.jwd.fShop.domain.ProductFilter;
 import com.jwd.fShop.domain.Role;
@@ -22,6 +23,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 import static java.util.Objects.nonNull;
 
 public class ShowProducts extends AbstractCommand implements Command {
@@ -38,7 +40,7 @@ public class ShowProducts extends AbstractCommand implements Command {
 
             HttpSession session = req.getSession(false);
             ProductService productService = ServiceHolder.getInstance().getProductService();
-            List<Product> products;
+            List<IdentifiedDTO<Product>> products;
             String subName = req.getParameter("subName");
             Float lowPrice = null;
             Float highPrice = null;
@@ -81,7 +83,7 @@ public class ShowProducts extends AbstractCommand implements Command {
             req.setAttribute("highPrice", highPrice);
             req.getRequestDispatcher("WEB-INF/pages/products.jsp").forward(req, resp);
         } catch (IOException | AccessViolationException | ServiceException | InvalidArgumentException | ServletException exception) {
-            throw new CommandException("In " + this.getClass().getName() + " : in execute().", exception);
+            throw new CommandException(createExceptionMessage(), exception);
         }
     }
 }

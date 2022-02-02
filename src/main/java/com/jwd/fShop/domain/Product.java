@@ -6,14 +6,12 @@ import static java.util.Objects.nonNull;
 
 public class Product {
     private final String name;
-    private final Integer id;
     private final Integer quantity;
     private final Float price;
     private final Integer productType;
     private final Boolean visible;
 
     Product(Builder builder) {
-        this.id = builder.id;
         this.name = builder.name;
         this.price = builder.price;
         this.quantity = builder.quantity;
@@ -23,10 +21,6 @@ public class Product {
 
     public String getName() {
         return name;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public Integer getQuantity() {
@@ -50,7 +44,7 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return nonNull(id) && nonNull(product.id) ? Objects.equals(id, product.id) : Objects.equals(name, product.name) &&
+        return  Objects.equals(name, product.name) &&
                 Objects.equals(price, product.price) ||
                 Objects.equals(quantity, product.quantity) ||
                 Objects.equals(productType, product.productType) ||
@@ -58,13 +52,12 @@ public class Product {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(name, id, quantity, price, productType, visible);
+    public int hashCode() {//todo refactor
+        return Objects.hash(name, quantity, price, productType, visible);
     }
 
     public static class Builder {
         private String name;
-        private Integer id;
         private Integer quantity;
         private Float price;
         private Integer productType;
@@ -73,7 +66,6 @@ public class Product {
 
         public Builder() {
             this.name = null;
-            this.id = null;
             this.quantity = null;
             this.price = null;
             this.productType = null;
@@ -81,7 +73,6 @@ public class Product {
 
         public Builder(Product product) {
             this.name = product.name;
-            this.id = product.id;
             this.quantity = product.quantity;
             this.price = product.price;
             this.productType = product.productType;
@@ -90,11 +81,6 @@ public class Product {
 
         public Builder setName(String name) {
             this.name = name;
-            return this;
-        }
-
-        public Builder setId(int id) {
-            this.id = id;
             return this;
         }
 

@@ -1,18 +1,20 @@
 package com.jwd.fShop.domain;
 
+import org.apache.logging.log4j.util.Strings;
+
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Objects;
 
+import static java.util.Objects.isNull;
+
 public class User {
-    private static final Integer DEFAULT_ID = null;
     private static final String DEFAULT_NAME = null;
     private static final String DEFAULT_HASHED_PASSWORD = null;
     private static final Date DEFAULT_DATE = null;
     private static final Time DEFAULT_TIME = null;
     private static final Integer DEFAULT_ROLE = null;
 
-    private final Integer id;
     private final String name;
     private final String hashedPassword;
     private final Date registrationDate;
@@ -20,7 +22,6 @@ public class User {
     private final Integer role;
 
     User(Builder builder) {
-        this.id = builder.id;
         this.name = builder.name;
         this.hashedPassword = builder.hashedPassword;
         this.registrationDate = builder.registrationDate;
@@ -28,16 +29,8 @@ public class User {
         this.role = builder.role;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public String getHashedPassword() {
-        return hashedPassword;
     }
 
     public Date getRegistrationDate() {
@@ -52,6 +45,10 @@ public class User {
         return role;
     }
 
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -63,16 +60,14 @@ public class User {
 
         User user = (User) obj;
 
-        return Objects.equals(this.id, user.id)
-                && Objects.equals(this.name, user.name)
-                && Objects.equals(this.hashedPassword, user.hashedPassword)
+        return Objects.equals(this.name, user.name)
+                && isNull(this.hashedPassword)? user.hashedPassword==null : this.hashedPassword.equals(user.hashedPassword)
                 && Objects.equals(this.role, user.role)
                 && Objects.equals(this.registrationDate, user.registrationDate)
                 && Objects.equals(this.registrationTime, user.registrationTime);
     }
 
     public static class Builder {
-        private Integer id;
         private String name;
         private String hashedPassword;
         private Date registrationDate;
@@ -80,7 +75,6 @@ public class User {
         private Integer role;
 
         public Builder(final User user) {
-            id = user.id;
             name = user.name;
             hashedPassword = user.hashedPassword;
             registrationDate = user.registrationDate;
@@ -89,7 +83,6 @@ public class User {
         }
 
         public Builder() {
-            id = DEFAULT_ID;
             name = DEFAULT_NAME;
             hashedPassword = DEFAULT_HASHED_PASSWORD;
             registrationDate = DEFAULT_DATE;
@@ -119,11 +112,6 @@ public class User {
 
         public Builder setRegistrationTime(Time registrationTime) {
             this.registrationTime = Time.valueOf(registrationTime.toString());
-            return this;
-        }
-
-        public Builder setId(Integer id) {
-            this.id = id;
             return this;
         }
 

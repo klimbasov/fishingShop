@@ -9,6 +9,7 @@ import com.jwd.fShop.dao.exception.ConnectionWrapperException;
 import com.jwd.fShop.dao.exception.DaoException;
 import com.jwd.fShop.dao.exception.FatalDaoException;
 import com.jwd.fShop.dao.util.QueryFactory;
+import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Product;
 import com.jwd.fShop.domain.ProductFilter;
 
@@ -21,6 +22,7 @@ import java.util.ListIterator;
 
 import static com.jwd.fShop.dao.util.ArgumentValidator.validate;
 import static com.jwd.fShop.dao.util.ArgumentValidator.validateId;
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 
 public class ProductDaoImpl implements ProductDao {
     private final ConnectionPool connectionPool;
@@ -29,7 +31,7 @@ public class ProductDaoImpl implements ProductDao {
         try {
             connectionPool = ConnectionPool.getInstance(path);
         } catch (ConnectionPoolException e) {
-            throw new FatalDaoException(e.getMessage());
+            throw new FatalDaoException(createExceptionMessage(), e);
         }
     }
 
@@ -88,19 +90,22 @@ public class ProductDaoImpl implements ProductDao {
         return counter;
     }
 
-    private static List<Product> getListFormResultSet(final ResultSet resultSet) throws SQLException {
-        List<Product> productList = new LinkedList<>();
-        while (resultSet.next()) {
-            productList.add(new Product.Builder()
-                    .setId(resultSet.getInt(ProductSqlNames.ID_COLUMN_NAME))
-                    .setName(resultSet.getString(ProductSqlNames.NAME_COLUMN_NAME))
-                    .setPrice(resultSet.getFloat(ProductSqlNames.PRICE_COLUMN_NAME))
-                    .setQuantity(resultSet.getInt(ProductSqlNames.QUANTITY_COLUMN_NAME))
-                    .setProductType(resultSet.getInt(ProductSqlNames.TYPE_ID_COLUMN_NAME))
-                    .setVisible(resultSet.getBoolean(ProductSqlNames.VISIBLE_COLUMN_NAME))
-                    .build());
+    private static List<IdentifiedDTO<Product>> getSelectedProducts(final PreparedStatement preparedStatement) throws SQLException {
+        List<IdentifiedDTO<Product>> products = new LinkedList<>();
+        try(ResultSet resultSet = preparedStatement.executeQuery()){
+            while (resultSet.next()) {
+                products.add(new IdentifiedDTO<>(
+                        resultSet.getInt(ProductSqlNames.ID_COLUMN_NAME),
+                        new Product.Builder()
+                                .setName(resultSet.getString(ProductSqlNames.NAME_COLUMN_NAME))
+                                .setPrice(resultSet.getFloat(ProductSqlNames.PRICE_COLUMN_NAME))
+                                .setQuantity(resultSet.getInt(ProductSqlNames.QUANTITY_COLUMN_NAME))
+                                .setProductType(resultSet.getInt(ProductSqlNames.TYPE_ID_COLUMN_NAME))
+                                .setVisible(resultSet.getBoolean(ProductSqlNames.VISIBLE_COLUMN_NAME))
+                                .build()));
+            }
         }
-        return productList;
+        return products;
     }
 
     @Override
@@ -115,7 +120,7 @@ public class ProductDaoImpl implements ProductDao {
             return preparedStatement.executeUpdate();
 
         } catch (Exception exception) {
-            throw new DaoException("in " + this.getClass().getName() + " in save(Product).", exception);
+            throw new DaoException(createExceptionMessage(), exception);
         }
     }
 
@@ -143,13 +148,13 @@ public class ProductDaoImpl implements ProductDao {
 
             return preparedStatement.executeUpdate();
         } catch (Exception exception) {
-            throw new DaoException("in " + this.getClass().getName() + " in saveMany(LinkedList<Product>)", exception);
+            throw new DaoException(createExceptionMessage(), exception);
         }
     }
 
     @Override
-    public List<Product> get(ProductFilter filter) throws DaoException {
-        List<Product> productList = new LinkedList<>();
+    public List<IdentifiedDTO<Product>> get(ProductFilter filter) throws DaoException {
+        List<IdentifiedDTO<Product>> productList;
 
         validate(filter);
 
@@ -158,12 +163,10 @@ public class ProductDaoImpl implements ProductDao {
 
             setSelectParams(preparedStatement, filter);
 
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                productList = getListFormResultSet(resultSet);
-            }
+            productList = getSelectedProducts(preparedStatement);
 
         } catch (SQLException | ConnectionWrapperException exception) {
-            throw new DaoException("in " + this.getClass().getName() + " in get(ProductFilter)", exception);
+            throw new DaoException(createExceptionMessage(), exception);
         }
 
         return productList;
@@ -182,7 +185,7 @@ public class ProductDaoImpl implements ProductDao {
 
             preparedStatement.executeUpdate();
         } catch (SQLException | ConnectionWrapperException exception) {
-            throw new DaoException("in ProductDaoImpl: in delete(int).", exception);
+            throw new DaoException(createExceptionMessage(), exception);
         }
     }
 
@@ -203,13 +206,13 @@ public class ProductDaoImpl implements ProductDao {
 
 
         } catch (SQLException | ConnectionWrapperException exception) {
-            throw new DaoException("in " + this.getClass().getName() + " in update(Product)", exception);
+            throw new DaoException(createExceptionMessage(), exception);
         }
     }
 
     @Override
-    public List<Product> getSet(final ProductFilter filter, int offset, int size) throws DaoException {
-        List<Product> productList = new LinkedList<>();
+    public List<IdentifiedDTO<Product>> getSet(final ProductFilter filter, int offset, int size) throws DaoException {
+        List<IdentifiedDTO<Product>> productList;
 
         validate(filter);
         validate(offset, size);
@@ -218,12 +221,10 @@ public class ProductDaoImpl implements ProductDao {
              PreparedStatement preparedStatement = connectionWrapper.getPreparedStatement(QueryFactory.ProductSql.getMultipleLimitedSelectSQL(filter))) {
             setLimitedSelectParams(preparedStatement, filter, offset, size);
 
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                productList = getListFormResultSet(resultSet);
-            }
+            productList = getSelectedProducts(preparedStatement);
 
         } catch (SQLException | ConnectionWrapperException exception) {
-            throw new DaoException("in " + this.getClass().getName() + " in get(ProductFilter)", exception);
+            throw new DaoException(createExceptionMessage(), exception);
         }
 
         return productList;
@@ -244,7 +245,7 @@ public class ProductDaoImpl implements ProductDao {
             }
 
         } catch (SQLException | ConnectionWrapperException exception) {
-            throw new DaoException("in ProductDaoImpl: in getSetQuantity(UserFilter, int)", exception);
+            throw new DaoException(createExceptionMessage(), exception);
         }
         return quantity;
     }

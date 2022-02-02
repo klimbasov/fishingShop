@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -39,7 +40,7 @@ public class OrderAll extends AbstractCommand implements Command {
 
             HttpSession session = req.getSession();
             Map<Integer, Integer> basket = (Map<Integer, Integer>) session.getAttribute(Attributes.ATTRIBUTE_BASKET);
-            Integer userID = (Integer) session.getAttribute(Attributes.ATTRIBUTE_ID);
+            Integer userID = (Integer) session.getAttribute(Attributes.ATTRIBUTE_USER_ID);
             OrderService orderService = ServiceHolder.getInstance().getOrderService();
 
             if (nonNull(basket)) {
@@ -51,7 +52,7 @@ public class OrderAll extends AbstractCommand implements Command {
             }
             resp.sendRedirect(RedirectionPaths.TO_INDEX);
         } catch (ServiceException | IOException | AccessViolationException exception) {
-            throw new CommandException(exception);
+            throw new CommandException(createExceptionMessage(),exception);
         }
     }
 

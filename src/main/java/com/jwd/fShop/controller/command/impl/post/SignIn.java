@@ -8,6 +8,7 @@ import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
 import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.AttributeSetter;
+import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Role;
 import com.jwd.fShop.domain.User;
 import com.jwd.fShop.service.UserService;
@@ -18,11 +19,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.util.Objects;
+import java.util.Optional;
 
 import static com.jwd.fShop.controller.constant.Attributes.*;
 import static com.jwd.fShop.controller.constant.Parameters.PARAMETER_PASSWORD;
 import static com.jwd.fShop.controller.constant.Parameters.PARAMETER_USERNAME;
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 
 public class SignIn extends AbstractCommand implements Command {
 
@@ -37,16 +39,16 @@ public class SignIn extends AbstractCommand implements Command {
 
             String userName = req.getParameter(PARAMETER_USERNAME);
             String password = req.getParameter(PARAMETER_PASSWORD);
-            User user;
+            Optional<IdentifiedDTO<User>> user;
             UserService userService = ServiceHolder.getInstance().getUserService();
             HttpSession session = req.getSession();
             user = userService.authorize(userName, password);
-            if (Objects.nonNull(user)) {
+            if (user.isPresent()) {
                 session.invalidate();
                 session = req.getSession();
-                session.setAttribute(ATTRIBUTE_USERNAME, user.getName());
-                session.setAttribute(ATTRIBUTE_ROLE, Role.getRole(user.getRole()));
-                session.setAttribute(ATTRIBUTE_ID, user.getId());
+                session.setAttribute(ATTRIBUTE_USERNAME, user.get().getDTO().getName());
+                session.setAttribute(ATTRIBUTE_ROLE, Role.getRole(user.get().getDTO().getRole()));
+                session.setAttribute(ATTRIBUTE_USER_ID, user.get().getId());
                 resp.sendRedirect(RedirectionPaths.TO_INDEX);
             } else {
                 AttributeSetter.setMessage(session, Messages.SIGN_FAULT);
@@ -54,7 +56,7 @@ public class SignIn extends AbstractCommand implements Command {
             }
 
         } catch (IOException | AccessViolationException | ServiceException | InvalidArgumentException exception) {
-            throw new CommandException("in " + this.getClass().getName() + " , adding user", exception);
+            throw new CommandException(createExceptionMessage(), exception);
         }
     }
 }

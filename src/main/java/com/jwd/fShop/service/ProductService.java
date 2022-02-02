@@ -1,10 +1,12 @@
 package com.jwd.fShop.service;
 
+import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Product;
 import com.jwd.fShop.domain.ProductFilter;
 import com.jwd.fShop.service.exception.ServiceException;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Specifies a contract to access business logic, maintains operations on products required by application.
@@ -27,7 +29,7 @@ public interface ProductService {
      * @throws ServiceException if some kind of exception occurred while execution or invalid argument was passed.
      *                          Usually warps cause exception.
      */
-    Product getById(int id) throws ServiceException;
+    Optional<IdentifiedDTO<Product>> getById(int id) throws ServiceException;
 
     /**
      * @param product product to save. Product instance should have all initialized fields exclude <code>id</code>
@@ -48,7 +50,7 @@ public interface ProductService {
      * @throws ServiceException if some kind of exception occurred while execution or invalid argument was passed.
      *                          Usually warps cause exception.
      */
-    List<Product> getPage(ProductFilter productFilter, int pageNumber) throws ServiceException;
+    List<IdentifiedDTO<Product>> getPage(ProductFilter productFilter, int pageNumber) throws ServiceException;
 
     /**
      * Used to get available page quantity for specified filtering.

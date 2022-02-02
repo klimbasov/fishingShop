@@ -6,6 +6,7 @@ import com.jwd.fShop.controller.constant.Attributes;
 import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
 import com.jwd.fShop.controller.exception.InvalidArgumentException;
+import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Role;
 import com.jwd.fShop.domain.User;
 import com.jwd.fShop.service.UserService;
@@ -16,6 +17,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Optional;
+
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 
 public class ShowProfile extends AbstractCommand implements Command {
     public ShowProfile() {
@@ -27,15 +31,16 @@ public class ShowProfile extends AbstractCommand implements Command {
         try {
             validateRole(req, resp);
 
-            int id = (Integer) req.getSession().getAttribute(Attributes.ATTRIBUTE_ID);
+            int id = (Integer) req.getSession().getAttribute(Attributes.ATTRIBUTE_USER_ID);
             UserService userService = ServiceHolder.getInstance().getUserService();
-            User user = userService.getById(id);
-
-            req.setAttribute(Attributes.ATTRIBUTE_USER, user);
-            req.setAttribute(Attributes.ATTRIBUTE_ROLE, Role.getRole(user.getRole()).getAlias());
-            req.getRequestDispatcher("WEB-INF/pages/profile.jsp").forward(req, resp);
+            Optional<IdentifiedDTO<User>> user = userService.getById(id);
+            if(user.isPresent()){
+                req.setAttribute(Attributes.ATTRIBUTE_USER, user.get());
+                req.setAttribute(Attributes.ATTRIBUTE_ROLE, Role.getRole(user.get().getDTO().getRole()).getAlias());
+                req.getRequestDispatcher("WEB-INF/pages/profile.jsp").forward(req, resp);
+            }
         } catch (IOException | AccessViolationException | ServiceException | InvalidArgumentException | ServletException e) {
-            throw new CommandException("In " + this.getClass().getName() + " : access violation.", e);
+            throw new CommandException(createExceptionMessage(), e);
         }
     }
 }

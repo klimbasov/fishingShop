@@ -9,7 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
-<fmt:setBundle basename = "locale/locale" var = "orderPageLang"/>
+<fmt:setBundle basename = "locale/locale" var = "userPageLang"/>
 <ul class="product_list" id="list">
     <c:forEach var="product" items="${requestScope.products}" >
         <li>
@@ -22,7 +22,7 @@
                 </div>
                 <div>
                         <span class='product_list quantity'>
-                                ${product.quantity}  <fmt:message key = "label.piece" bundle = "${orderPageLang}"/>
+                                ${product.quantity}  <fmt:message key = "label.piece" bundle = "${userPageLang}"/>
                         </span>
                 </div>
                 <div>

@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
+
 public class ShowChangeUser extends AbstractCommand implements Command {
     public ShowChangeUser() {
         super(Role.USER);
@@ -27,7 +29,7 @@ public class ShowChangeUser extends AbstractCommand implements Command {
             req.setAttribute("id", id);
             req.getRequestDispatcher("WEB-INF/pages/changeUser.jsp").forward(req, resp);
         } catch (ServletException | IOException | InvalidArgumentException | AccessViolationException exception) {
-            throw new CommandException(exception);
+            throw new CommandException(createExceptionMessage(),exception);
         }
     }
 }

@@ -1,9 +1,11 @@
 package com.jwd.fShop.dao;
 
 import com.jwd.fShop.dao.exception.DaoException;
+import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Order;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Specifies communication with database to maintain orders operation.
@@ -26,11 +28,11 @@ public interface OrderDao {
      * @throws DaoException if some kind of exception occurred while execution or invalid argument was passed.
      *                      Usually warps cause exception.
      */
-    Order getById(int id) throws DaoException;
+    Optional<IdentifiedDTO<Order>> getById(int id) throws DaoException;
 
-    List<Order> get(int userId) throws DaoException;
+    List<IdentifiedDTO<Order>> get(int userId) throws DaoException;
 
-    List<Order> getSet(int userId, int offset, int size) throws DaoException;
+    List<IdentifiedDTO<Order>> getSet(int userId, int offset, int size) throws DaoException;
 
     int getQuantity(int userId) throws DaoException;
 }

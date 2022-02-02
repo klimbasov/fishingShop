@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Map;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 import static java.util.Objects.nonNull;
 
 public class OutBasket extends AbstractCommand implements Command {
@@ -42,9 +43,9 @@ public class OutBasket extends AbstractCommand implements Command {
             resp.sendRedirect(req.getHeader("Referer"));
 
         } catch (IllegalArgumentException exception) {
-            throw new CommandException(ExceptionMessages.INVALID_PARAMETER_STRUCTURE, exception);
+            throw new CommandException(createExceptionMessage(), exception);
         } catch (IOException | AccessViolationException exception) {
-            throw new CommandException(exception);
+            throw new CommandException(createExceptionMessage(),exception);
         }
     }
 }

@@ -2,7 +2,8 @@ package com.jwd.fShop.controller.constant;
 
 public class Attributes {
     public static final String ATTRIBUTE_USERNAME = "username";
-    public static final String ATTRIBUTE_ID = "userId";
+    public static final String ATTRIBUTE_USER_ID = "userId";
+    public static final String ATTRIBUTE_ID = "idd";
     public static final String ATTRIBUTE_ROLE = "role";
     public static final String ATTRIBUTE_MESSAGE = "message";
     public static final String ATTRIBUTE_BASKET = "basket";

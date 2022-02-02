@@ -1,6 +1,7 @@
 package com.jwd.fShop.dao;
 
 import com.jwd.fShop.dao.exception.DaoException;
+import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.User;
 import com.jwd.fShop.domain.UserFilter;
 
@@ -29,7 +30,7 @@ public interface UserDao {
      * @throws DaoException if some kind of exception occurred while execution or invalid argument was passed.
      * Usually warps cause exception.
      */
-    LinkedList<User> get(UserFilter filter) throws DaoException;
+    List<IdentifiedDTO<User>> get(UserFilter filter) throws DaoException;
 
     /**
      * Used to update some existing user. User argument's id field must be initialised.
@@ -47,7 +48,7 @@ public interface UserDao {
      * @return List of users
      * @throws DaoException - if arguments are not valid? or if some exception is occurred while transaction.
      */
-    List<User> getSet(UserFilter filter, int offset, int size) throws DaoException;
+    List<IdentifiedDTO<User>> getSet(UserFilter filter, int offset, int size) throws DaoException;
 
     /**
      * Used to get quantity of existing sets for the specified filter.

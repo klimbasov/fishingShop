@@ -32,7 +32,7 @@
               <span><fmt:message key = "label.name" bundle = "${lang}"/></span>
             </div>
             <div class='product_info value'>
-              <span>${requestScope.product.name}</span>
+              <span>${requestScope.product.DTO.name}</span>
             </div>
           </li>
           <li>
@@ -40,7 +40,7 @@
               <span><fmt:message key = "label.price" bundle = "${lang}"/></span>
             </div>
             <div class='product_info value'>
-              <span>${requestScope.product.price}</span>
+              <span>${requestScope.product.DTO.price}</span>
             </div>
           </li>
           <li>
@@ -48,16 +48,16 @@
               <span><fmt:message key = "label.quantity" bundle = "${lang}"/></span>
             </div>
             <div class='product_info value'>
-              <span>${requestScope.product.quantity}</span>
+              <span>${requestScope.product.DTO.quantity}</span>
             </div>
           </li>
           <c:if test="${sessionScope.role !=null && sessionScope.role.alias == 'admin'}">
             <li>
               <div class='product_info name'>
-                <c:if test="${requestScope.product.visible}">
+                <c:if test="${requestScope.product.DTO.visible}">
                   <span><fmt:message key = "label.visibility.visible" bundle = "${lang}"/></span>
                 </c:if>
-                <c:if test="${!requestScope.product.visible}">
+                <c:if test="${!requestScope.product.DTO.visible}">
                   <span><fmt:message key = "label.visibility.invisible" bundle = "${lang}"/></span>
                 </c:if>
               </div>

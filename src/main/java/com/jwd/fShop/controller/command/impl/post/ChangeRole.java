@@ -18,6 +18,8 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
+
 public class ChangeRole extends AbstractCommand implements Command {
     public ChangeRole() {
         super(Role.ADMIN);
@@ -38,13 +40,13 @@ public class ChangeRole extends AbstractCommand implements Command {
             ServiceHolder.getInstance().getUserService().changeRole(id, newRole);
             resp.sendRedirect(RedirectionPaths.TO_USER + "&id=" + id);
         } catch (AccessViolationException exception) {
-            throw new CommandException(exception);
+            throw new CommandException(createExceptionMessage(),exception);
         } catch (ServiceException | InvalidArgumentException exception) {
             AttributeSetter.setMessage(session, Messages.ROLE_CHANGING_FAULT);
             try {
                 resp.sendRedirect(RedirectionPaths.TO_CHANGE_USER + "&id=" + id);
             } catch (IOException e) {
-                throw new CommandException(exception);
+                throw new CommandException(createExceptionMessage(),exception);
             }
         } catch (IOException exception) {
             exception.printStackTrace();

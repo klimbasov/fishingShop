@@ -18,6 +18,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
+
 public class ChangeUsername extends AbstractCommand implements Command {
     public ChangeUsername() {
         super(Role.USER);
@@ -37,13 +39,13 @@ public class ChangeUsername extends AbstractCommand implements Command {
             ServiceHolder.getInstance().getUserService().changeName(id, username);
             resp.sendRedirect(RedirectionPaths.TO_PROFILE + "&id=" + id);
         } catch (AccessViolationException | IOException exception) {
-            throw new CommandException(exception);
+            throw new CommandException(createExceptionMessage(),exception);
         } catch (ServiceException | InvalidArgumentException exception) {
             AttributeSetter.setMessage(req.getSession(), Messages.USERNAME_CHANGING_FAULT);
             try {
                 resp.sendRedirect(RedirectionPaths.TO_CHANGE_USER + "&id=" + id);
             } catch (IOException e) {
-                throw new CommandException(exception);
+                throw new CommandException(createExceptionMessage(),exception);
             }
         }
     }
@@ -51,7 +53,7 @@ public class ChangeUsername extends AbstractCommand implements Command {
     protected void validate(HttpServletRequest req, HttpServletResponse resp) throws AccessViolationException {
         validateRole(req, resp);
 
-        int userId = (int) req.getSession().getAttribute(Attributes.ATTRIBUTE_ID);
+        int userId = (int) req.getSession().getAttribute(Attributes.ATTRIBUTE_USER_ID);
         int requestId = ParameterParser.parseInt(req.getParameter("id"));
 
         if (requestId != userId) {

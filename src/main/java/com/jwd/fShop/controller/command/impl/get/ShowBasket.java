@@ -9,6 +9,7 @@ import com.jwd.fShop.controller.exception.CommandException;
 import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.AttributeSetter;
 import com.jwd.fShop.controller.util.ParameterParser;
+import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Product;
 import com.jwd.fShop.domain.Role;
 import com.jwd.fShop.service.ProductService;
@@ -23,7 +24,9 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 import static java.util.Objects.nonNull;
 
 
@@ -42,7 +45,7 @@ public class ShowBasket extends AbstractCommand implements Command {
 
             HttpSession session = req.getSession();
             ProductService productService = ServiceHolder.getInstance().getProductService();
-            List<Product> products = new LinkedList<>();
+            List<IdentifiedDTO<Product>> products = new LinkedList<>();
             Map<Integer, Integer> basket = (Map<Integer, Integer>) session.getAttribute(Attributes.ATTRIBUTE_BASKET);
             int page = ParameterParser.parseInt(req.getParameter("page"), 1);
             int pageAmount = 1;
@@ -54,16 +57,23 @@ public class ShowBasket extends AbstractCommand implements Command {
                 int skipCounter = (page - 1) * PAGE_SIZE;
                 int addCounter = 0;
                 for (Map.Entry<Integer, Integer> entry : basket.entrySet()) {
-                    Product stored = productService.getById(entry.getKey());
+                    Optional<IdentifiedDTO<Product>> stored = productService.getById(entry.getKey());
                     int orderedPieces = entry.getValue();
-                    totalPrice += stored.getPrice() * orderedPieces;
-                    if (skipCounter == 0 && addCounter < PAGE_SIZE) {
-                        products.add(new Product.Builder(stored).
-                                setQuantity(orderedPieces).
-                                build());
-                        ++addCounter;
-                    } else {
-                        --skipCounter;
+                    if(stored.isPresent()){
+                        totalPrice += stored.get().getDTO().getPrice() * orderedPieces;
+                        if (skipCounter == 0 && addCounter < PAGE_SIZE) {
+                            products.add(
+                                    new IdentifiedDTO<>(
+                                            stored.get().getId(),
+                                            new Product.Builder(stored.get().getDTO()).
+                                                    setQuantity(orderedPieces).
+                                                    build()
+                                    )
+                            );
+                            ++addCounter;
+                        } else {
+                            --skipCounter;
+                        }
                     }
                 }
             } else {
@@ -78,7 +88,7 @@ public class ShowBasket extends AbstractCommand implements Command {
                 ServiceException |
                 InvalidArgumentException |
                 ServletException exception) {
-            throw new CommandException("In " + this.getClass().getName() + ".", exception);
+            throw new CommandException(createExceptionMessage(), exception);
         }
     }
 }

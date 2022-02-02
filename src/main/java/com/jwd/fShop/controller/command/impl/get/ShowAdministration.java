@@ -12,6 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
+
 public class ShowAdministration extends AbstractCommand implements Command {
     public ShowAdministration() {
         super(Role.ADMIN);
@@ -24,7 +26,7 @@ public class ShowAdministration extends AbstractCommand implements Command {
 
             req.getRequestDispatcher("WEB-INF/pages/administration.jsp").forward(req, resp);
         } catch (IOException | AccessViolationException | InvalidArgumentException | ServletException exception) {
-            throw new CommandException("In " + this.getClass().getName() + ". ", exception);
+            throw new CommandException(createExceptionMessage(), exception);
         }
     }
 }

@@ -1,11 +1,13 @@
 package com.jwd.fShop.service;
 
+import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Role;
 import com.jwd.fShop.domain.User;
 import com.jwd.fShop.domain.UserFilter;
 import com.jwd.fShop.service.exception.ServiceException;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Specifies a user business logic, maintains registration, authorization.
@@ -21,7 +23,7 @@ public interface UserService {
      * @throws ServiceException if some kind of exception occurred while execution or invalid argument was passed.
      *                          Usually warps cause exception.
      */
-    User register(String name, String password, final Role role) throws ServiceException;
+    Optional<IdentifiedDTO<User>> register(String name, String password, final Role role) throws ServiceException;
 
     /**
      * Used to authorize user.
@@ -32,7 +34,7 @@ public interface UserService {
      * @throws ServiceException if some kind of exception occurred while execution or invalid argument was passed.
      *                          Usually warps cause exception.
      */
-    User authorize(String name, String password) throws ServiceException;
+    Optional<IdentifiedDTO<User>> authorize(String name, String password) throws ServiceException;
 
     /**
      * Used to change user's role.
@@ -43,7 +45,7 @@ public interface UserService {
      * @throws ServiceException if some kind of exception occurred while execution or invalid argument was passed.
      *                          Usually warps cause exception.
      */
-    User changeRole(int userId, int role) throws ServiceException;
+    Optional<IdentifiedDTO<User>> changeRole(int userId, int role) throws ServiceException;
 
     /**
      * Used to change user's password.
@@ -54,7 +56,7 @@ public interface UserService {
      * @throws ServiceException if some kind of exception occurred while execution or invalid argument was passed.
      *                          Usually warps cause exception.
      */
-    User changePassword(int userId, String password) throws ServiceException;
+    Optional<IdentifiedDTO<User>> changePassword(int userId, String password) throws ServiceException;
 
     /**
      * Used to change user's name.
@@ -65,7 +67,7 @@ public interface UserService {
      * @throws ServiceException if some kind of exception occurred while execution or invalid argument was passed.
      *                          Usually warps cause exception.
      */
-    User changeName(int userId, String username) throws ServiceException;
+    Optional<IdentifiedDTO<User>> changeName(int userId, String username) throws ServiceException;
 
     /**
      * Used to get the user by id.
@@ -75,7 +77,7 @@ public interface UserService {
      * @throws ServiceException if some kind of exception occurred while execution or invalid argument was passed.
      *                          Usually warps cause exception.
      */
-    User getById(int id) throws ServiceException;
+    Optional<IdentifiedDTO<User>> getById(int id) throws ServiceException;
 
     /**
      * Used to get a range of users on specified filtering. Size of the range depends on implementation of the service.
@@ -87,7 +89,7 @@ public interface UserService {
      * @throws ServiceException if some kind of exception occurred while execution or invalid argument was passed.
      *                          Usually warps cause exception.
      */
-    List<User> getPage(UserFilter filter, int page) throws ServiceException;
+    List<IdentifiedDTO<User>> getPage(UserFilter filter, int page) throws ServiceException;
 
     /**
      * Used to get page quantity for specified filtering.

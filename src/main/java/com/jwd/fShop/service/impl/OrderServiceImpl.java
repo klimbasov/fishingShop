@@ -3,6 +3,7 @@ package com.jwd.fShop.service.impl;
 import com.jwd.fShop.dao.OrderDao;
 import com.jwd.fShop.dao.daoHolder.DaoHolder;
 import com.jwd.fShop.dao.exception.DaoException;
+import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Order;
 import com.jwd.fShop.domain.ProductBunch;
 import com.jwd.fShop.service.OrderService;
@@ -11,9 +12,10 @@ import com.jwd.fShop.service.exception.ServiceException;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.Instant;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 import static java.util.Objects.nonNull;
 
 public class OrderServiceImpl implements OrderService {
@@ -38,46 +40,42 @@ public class OrderServiceImpl implements OrderService {
             try {
                 orderDao.save(order);
             } catch (DaoException exception) {
-                throw new ServiceException("In " + this.getClass().getName() + " in register(User)", exception);
+                throw new ServiceException(createExceptionMessage(), exception);
             }
         }
     }
 
     @Override
-    public Order getById(int id) throws ServiceException {
-        Order spotted = null;
+    public Optional<IdentifiedDTO<Order>> getById(int id) throws ServiceException {
+        Optional<IdentifiedDTO<Order>> spotted;
         try {
             spotted = orderDao.getById(id);
         } catch (DaoException exception) {
-            throw new ServiceException("In " + this.getClass().getName() + " in register(User)", exception);
+            throw new ServiceException(createExceptionMessage(), exception);
         }
         return spotted;
     }
 
     @Override
-    public List<Order> getPage(int userId, int page) throws ServiceException {
-        List<Order> orders = new LinkedList<>();
+    public List<IdentifiedDTO<Order>> getPage(int userId, int page) throws ServiceException {
+        List<IdentifiedDTO<Order>> orders;
         int offset = (page - 1) * pageSize;
-
         try {
             orders = orderDao.getSet(userId, offset, pageSize);
         } catch (DaoException exception) {
-            throw new ServiceException("In " + this.getClass().getName() + " in register(User)", exception);
+            throw new ServiceException(createExceptionMessage(), exception);
         }
         return orders;
     }
 
     @Override
     public int getPageQuantity(int userId) throws ServiceException {
-        int quantity = 0;
-        int totalValue = 0;
-
+        int totalValue;
         try {
             totalValue = orderDao.getQuantity(userId);
-            quantity = totalValue / pageSize + (totalValue % pageSize == 0 ? 0 : 1);
         } catch (DaoException exception) {
-            throw new ServiceException("In " + this.getClass().getName() + " in register(User)", exception);
+            throw new ServiceException(createExceptionMessage(), exception);
         }
-        return quantity;
+        return (totalValue + pageSize-1) / pageSize;
     }
 }

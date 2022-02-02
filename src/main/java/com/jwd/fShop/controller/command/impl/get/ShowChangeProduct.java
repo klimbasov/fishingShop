@@ -9,6 +9,7 @@ import com.jwd.fShop.controller.exception.CommandException;
 import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.AttributeSetter;
 import com.jwd.fShop.controller.util.ParameterParser;
+import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Product;
 import com.jwd.fShop.domain.Role;
 import com.jwd.fShop.service.exception.ServiceException;
@@ -18,7 +19,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Optional;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 import static java.util.Objects.nonNull;
 
 public class ShowChangeProduct extends AbstractCommand implements Command {
@@ -33,10 +36,10 @@ public class ShowChangeProduct extends AbstractCommand implements Command {
 
             int id = ParameterParser.parseInt(req.getParameter("id"));
             String[] types = ServiceHolder.getInstance().getTypeService().getNames();
-            Product product = ServiceHolder.getInstance().getProductService().getById(id);
-            if (nonNull(product)) {
+            Optional<IdentifiedDTO<Product>> product = ServiceHolder.getInstance().getProductService().getById(id);
+            if (product.isPresent()) {
                 req.setAttribute(Attributes.ATTRIBUTE_TYPE_NAMES, types);
-                req.setAttribute("product", product);
+                req.setAttribute("product", product.get());
             } else {
                 AttributeSetter.setMessage(req.getSession(), Messages.PRODUCT_NOT_FOUND);
             }
@@ -46,7 +49,7 @@ public class ShowChangeProduct extends AbstractCommand implements Command {
                 ServletException |
                 ServiceException |
                 IOException exception) {
-            throw new CommandException(exception);
+            throw new CommandException(createExceptionMessage(),exception);
         }
     }
 }

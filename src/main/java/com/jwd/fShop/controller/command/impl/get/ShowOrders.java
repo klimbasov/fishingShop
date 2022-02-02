@@ -7,6 +7,7 @@ import com.jwd.fShop.controller.exception.CommandException;
 import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.AttributeSetter;
 import com.jwd.fShop.controller.util.ParameterParser;
+import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Order;
 import com.jwd.fShop.domain.Role;
 import com.jwd.fShop.service.OrderService;
@@ -18,6 +19,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.List;
+
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 
 public class ShowOrders extends AbstractCommand implements Command {
     private static final int RANGE = 3;
@@ -34,7 +37,7 @@ public class ShowOrders extends AbstractCommand implements Command {
             int id = ParameterParser.parseInt(req.getParameter("id"));
             int page = ParameterParser.parseInt(req.getParameter("page"), 1);
             OrderService orderService = ServiceHolder.getInstance().getOrderService();
-            List<Order> orders = orderService.getPage(id, page);
+            List<IdentifiedDTO<Order>> orders = orderService.getPage(id, page);
             int pageAmount = orderService.getPageQuantity(id);
 
             AttributeSetter.setPageNavigation(req, page, pageAmount, RANGE);
@@ -46,7 +49,7 @@ public class ShowOrders extends AbstractCommand implements Command {
                 ServiceException |
                 InvalidArgumentException |
                 ServletException exception) {
-            throw new CommandException("In " + this.getClass().getName() + " : access violation.", exception);
+            throw new CommandException(createExceptionMessage(), exception);
         }
     }
 }

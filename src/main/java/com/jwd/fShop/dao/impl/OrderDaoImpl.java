@@ -10,6 +10,7 @@ import com.jwd.fShop.dao.exception.ConnectionWrapperException;
 import com.jwd.fShop.dao.exception.DaoException;
 import com.jwd.fShop.dao.exception.FatalDaoException;
 import com.jwd.fShop.dao.util.QueryFactory;
+import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Order;
 import com.jwd.fShop.domain.ProductBunch;
 
@@ -18,9 +19,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.jwd.fShop.dao.util.ArgumentValidator.validate;
 import static com.jwd.fShop.dao.util.ArgumentValidator.validateId;
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
+import static java.util.Objects.nonNull;
 
 public class OrderDaoImpl implements OrderDao {
 
@@ -30,7 +34,7 @@ public class OrderDaoImpl implements OrderDao {
         try {
             this.connectionPool = ConnectionPool.getInstance(path);
         } catch (ConnectionPoolException e) {
-            throw new FatalDaoException(e.getMessage());
+            throw new FatalDaoException(createExceptionMessage(),e);
         }
     }
 
@@ -66,12 +70,12 @@ public class OrderDaoImpl implements OrderDao {
             connectionWrapper.commit();
 
         } catch (SQLException | ConnectionWrapperException exception) {
-            throw new DaoException("In " + this.getClass().getName() + " in void save(Order)", exception);
+            throw new DaoException(createExceptionMessage(), exception);
         }
     }
 
     @Override
-    public Order getById(int id) throws DaoException {
+    public Optional<IdentifiedDTO<Order>> getById(int id) throws DaoException {
         Order order = null;
 
         validateId(id);
@@ -84,7 +88,6 @@ public class OrderDaoImpl implements OrderDao {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     Order.Builder orderBuilder = new Order.Builder().
-                            setId(id).
                             setOrderingDate(resultSet.getDate(UsersOrdersSqlNames.ORDERING_DATE_COLUMN_NAME)).
                             setUserId(resultSet.getInt(UsersOrdersSqlNames.USER_ID_COLUMN_NAME));
                     List<ProductBunch> productBunches = new LinkedList<>();
@@ -102,14 +105,19 @@ public class OrderDaoImpl implements OrderDao {
 
 
         } catch (SQLException | ConnectionWrapperException exception) {
-            throw new DaoException(exception);
+            throw new DaoException(createExceptionMessage(),exception);
         }
-        return order;
+
+        IdentifiedDTO<Order> dto = null;
+        if(nonNull(order)){
+            dto = new IdentifiedDTO<>(id, order);
+        }
+        return Optional.ofNullable(dto);
     }
 
     @Override
-    public List<Order> get(int userId) throws DaoException {
-        List<Order> orders = new LinkedList<>();
+    public List<IdentifiedDTO<Order>> get(int userId) throws DaoException {
+        List<IdentifiedDTO<Order>> orders = new LinkedList<>();
 
         validateId(userId);
 
@@ -121,23 +129,23 @@ public class OrderDaoImpl implements OrderDao {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     orders.add(
-                            new Order.Builder().
-                                    setUserId(userId).
-                                    setId(resultSet.getInt(UsersOrdersSqlNames.ID_COLUMN_NAME)).
-                                    setOrderingDate(resultSet.getDate(UsersOrdersSqlNames.ORDERING_DATE_COLUMN_NAME)).
-                                    build()
+                            new IdentifiedDTO<>(resultSet.getInt(UsersOrdersSqlNames.ID_COLUMN_NAME),
+                                    new Order.Builder().
+                                        setUserId(userId).
+                                        setOrderingDate(resultSet.getDate(UsersOrdersSqlNames.ORDERING_DATE_COLUMN_NAME)).
+                                    build())
                     );
                 }
             }
         } catch (SQLException | ConnectionWrapperException exception) {
-            throw new DaoException(exception);
+            throw new DaoException(createExceptionMessage(),exception);
         }
         return orders;
     }
 
     @Override
-    public List<Order> getSet(int userId, int offset, int size) throws DaoException {
-        List<Order> orders = new LinkedList<>();
+    public List<IdentifiedDTO<Order>> getSet(int userId, int offset, int size) throws DaoException {
+        List<IdentifiedDTO<Order>> orders = new LinkedList<>();
 
         validateId(userId);
         validate(size, offset);
@@ -152,17 +160,17 @@ public class OrderDaoImpl implements OrderDao {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     orders.add(
-                            new Order.Builder().
-                                    setUserId(userId).
-                                    setId(resultSet.getInt(UsersOrdersSqlNames.ID_COLUMN_NAME)).
-                                    setOrderingDate(resultSet.getDate(UsersOrdersSqlNames.ORDERING_DATE_COLUMN_NAME)).
-                                    build()
+                            new IdentifiedDTO<>(resultSet.getInt(UsersOrdersSqlNames.ID_COLUMN_NAME),
+                                    new Order.Builder().
+                                            setUserId(userId).
+                                            setOrderingDate(resultSet.getDate(UsersOrdersSqlNames.ORDERING_DATE_COLUMN_NAME)).
+                                            build())
                     );
                 }
             }
 
         } catch (SQLException | ConnectionWrapperException exception) {
-            throw new DaoException(exception);
+            throw new DaoException(createExceptionMessage(), exception);
         }
         return orders;
     }
@@ -184,7 +192,7 @@ public class OrderDaoImpl implements OrderDao {
             }
 
         } catch (SQLException | ConnectionWrapperException exception) {
-            throw new DaoException("in ProductDaoImpl: in getSetQuantity(UserFilter, int)", exception);
+            throw new DaoException(createExceptionMessage(), exception);
         }
         return quantity;
     }

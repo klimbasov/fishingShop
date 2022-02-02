@@ -20,7 +20,7 @@
             <fmt:message key = "label.order_id" bundle = "${orderLang}"/>: ${requestScope.order.id}
         </span>
         <span>
-            <fmt:message key = "label.orderingDate" bundle = "${orderLang}"/>: ${requestScope.order.orderingDate}
+            <fmt:message key = "label.orderingDate" bundle = "${orderLang}"/>: ${requestScope.order.DTO.orderingDate}
         </span>
         <span>
             <fmt:message key = "label.order" bundle = "${orderLang}"/> ${requestScope.totalPrice} $

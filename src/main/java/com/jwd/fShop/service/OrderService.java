@@ -1,10 +1,12 @@
 package com.jwd.fShop.service;
 
+import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Order;
 import com.jwd.fShop.domain.ProductBunch;
 import com.jwd.fShop.service.exception.ServiceException;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Specifies an ordering business logic, maintains operations on orders required by application.
@@ -30,7 +32,7 @@ public interface OrderService {
      * @throws ServiceException if some kind of exception occurred while execution or invalid argument was passed.
      *                          Usually warps cause exception.
      */
-    Order getById(int id) throws ServiceException;
+    Optional<IdentifiedDTO<Order>> getById(int id) throws ServiceException;
 
     /**
      * Used to get a range of Orders of specified user. Size of the range depends on implementation of the service.
@@ -42,7 +44,7 @@ public interface OrderService {
      * @throws ServiceException if some kind of exception occurred while execution or invalid argument was passed.
      *                          Usually warps cause exception.
      */
-    List<Order> getPage(int userId, int page) throws ServiceException;
+    List<IdentifiedDTO<Order>> getPage(int userId, int page) throws ServiceException;
 
     /**
      * Used to get available pages quantity to the specified user

@@ -3,6 +3,7 @@ package com.jwd.fShop.service.impl;
 import com.jwd.fShop.dao.UserDao;
 import com.jwd.fShop.dao.daoHolder.DaoHolder;
 import com.jwd.fShop.dao.exception.DaoException;
+import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Role;
 import com.jwd.fShop.domain.User;
 import com.jwd.fShop.domain.UserFilter;
@@ -13,8 +14,10 @@ import com.jwd.fShop.service.util.Hasher;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.Instant;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 
 public class UserServiceImpl implements UserService {
     static private final int DEFAULT_PAGE_SIZE = 5;
@@ -29,14 +32,14 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User register(String name, String password, Role role) throws ServiceException {
+    public Optional<IdentifiedDTO<User>> register(String name, String password, Role role) throws ServiceException {
         String hashedPassword = Hasher.hash(password);
         UserFilter filter = new UserFilter.Builder().
                 setUserSubName(name).
                 fullName(true).
                 build();
-        List<User> existed;
-        User spotted;
+        List<IdentifiedDTO<User>> existed;
+        Optional<IdentifiedDTO<User>> spotted = Optional.empty();
         User registerUser = new User.Builder().
                 setName(name).
                 setHashedPassword(hashedPassword).
@@ -44,140 +47,136 @@ public class UserServiceImpl implements UserService {
                 setRegistrationTime(new Time(Time.from(Instant.now()).getTime())).
                 setRole(role.getPriority()).
                 build();
-        User resultUser = null;
 
         try {
             existed = userDao.get(filter);
             if (existed.isEmpty()) {
                 userDao.save(registerUser);
                 existed = userDao.get(filter);
-                spotted = existed.get(0);
-                resultUser = new User.Builder().
-                        setId(spotted.getId()).
-                        setName(name).
-                        setRole(role.getPriority()).
-                        build();
+                spotted = Optional.of(existed.get(0));
             }
 
         } catch (DaoException exception) {
-            throw new ServiceException("In " + this.getClass().getName() + " in register(User)", exception);
+            throw new ServiceException(createExceptionMessage(), exception);
         }
-        return resultUser;
+        return spotted;
     }
 
     @Override
-    public User authorize(String name, String password) throws ServiceException {
+    public Optional<IdentifiedDTO<User>> authorize(String name, String password) throws ServiceException {
         String hashedPassword = Hasher.hash(password);
         UserFilter filter = new UserFilter.Builder().
                 setUserSubName(name).
                 fullName(true).
                 setSubHashPass(hashedPassword).
                 build();
-        User resultUser = null;
-        List<User> exists;
+        Optional<IdentifiedDTO<User>> resultUser = Optional.empty();
+        List<IdentifiedDTO<User>> exists;
 
         try {
             exists = userDao.get(filter);
             if (!exists.isEmpty()) {
-                User spotted = exists.get(0);
-                resultUser = new User.Builder().
-                        setId(spotted.getId()).
-                        setName(name).
-                        setRole(spotted.getRole()).
-                        build();
+                resultUser = Optional.of(exists.get(0));
             }
 
         } catch (DaoException exception) {
-            throw new ServiceException("In " + this.getClass().getName() + " in register(User)", exception);
+            throw new ServiceException(createExceptionMessage(), exception);
         }
         return resultUser;
     }
 
     @Override
-    public User changeRole(int userId, int role) throws ServiceException {
+    public Optional<IdentifiedDTO<User>> changeRole(int userId, int role) throws ServiceException {
         User user = new User.Builder().
                 setRole(role).
                 build();
-        UserFilter filter = new UserFilter.Builder().
-                setId(userId).
-                build();
-        return updateAndGetUserInternal(userId, user, filter);
+        return updateAndGetUserInternal(userId, user);
     }
 
     @Override
-    public User changePassword(int userId, String password) throws ServiceException {
+    public Optional<IdentifiedDTO<User>> changePassword(int userId, String password) throws ServiceException {
         String hashedPassword = Hasher.hash(password);
         User user = new User.Builder().
                 setHashedPassword(hashedPassword).
                 build();
-        UserFilter filter = new UserFilter.Builder().setId(userId).build();
-        return updateAndGetUserInternal(userId, user, filter);
+        return updateAndGetUserInternal(userId, user);
     }
 
     @Override
-    public User changeName(int userId, String username) throws ServiceException {
-        User user = new User.Builder().
+    public Optional<IdentifiedDTO<User>> changeName(int userId, String username) throws ServiceException {
+        Optional<IdentifiedDTO<User>> user;
+        User UserWithUpdateFields = new User.Builder().
                 setName(username).
                 build();
         UserFilter filter = new UserFilter.Builder().
-                setId(userId).
+                setUserSubName(username).
+                fullName(true).
                 build();
-        return updateAndGetUserInternal(userId, user, filter);
+        try{
+            if(userDao.get(filter).isEmpty()){
+                user = updateAndGetUserInternal(userId, UserWithUpdateFields);
+            }else {
+                throw new ServiceException(createExceptionMessage("Such name has already exists."));
+            }
+        } catch (DaoException exception) {
+            throw new ServiceException(createExceptionMessage("Fail on requesting users."));
+        }
+        return user;
     }
 
     @Override
-    public User getById(int id) throws ServiceException {
-        User spotted = null;
+    public Optional<IdentifiedDTO<User>> getById(int id) throws ServiceException {
+        Optional<IdentifiedDTO<User>> spotted = Optional.empty();
         UserFilter filter = new UserFilter.Builder().
                 setId(id).
                 build();
-        List<User> exists;
         try {
-            exists = userDao.get(filter);
+            List<IdentifiedDTO<User>> exists = userDao.get(filter);
             if (!exists.isEmpty()) {
-                spotted = exists.get(0);
+                spotted = Optional.of(exists.get(0));
             }
         } catch (DaoException exception) {
-            throw new ServiceException("In " + this.getClass().getName() + " in register(User)", exception);
+            throw new ServiceException(createExceptionMessage(), exception);
         }
         return spotted;
     }
 
     @Override
-    public List<User> getPage(UserFilter filter, int page) throws ServiceException {
-        List<User> users = new LinkedList<>();
+    public List<IdentifiedDTO<User>> getPage(UserFilter filter, int page) throws ServiceException {
+        List<IdentifiedDTO<User>> users;
         try {
             users = userDao.getSet(filter, (page - 1) * pageSize, pageSize);
         } catch (DaoException exception) {
-            throw new ServiceException("In " + this.getClass().getName() + " in register(User)", exception);
+            throw new ServiceException(createExceptionMessage(), exception);
         }
         return users;
     }
 
     @Override
     public int getPagesQuantity(UserFilter filter) throws ServiceException {
-        int quantity = 0;
-        int totalValue = 0;
+        int totalValue;
         try {
             totalValue = userDao.getQuantity(filter);
-            quantity = totalValue / pageSize + (totalValue % pageSize == 0 ? 0 : 1);
         } catch (DaoException exception) {
-            throw new ServiceException("In " + this.getClass().getName() + " in register(User)", exception);
+            throw new ServiceException(createExceptionMessage(), exception);
         }
-        return quantity;
+        return (totalValue+pageSize-1) / pageSize;
     }
 
-    private User updateAndGetUserInternal(int userId, User user, UserFilter filter) throws ServiceException {
-        User updated = null;
-        List<User> exists;
+    private Optional<IdentifiedDTO<User>> updateAndGetUserInternal(int userId, User user) throws ServiceException {
+        UserFilter filter = new UserFilter.Builder().
+                setId(userId).
+                build();
+        Optional<IdentifiedDTO<User>> updated = Optional.empty();
+        List<IdentifiedDTO<User>> exists;
         try {
             userDao.update(user, userId);
             exists = userDao.get(filter);
             if (!exists.isEmpty()) {
-                updated = exists.get(0);
+                updated = Optional.of(exists.get(0));
             }
         } catch (DaoException exception) {
-            throw new ServiceException("In " + this.getClass().getName() + " in register(User)", exception);
+            throw new ServiceException(createExceptionMessage(), exception);
         }
         return updated;
     }

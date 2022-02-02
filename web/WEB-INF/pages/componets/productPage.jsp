@@ -9,7 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
-<fmt:setBundle basename = "locale/locale" var = "orderPageLang"/>
+<fmt:setBundle basename = "locale/locale" var = "userPageLang"/>
 <ul class="product_list" id="list">
     <c:forEach var="product" items="${requestScope.products}" >
         <li>
@@ -18,27 +18,27 @@
                 <div class='product_list info_slot'>
                     <a class='product_href' href="?command_get=product&id=${product.id}">
                         <span class='product_text'>
-                                ${product.name}
+                                ${product.DTO.name}
                         </span>
                     </a>
                 </div>
                 <div>
                         <span class='product_list quantity'>
-                                ${product.quantity}  <fmt:message key = "label.piece" bundle = "${orderPageLang}"/>
+                                ${product.DTO.quantity}  <fmt:message key = "label.piece" bundle = "${userPageLang}"/>
                         </span>
                 </div>
                 <div>
                         <span class='product_list price'>
-                                ${product.price} $
+                                ${product.DTO.price} $
                         </span>
                 </div>
         <c:if test="${sessionScope.role.alias == 'admin'}">
             <div class='product_info name'>
-                <c:if test="${product.visible == true}">
-                    <span><fmt:message key = "label.visibility.visible" bundle = "${orderPageLang}"/></span>
+                <c:if test="${product.DTO.visible == true}">
+                    <span><fmt:message key = "label.visibility.visible" bundle = "${userPageLang}"/></span>
                 </c:if>
-                <c:if test="${product.visible == false}">
-                    <span><fmt:message key = "label.visibility.invisible" bundle = "${orderPageLang}"/></span>
+                <c:if test="${product.DTO.visible == false}">
+                    <span><fmt:message key = "label.visibility.invisible" bundle = "${userPageLang}"/></span>
                 </c:if>
             </div>
         </c:if>

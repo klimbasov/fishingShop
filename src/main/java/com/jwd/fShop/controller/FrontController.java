@@ -26,7 +26,7 @@ public class FrontController extends HttpServlet {
         try {
             this.commandHolder = new CommandHolder();
         } catch (Exception exception) {
-            exception.printStackTrace();
+            logger.error(exception);
             throw new ServletException(exception.getMessage(), exception);
         }
 
@@ -69,6 +69,7 @@ public class FrontController extends HttpServlet {
             AttributeSetter.setMessage(req.getSession(), exception.getMessage());
             req.getRequestDispatcher("WEB-INF/pages/error/error.jsp").forward(req, resp);
         } catch (IOException e) {
+            logger.error(exception);
             throw new ServletException(e.getMessage());
         }
     }

@@ -26,11 +26,11 @@
         <input type="hidden" name="id" value="${requestScope.product.id}">
         <div>
             <span><fmt:message key = "label.name" bundle = "${lang}"/></span>
-            <input type="text" size="40" name="name" autocomplete="off" spellcheck="false" value="${requestScope.product.name}">
+            <input type="text" size="40" name="name" autocomplete="off" spellcheck="false" value="${requestScope.product.DTO.name}">
         </div>
         <div>
             <span><fmt:message key = "label.price" bundle = "${lang}"/></span>
-            <input type="text" size="40" name="price" autocomplete="off" spellcheck="false" value="${requestScope.product.price}">
+            <input type="text" size="40" name="price" autocomplete="off" spellcheck="false" value="${requestScope.product.DTO.price}">
         </div>
         <div>
             <span><fmt:message key = "label.type" bundle = "${lang}"/></span>
@@ -42,7 +42,7 @@
         </div>
         <div>
             <span><fmt:message key = "label.quantity" bundle = "${lang}"/></span>
-            <input type="text" size="40" name="quantity" autocomplete="off" spellcheck="false" value="${requestScope.product.quantity}">
+            <input type="text" size="40" name="quantity" autocomplete="off" spellcheck="false" value="${requestScope.product.DTO.quantity}">
         </div>
         <div>
             <span><fmt:message key = "label.visibility" bundle = "${lang}"/></span>

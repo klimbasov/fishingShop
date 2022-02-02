@@ -12,6 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
+
 public class SignOut extends AbstractCommand implements Command {
     public SignOut() {
         super(Role.UNREGISTERED);
@@ -25,7 +27,7 @@ public class SignOut extends AbstractCommand implements Command {
             req.getSession().invalidate();
             resp.sendRedirect(RedirectionPaths.TO_INDEX);
         } catch (IOException | AccessViolationException | InvalidArgumentException e) {
-            throw new CommandException("In " + this.getClass().getName() + " while forwarding.", e);
+            throw new CommandException(createExceptionMessage(), e);
         }
     }
 }

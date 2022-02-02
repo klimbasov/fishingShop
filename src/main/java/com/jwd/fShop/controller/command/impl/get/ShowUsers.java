@@ -7,6 +7,7 @@ import com.jwd.fShop.controller.exception.CommandException;
 import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.AttributeSetter;
 import com.jwd.fShop.controller.util.ParameterParser;
+import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Role;
 import com.jwd.fShop.domain.User;
 import com.jwd.fShop.domain.UserFilter;
@@ -19,6 +20,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.List;
+
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 
 public class ShowUsers extends AbstractCommand implements Command {
     private static final int RANGE = 3;
@@ -39,7 +42,7 @@ public class ShowUsers extends AbstractCommand implements Command {
                     build();
             int pageAmount = userService.getPagesQuantity(filter);
             int page = ParameterParser.parseInt(req.getParameter("page"), 1);
-            List<User> users = userService.getPage(filter, page);
+            List<IdentifiedDTO<User>> users = userService.getPage(filter, page);
 
             AttributeSetter.setPageNavigation(req, page, pageAmount, RANGE);
             req.setAttribute("users", users);
@@ -49,7 +52,7 @@ public class ShowUsers extends AbstractCommand implements Command {
                 ServiceException |
                 InvalidArgumentException |
                 ServletException exception) {
-            throw new CommandException("In " + this.getClass().getName() + " : access violation.", exception);
+            throw new CommandException(createExceptionMessage(), exception);
         }
     }
 }

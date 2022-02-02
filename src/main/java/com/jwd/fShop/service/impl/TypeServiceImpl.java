@@ -10,6 +10,8 @@ import com.jwd.fShop.service.typeHolder.TypeHolder;
 
 import java.util.Map;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
+
 public class TypeServiceImpl implements TypeService {
     private final TypeHolder typeHolder;
     private final TypeDao typeDao;
@@ -38,7 +40,7 @@ public class TypeServiceImpl implements TypeService {
             int id = typeDao.save(name);
             typeHolder.add(id, name);
         } catch (DaoException exception) {
-            throw new ServiceException(exception);
+            throw new ServiceException(createExceptionMessage(),exception);
         }
     }
 

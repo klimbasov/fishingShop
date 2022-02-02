@@ -8,6 +8,7 @@ import com.jwd.fShop.dao.exception.ConnectionWrapperException;
 import com.jwd.fShop.dao.exception.DaoException;
 import com.jwd.fShop.dao.exception.FatalDaoException;
 import com.jwd.fShop.dao.util.QueryFactory;
+import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.User;
 import com.jwd.fShop.domain.UserFilter;
 
@@ -19,6 +20,7 @@ import java.util.List;
 
 import static com.jwd.fShop.dao.constant.UserSqlNames.*;
 import static com.jwd.fShop.dao.util.ArgumentValidator.validate;
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -29,7 +31,7 @@ public class UserDaoImpl implements UserDao {
         try {
             connectionPool = ConnectionPool.getInstance(path);
         } catch (ConnectionPoolException e) {
-            throw new FatalDaoException(e.getMessage());
+            throw new FatalDaoException(createExceptionMessage(), e);
         }
     }
 
@@ -105,13 +107,13 @@ public class UserDaoImpl implements UserDao {
 
             statement.executeUpdate();
         } catch (SQLException | ConnectionWrapperException exception) {
-            throw new DaoException("in ProductDaoImpl: in setUser(User) while getting connection from connection pool", exception);
+            throw new DaoException(createExceptionMessage(), exception);
         }
     }
 
     @Override
-    public LinkedList<User> get(UserFilter filter) throws DaoException {
-        LinkedList<User> users = new LinkedList<>();
+    public List<IdentifiedDTO<User>> get(UserFilter filter) throws DaoException {
+        List<IdentifiedDTO<User>> users;
 
         validate(filter);
 
@@ -120,19 +122,10 @@ public class UserDaoImpl implements UserDao {
 
             setSelectParams(preparedStatement, filter);
 
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    users.add(new User.Builder()
-                            .setId(resultSet.getInt(ID_COLUMN_NAME))
-                            .setName(resultSet.getNString(USERNAME_COLUMN_NAME))
-                            .setRegistrationDate(resultSet.getDate(REGISTRATION_DATE_COLUMN_NAME))
-                            .setRegistrationTime(resultSet.getTime(REGISTRATION_TIME_COLUMN_NAME))
-                            .setRole(resultSet.getInt(ROLE_COLUMN_NAME))
-                            .build());
-                }
-            }
+            users = getSelectedUsers(preparedStatement);
+
         } catch (SQLException | ConnectionWrapperException exception) {
-            throw new DaoException("in ProductDaoImpl: in getUser(String) while getting prepared statement", exception);
+            throw new DaoException(createExceptionMessage(), exception);
         }
         return users;
     }
@@ -143,7 +136,7 @@ public class UserDaoImpl implements UserDao {
         validate(id);
 
         if (isNull(user)) {
-            throw new IllegalArgumentException("in ProductDaoImpl: in getUser(String): user was null");
+            throw new IllegalArgumentException(createExceptionMessage(" user was null"));
         }
 
         try (ConnectionWrapper connectionWrapper = new ConnectionWrapper(connectionPool);
@@ -154,13 +147,13 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.executeUpdate();
 
         } catch (SQLException | ConnectionWrapperException exception) {
-            throw new DaoException("in ProductDaoImpl: in getUser(String)", exception);
+            throw new DaoException(createExceptionMessage(), exception);
         }
     }
 
     @Override
-    public List<User> getSet(UserFilter filter, int offset, int size) throws DaoException {
-        LinkedList<User> users = new LinkedList<>();
+    public List<IdentifiedDTO<User>> getSet(UserFilter filter, int offset, int size) throws DaoException {
+        List<IdentifiedDTO<User>> users;
 
         validate(filter);
         validate(offset, size);
@@ -169,19 +162,29 @@ public class UserDaoImpl implements UserDao {
              PreparedStatement preparedStatement = connectionWrapper.getPreparedStatement(QueryFactory.UserSql.getMultipleLimitedSelectSQL(filter))) {
             setLimitedSelectParams(preparedStatement, filter, offset, size);
 
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    users.add(new User.Builder()
-                            .setId(resultSet.getInt(ID_COLUMN_NAME))
-                            .setName(resultSet.getNString(USERNAME_COLUMN_NAME))
-                            .setRegistrationDate(resultSet.getDate(REGISTRATION_DATE_COLUMN_NAME))
-                            .setRegistrationTime(resultSet.getTime(REGISTRATION_TIME_COLUMN_NAME))
-                            .setRole(resultSet.getInt(ROLE_COLUMN_NAME))
-                            .build());
-                }
-            }
+            users = getSelectedUsers(preparedStatement);
+
         } catch (SQLException | ConnectionWrapperException exception) {
-            throw new DaoException("in ProductDaoImpl: in getUser(String) while getting prepared statement", exception);
+            throw new DaoException(createExceptionMessage(), exception);
+        }
+        return users;
+    }
+
+    private List<IdentifiedDTO<User>> getSelectedUsers(PreparedStatement statement) throws SQLException {
+        List<IdentifiedDTO<User>> users = new LinkedList<>();
+        try (ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                users.add(
+                        new IdentifiedDTO<>(
+                                resultSet.getInt(ID_COLUMN_NAME),
+                                new User.Builder()
+                                        .setName(resultSet.getNString(USERNAME_COLUMN_NAME))
+                                        .setRegistrationDate(resultSet.getDate(REGISTRATION_DATE_COLUMN_NAME))
+                                        .setRegistrationTime(resultSet.getTime(REGISTRATION_TIME_COLUMN_NAME))
+                                        .setRole(resultSet.getInt(ROLE_COLUMN_NAME))
+                                        .build())
+                );
+            }
         }
         return users;
     }
@@ -201,8 +204,9 @@ public class UserDaoImpl implements UserDao {
             }
 
         } catch (SQLException | ConnectionWrapperException exception) {
-            throw new DaoException("in ProductDaoImpl: in getSetQuantity(UserFilter, int)", exception);
+            throw new DaoException(createExceptionMessage(), exception);
         }
         return quantity;
     }
+
 }
