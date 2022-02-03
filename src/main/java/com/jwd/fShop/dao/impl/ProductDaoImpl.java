@@ -22,6 +22,7 @@ import java.util.ListIterator;
 
 import static com.jwd.fShop.dao.util.ArgumentValidator.validate;
 import static com.jwd.fShop.dao.util.ArgumentValidator.validateId;
+import static com.jwd.fShop.dao.util.StatementFiller.*;
 import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 
 public class ProductDaoImpl implements ProductDao {
@@ -47,47 +48,6 @@ public class ProductDaoImpl implements ProductDao {
             }
         }
         return cleanProducts;
-    }
-
-    private static void setSingleObjectQueryParams(final PreparedStatement preparedStatement, final Product product) throws SQLException {
-        preparedStatement.setString(1, product.getName());
-        preparedStatement.setFloat(2, product.getPrice());
-        preparedStatement.setInt(3, product.getQuantity());
-        preparedStatement.setInt(4, product.getProductType());
-        preparedStatement.setBoolean(5, product.getVisible());
-    }
-
-    private static void setLimitedSelectParams(PreparedStatement preparedStatement, ProductFilter productFilter, int offset, int size) throws SQLException {
-        int counter = setSelectFilterParams(preparedStatement, productFilter);
-        preparedStatement.setInt(counter, offset);
-        preparedStatement.setInt(counter + 1, size);
-    }
-
-    private static void setSelectParams(final PreparedStatement preparedStatement, final ProductFilter productFilter) throws SQLException {
-        setSelectFilterParams(preparedStatement, productFilter);
-    }
-
-    private static int setSelectFilterParams(final PreparedStatement preparedStatement, final ProductFilter productFilter) throws SQLException {
-        int counter = 1;
-        if (productFilter.isName()) {
-            preparedStatement.setString(counter++, "%" + productFilter.getName() + "%");
-        }
-        if (productFilter.isId()) {
-            preparedStatement.setInt(counter++, productFilter.getId());
-        }
-        if (productFilter.isProductType()) {
-            preparedStatement.setInt(counter++, productFilter.getProductType());
-        }
-        if (productFilter.isHighPrice()) {
-            preparedStatement.setFloat(counter++, productFilter.getHighPrice());
-        }
-        if (productFilter.isLowPrice()) {
-            preparedStatement.setFloat(counter++, productFilter.getLowPrice());
-        }
-        if (productFilter.isVisibility()) {
-            preparedStatement.setBoolean(counter++, productFilter.getVisibility());
-        }
-        return counter;
     }
 
     private static List<IdentifiedDTO<Product>> getSelectedProducts(final PreparedStatement preparedStatement) throws SQLException {

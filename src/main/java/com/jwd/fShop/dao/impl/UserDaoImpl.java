@@ -20,6 +20,7 @@ import java.util.List;
 
 import static com.jwd.fShop.dao.constant.UserSqlNames.*;
 import static com.jwd.fShop.dao.util.ArgumentValidator.validate;
+import static com.jwd.fShop.dao.util.StatementFiller.*;
 import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -35,60 +36,23 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-    private static void setUpdateParams(PreparedStatement preparedStatement, User user, int id) throws SQLException {
-        if (nonNull(user.getName())) {
-            preparedStatement.setString(1, user.getName());
-        }
-        if (nonNull(user.getHashedPassword())) {
-            preparedStatement.setString(1, user.getHashedPassword());
-        }
-        if (nonNull(user.getRole())) {
-            preparedStatement.setInt(1, user.getRole());
-        }
-        preparedStatement.setInt(2, id);
-    }
-
-    private static void setLimitedSelectParams(PreparedStatement preparedStatement, UserFilter userFilter, int offset, int size) throws SQLException {
-        int counter = setSelectFilterParams(preparedStatement, userFilter);
-        preparedStatement.setInt(counter, offset);
-        preparedStatement.setInt(counter + 1, size);
-    }
-
-    private static void setSelectParams(final PreparedStatement preparedStatement, final UserFilter userFilter) throws SQLException {
-        setSelectFilterParams(preparedStatement, userFilter);
-    }
-
-    private static int setSelectFilterParams(final PreparedStatement preparedStatement, final UserFilter userFilter) throws SQLException {
-        int counter = 1;
-        if (userFilter.getUserSubName()) {
-            if (userFilter.isFullName()) {
-                preparedStatement.setString(counter++, userFilter.getUserSubname());
-            } else {
-                preparedStatement.setString(counter++, "%" + userFilter.getUserSubname() + "%");
+    private List<IdentifiedDTO<User>> getSelectedUsers(PreparedStatement statement) throws SQLException {
+        List<IdentifiedDTO<User>> users = new LinkedList<>();
+        try (ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                users.add(
+                        new IdentifiedDTO<>(
+                                resultSet.getInt(ID_COLUMN_NAME),
+                                new User.Builder()
+                                        .setName(resultSet.getNString(USERNAME_COLUMN_NAME))
+                                        .setRegistrationDate(resultSet.getDate(REGISTRATION_DATE_COLUMN_NAME))
+                                        .setRegistrationTime(resultSet.getTime(REGISTRATION_TIME_COLUMN_NAME))
+                                        .setRole(resultSet.getInt(ROLE_COLUMN_NAME))
+                                        .build())
+                );
             }
         }
-        if (userFilter.isId()) {
-            preparedStatement.setInt(counter++, userFilter.getId());
-        }
-        if (userFilter.isSubHashPass()) {
-            preparedStatement.setString(counter++, userFilter.getSubHashPass());
-        }
-        if (userFilter.isHighDate()) {
-            preparedStatement.setDate(counter++, userFilter.getHighDate());
-        }
-        if (userFilter.isLowDate()) {
-            preparedStatement.setDate(counter++, userFilter.getLowDate());
-        }
-        if (userFilter.isHighTime()) {
-            preparedStatement.setTime(counter++, userFilter.getHighTime());
-        }
-        if (userFilter.isLowTime()) {
-            preparedStatement.setTime(counter++, userFilter.getLowTime());
-        }
-        if (userFilter.isRole()) {
-            preparedStatement.setInt(counter++, userFilter.getRole());
-        }
-        return counter;
+        return users;
     }
 
     @Override
@@ -119,6 +83,7 @@ public class UserDaoImpl implements UserDao {
 
         try (ConnectionWrapper connectionWrapper = new ConnectionWrapper(connectionPool);
              PreparedStatement preparedStatement = connectionWrapper.getPreparedStatement(QueryFactory.UserSql.getMultipleSelectSQL(filter))) {
+
 
             setSelectParams(preparedStatement, filter);
 
@@ -166,25 +131,6 @@ public class UserDaoImpl implements UserDao {
 
         } catch (SQLException | ConnectionWrapperException exception) {
             throw new DaoException(createExceptionMessage(), exception);
-        }
-        return users;
-    }
-
-    private List<IdentifiedDTO<User>> getSelectedUsers(PreparedStatement statement) throws SQLException {
-        List<IdentifiedDTO<User>> users = new LinkedList<>();
-        try (ResultSet resultSet = statement.executeQuery()) {
-            while (resultSet.next()) {
-                users.add(
-                        new IdentifiedDTO<>(
-                                resultSet.getInt(ID_COLUMN_NAME),
-                                new User.Builder()
-                                        .setName(resultSet.getNString(USERNAME_COLUMN_NAME))
-                                        .setRegistrationDate(resultSet.getDate(REGISTRATION_DATE_COLUMN_NAME))
-                                        .setRegistrationTime(resultSet.getTime(REGISTRATION_TIME_COLUMN_NAME))
-                                        .setRole(resultSet.getInt(ROLE_COLUMN_NAME))
-                                        .build())
-                );
-            }
         }
         return users;
     }
