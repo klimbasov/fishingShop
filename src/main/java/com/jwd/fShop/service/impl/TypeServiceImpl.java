@@ -40,7 +40,7 @@ public class TypeServiceImpl implements TypeService {
             int id = typeDao.save(name);
             typeHolder.add(id, name);
         } catch (DaoException exception) {
-            throw new ServiceException(createExceptionMessage(),exception);
+            throw new ServiceException(createExceptionMessage(), exception);
         }
     }
 

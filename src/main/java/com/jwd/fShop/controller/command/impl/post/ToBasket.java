@@ -6,9 +6,9 @@ import com.jwd.fShop.controller.constant.Attributes;
 import com.jwd.fShop.controller.constant.RedirectionPaths;
 import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
-import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.ParameterParser;
 import com.jwd.fShop.domain.Role;
+import com.jwd.fShop.exception.InvalidArgumentException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -44,7 +44,7 @@ public class ToBasket extends AbstractCommand implements Command {
             basket.put(id, quantity + existing);
             resp.sendRedirect(RedirectionPaths.TO_PRODUCT + "&id=" + id);
         } catch (IOException | AccessViolationException | InvalidArgumentException exception) {
-            throw new CommandException(createExceptionMessage(),exception);
+            exceptionHandler(resp, createExceptionMessage(), exception);
         }
     }
 }

@@ -2,8 +2,6 @@ package com.jwd.fShop.domain;
 
 import java.util.Objects;
 
-import static java.util.Objects.nonNull;
-
 public class Product {
     private final String name;
     private final Integer quantity;
@@ -44,7 +42,7 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return  Objects.equals(name, product.name) &&
+        return Objects.equals(name, product.name) &&
                 Objects.equals(price, product.price) ||
                 Objects.equals(quantity, product.quantity) ||
                 Objects.equals(productType, product.productType) ||

@@ -4,9 +4,9 @@ import com.jwd.fShop.controller.command.Command;
 import com.jwd.fShop.controller.command.impl.AbstractCommand;
 import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
-import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.ParameterParser;
 import com.jwd.fShop.domain.Role;
+import com.jwd.fShop.exception.InvalidArgumentException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,7 +29,7 @@ public class ShowChangeUser extends AbstractCommand implements Command {
             req.setAttribute("id", id);
             req.getRequestDispatcher("WEB-INF/pages/changeUser.jsp").forward(req, resp);
         } catch (ServletException | IOException | InvalidArgumentException | AccessViolationException exception) {
-            throw new CommandException(createExceptionMessage(),exception);
+            exceptionHandler(resp, createExceptionMessage(), exception);
         }
     }
 }

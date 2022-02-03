@@ -16,7 +16,7 @@
 </head>
 <body>
 <jsp:include page="componets/header.jsp"/>
-<fmt:setBundle basename = "locale/locale" var = "lang"/>
+<fmt:setBundle basename="locale/locale" var="lang"/>
 <div class="productInfo" id="content">
     <div class='product_info group'>
         <div class='product_info half'>
@@ -29,7 +29,7 @@
                 <ul class='product_info text_list'>
                     <li>
                         <div class='product_info name'>
-                            <span><fmt:message key = "label.profile.name" bundle = "${lang}"/></span>
+                            <span><fmt:message key="label.profile.name" bundle="${lang}"/></span>
                         </div>
                         <div class='product_info value'>
                             <span>${requestScope.user.DTO.name}</span>
@@ -37,7 +37,7 @@
                     </li>
                     <li>
                         <div class='product_info name'>
-                            <span><fmt:message key = "label.profile.role" bundle = "${lang}"/></span>
+                            <span><fmt:message key="label.profile.role" bundle="${lang}"/></span>
                         </div>
                         <div class='product_info value'>
                             <span>${requestScope.role}</span>
@@ -45,7 +45,7 @@
                     </li>
                     <li>
                         <div class='product_info name'>
-                            <span><fmt:message key = "label.profile.registration_date" bundle = "${lang}"/></span>
+                            <span><fmt:message key="label.profile.registration_date" bundle="${lang}"/></span>
                         </div>
                         <div class='product_info value'>
                             <span>${requestScope.user.DTO.registrationDate}</span>
@@ -53,7 +53,7 @@
                     </li>
                     <li>
                         <div class='product_info name'>
-                            <span><fmt:message key = "label.profile.registration_time" bundle = "${lang}"/></span>
+                            <span><fmt:message key="label.profile.registration_time" bundle="${lang}"/></span>
                         </div>
                         <div class='product_info value'>
                             <span>${requestScope.user.DTO.registrationTime}</span>
@@ -66,15 +66,15 @@
                     <li>
                         <form method="get">
                             <input type='hidden' name='command_get' value='changeUser'/>
-                            <input type='hidden' name='id' value="${requestScope.user.id}" />
-                            <button type="submit"><fmt:message key = "button.profile.change" bundle = "${lang}"/></button>
+                            <input type='hidden' name='id' value="${requestScope.user.id}"/>
+                            <button type="submit"><fmt:message key="button.profile.change" bundle="${lang}"/></button>
                         </form>
                     </li>
                     <li>
                         <form method="get">
                             <input type='hidden' name='command_get' value='orders'/>
-                            <input type='hidden' name='id' value="${requestScope.user.id}" />
-                            <button type="submit"><fmt:message key = "button.profile.orders" bundle = "${lang}"/></button>
+                            <input type='hidden' name='id' value="${requestScope.user.id}"/>
+                            <button type="submit"><fmt:message key="button.profile.orders" bundle="${lang}"/></button>
                         </form>
                     </li>
                 </ul>

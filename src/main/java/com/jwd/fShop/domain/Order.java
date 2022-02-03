@@ -31,7 +31,7 @@ public class Order {
         this.orderingTime = builder.orderingTime;
     }
 
-    public int getUserId(){
+    public int getUserId() {
         return userId;
     }
 

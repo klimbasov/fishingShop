@@ -1,11 +1,12 @@
-.block{
+.block {
     display: block;
     background-color: #d8d7b8;
     border: 5px solid #557534;
     border-radius: 10px 10px 10px 10px;
-    margin:auto;
-    width:900px;
+    margin: auto;
+    width: 900px;
 }
+
 .form-inline {
     display: flex;
     flex-basis: auto;
@@ -39,6 +40,7 @@
     font-size: 26px;
     font-family: helvetica;
 }
+
 .form-inline select {
     vertical-align: middle;
     margin: 5px 10px 5px 0;
@@ -50,6 +52,7 @@
     font-size: 26px;
     font-family: helvetica;
 }
+
 /* Style the submit button */
 .form-inline button {
     background-color: #557534; /* Green */
@@ -67,6 +70,7 @@
 .form-inline button:hover {
     background: #096c0c;
 }
+
 .center {
     display: flex;
     justify-content: center;

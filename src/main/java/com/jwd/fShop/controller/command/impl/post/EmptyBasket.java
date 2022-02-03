@@ -7,6 +7,7 @@ import com.jwd.fShop.controller.constant.RedirectionPaths;
 import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
 import com.jwd.fShop.domain.Role;
+import com.jwd.fShop.exception.InvalidArgumentException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -27,8 +28,8 @@ public class EmptyBasket extends AbstractCommand implements Command {
             req.getSession().removeAttribute(Attributes.ATTRIBUTE_BASKET);
 
             resp.sendRedirect(RedirectionPaths.TO_BASKET);
-        } catch (IOException | AccessViolationException exception) {
-            throw new CommandException(createExceptionMessage(),exception);
+        } catch (IOException | AccessViolationException | InvalidArgumentException exception) {
+            exceptionHandler(resp, createExceptionMessage(), exception);
         }
     }
 }

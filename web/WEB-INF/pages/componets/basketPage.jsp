@@ -9,9 +9,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
-<fmt:setBundle basename = "locale/locale" var = "userPageLang"/>
+<fmt:setBundle basename="locale/locale" var="userPageLang"/>
 <ul class="product_list" id="list">
-    <c:forEach var="product" items="${requestScope.products}" >
+    <c:forEach var="product" items="${requestScope.products}">
         <li>
 
             <div class='product_list info_group'>
@@ -24,7 +24,7 @@
                 </div>
                 <div>
                         <span class='product_list quantity'>
-                                ${product.DTO.quantity}  <fmt:message key = "label.piece" bundle = "${userPageLang}"/>
+                                ${product.DTO.quantity}  <fmt:message key="label.piece" bundle="${userPageLang}"/>
                         </span>
                 </div>
                 <div>
@@ -33,11 +33,11 @@
                         </span>
                 </div>
                 <div class="search">
-                        <form method="post">
-                            <input type="hidden" name="command" value="outBasket">
-                            <input type="hidden" name="id" value="${product.id}">
-                            <button type="submit"><fmt:message key = "label.cancel" bundle = "${userPageLang}"/></button>
-                        </form>
+                    <form method="post">
+                        <input type="hidden" name="command" value="outBasket">
+                        <input type="hidden" name="bunch_id" value="${product.id}">
+                        <button type="submit"><fmt:message key="label.cancel" bundle="${userPageLang}"/></button>
+                    </form>
                 </div>
             </div>
             <img alt="" src='resources/images/tick.jpg'>

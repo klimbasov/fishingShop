@@ -1,6 +1,6 @@
 package com.jwd.fShop.controller.exception;
 
-public class UnhandledException extends RuntimeException{
+public class UnhandledException extends RuntimeException {
     public UnhandledException() {
         super();
     }

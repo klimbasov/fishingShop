@@ -11,7 +11,7 @@
 <html>
 <head>
     <title>fShop</title>
-  <c:set var="navigationCommand" value="users" scope="request"/>
+    <c:set var="navigationCommand" value="users" scope="request"/>
 </head>
 <body>
 <jsp:include page="componets/header.jsp"/>

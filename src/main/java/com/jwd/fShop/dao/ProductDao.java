@@ -6,7 +6,6 @@ import com.jwd.fShop.domain.Product;
 import com.jwd.fShop.domain.ProductFilter;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProductDao {
     int save(Product product) throws DaoException;

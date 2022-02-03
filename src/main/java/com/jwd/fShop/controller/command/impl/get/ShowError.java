@@ -4,7 +4,6 @@ import com.jwd.fShop.controller.command.Command;
 import com.jwd.fShop.controller.command.impl.AbstractCommand;
 import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
-import com.jwd.fShop.controller.exception.UnhandledException;
 import com.jwd.fShop.domain.Role;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +25,7 @@ public class ShowError extends AbstractCommand implements Command {
 
             req.getRequestDispatcher("WEB-INF/pages/error/error.jsp").forward(req, resp);
         } catch (ServletException | IOException | AccessViolationException exception) {
-            throw new UnhandledException(createExceptionMessage(), exception);
+            exceptionHandler(resp, createExceptionMessage(), exception);
         }
     }
 }

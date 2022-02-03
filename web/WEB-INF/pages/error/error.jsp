@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="ex" uri="custom" %>
 
 <html>
 <head>
@@ -18,11 +19,11 @@
 <body>
 <jsp:include page="../componets/header.jsp"/>
 <p class="error">
-    Some error has occurred.
+    Error <ex:errorCode/>
 </p>
 <jsp:include page="../componets/message.jsp"/>
-<fmt:setLocale value = "en"/>
-<fmt:setBundle basename = "locale/locale" var = "lang"/>
+<fmt:setLocale value="en"/>
+<fmt:setBundle basename="locale/locale" var="lang"/>
 
 
 </body>

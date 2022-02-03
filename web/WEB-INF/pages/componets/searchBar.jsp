@@ -13,17 +13,17 @@
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8"/>
     <link rel="stylesheet" type="text/css" href="resources/css/stylesheets.css">
 </head>
-<fmt:setBundle basename = "locale/locale" var = "searchPageLang"/>
+<fmt:setBundle basename="locale/locale" var="searchPageLang"/>
 <div class="search" id="search">
     <ul>
         <li>
             <form id='searchForm' method="get">
                 <input type="hidden" name="command_get" value="products"/>
                 <input name='subName' type='text'>
-                <button type='submit'><fmt:message key = "label.search" bundle = "${searchPageLang}"/></button>
+                <button type='submit'><fmt:message key="label.search" bundle="${searchPageLang}"/></button>
             </form>
             <form id='filterForm' method="post">
-                <button type='button'><fmt:message key = "label.filter" bundle = "${searchPageLang}"/></button>
+                <button type='button'><fmt:message key="label.filter" bundle="${searchPageLang}"/></button>
             </form>
         </li>
     </ul>

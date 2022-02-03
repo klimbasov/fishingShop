@@ -4,12 +4,12 @@ import com.jwd.fShop.controller.command.Command;
 import com.jwd.fShop.controller.command.impl.AbstractCommand;
 import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
-import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.AttributeSetter;
 import com.jwd.fShop.controller.util.ParameterParser;
 import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Order;
 import com.jwd.fShop.domain.Role;
+import com.jwd.fShop.exception.InvalidArgumentException;
 import com.jwd.fShop.service.OrderService;
 import com.jwd.fShop.service.exception.ServiceException;
 import com.jwd.fShop.service.serviceHolder.ServiceHolder;
@@ -49,7 +49,7 @@ public class ShowOrders extends AbstractCommand implements Command {
                 ServiceException |
                 InvalidArgumentException |
                 ServletException exception) {
-            throw new CommandException(createExceptionMessage(), exception);
+            exceptionHandler(resp, createExceptionMessage(), exception);
         }
     }
 }

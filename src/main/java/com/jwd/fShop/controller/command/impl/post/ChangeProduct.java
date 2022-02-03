@@ -6,11 +6,11 @@ import com.jwd.fShop.controller.constant.Messages;
 import com.jwd.fShop.controller.constant.RedirectionPaths;
 import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
-import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.AttributeSetter;
 import com.jwd.fShop.controller.util.ParameterParser;
 import com.jwd.fShop.domain.Product;
 import com.jwd.fShop.domain.Role;
+import com.jwd.fShop.exception.InvalidArgumentException;
 import com.jwd.fShop.service.ProductService;
 import com.jwd.fShop.service.TypeService;
 import com.jwd.fShop.service.exception.FatalServiceException;
@@ -58,13 +58,13 @@ public class ChangeProduct extends AbstractCommand implements Command {
             AttributeSetter.setMessage(req.getSession(), Messages.PRODUCT_CHANGING_SUCCESS);
             resp.sendRedirect(RedirectionPaths.TO_CHANGE_PRODUCT + "&id=" + id);
         } catch (AccessViolationException | IOException | FatalServiceException exception) {
-            throw new CommandException(createExceptionMessage(), exception);
+            exceptionHandler(resp, createExceptionMessage(), exception);
         } catch (ServiceException | InvalidArgumentException exception) {
             AttributeSetter.setMessage(req.getSession(), Messages.PRODUCT_CHANGING_FAULT);
             try {
                 resp.sendRedirect(RedirectionPaths.TO_CHANGE_PRODUCT + "&id=" + id);
             } catch (IOException e) {
-                throw new CommandException(createExceptionMessage(), exception);
+                exceptionHandler(resp, createExceptionMessage(), exception);
             }
         }
     }

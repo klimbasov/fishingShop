@@ -15,6 +15,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+import static com.jwd.fShop.service.util.Validator.validate;
+import static com.jwd.fShop.service.util.Validator.validatePositive;
 import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 import static java.util.Objects.nonNull;
 
@@ -31,6 +33,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void add(List<ProductBunch> productBunches, int userId) throws ServiceException {
+        validate(productBunches);
+        validatePositive(userId);
+
         if (nonNull(productBunches)) {
             Order order = new Order.Builder().setUserId(userId).
                     setProductBunchList(productBunches).
@@ -48,6 +53,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional<IdentifiedDTO<Order>> getById(int id) throws ServiceException {
         Optional<IdentifiedDTO<Order>> spotted;
+
+        validatePositive(id);
         try {
             spotted = orderDao.getById(id);
         } catch (DaoException exception) {
@@ -59,7 +66,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<IdentifiedDTO<Order>> getPage(int userId, int page) throws ServiceException {
         List<IdentifiedDTO<Order>> orders;
-        int offset = (page - 1) * pageSize;
+        int offset;
+
+        validatePositive(userId, page);
+
+        offset = (page - 1) * pageSize;
         try {
             orders = orderDao.getSet(userId, offset, pageSize);
         } catch (DaoException exception) {
@@ -71,11 +82,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int getPageQuantity(int userId) throws ServiceException {
         int totalValue;
+
+        validatePositive(userId);
+
         try {
             totalValue = orderDao.getQuantity(userId);
         } catch (DaoException exception) {
             throw new ServiceException(createExceptionMessage(), exception);
         }
-        return (totalValue + pageSize-1) / pageSize;
+        return (totalValue + pageSize - 1) / pageSize;
     }
 }

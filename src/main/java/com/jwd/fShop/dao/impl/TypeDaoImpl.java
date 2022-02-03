@@ -26,7 +26,7 @@ public class TypeDaoImpl implements TypeDao {
         try {
             connectionPool = ConnectionPool.getInstance(path);
         } catch (ConnectionPoolException e) {
-            throw new FatalDaoException(createExceptionMessage(),e);
+            throw new FatalDaoException(createExceptionMessage(), e);
         }
     }
 
@@ -45,7 +45,7 @@ public class TypeDaoImpl implements TypeDao {
                 }
             }
         } catch (SQLException | ConnectionWrapperException e) {
-            throw new DaoException(createExceptionMessage(),e);
+            throw new DaoException(createExceptionMessage(), e);
         }
         return typesMap;
     }

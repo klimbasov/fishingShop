@@ -12,6 +12,8 @@ import com.jwd.fShop.service.exception.ServiceException;
 import java.util.List;
 import java.util.Optional;
 
+import static com.jwd.fShop.service.util.Validator.validate;
+import static com.jwd.fShop.service.util.Validator.validatePositive;
 import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 
 public class ProductServiceImpl implements ProductService {
@@ -27,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void add(Product product) throws ServiceException {
-
+        validate(product);
         try {
             productStorage.save(product);
         } catch (DaoException exception) {
@@ -38,8 +40,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<IdentifiedDTO<Product>> getPage(final ProductFilter filter, int page) throws ServiceException {
         List<IdentifiedDTO<Product>> products;
-        int offset = (page - 1) * pageSize;
+        int offset;
 
+        validatePositive(page);
+
+        offset = (page - 1) * pageSize;
         try {
             products = productStorage.getSet(filter, offset, pageSize);
         } catch (DaoException exception) {
@@ -62,7 +67,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Optional<IdentifiedDTO<Product>> getById(int id) throws ServiceException {
         Optional<IdentifiedDTO<Product>> product = Optional.empty();
-        ProductFilter filter = new ProductFilter.Builder().setId(id).build();
+        ProductFilter filter;
+
+        validatePositive(id);
+
+        filter = new ProductFilter.Builder().setId(id).build();
         try {
             List<IdentifiedDTO<Product>> existing = productStorage.get(filter);
             if (!existing.isEmpty()) {
@@ -76,6 +85,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void changeById(Product product, int id) throws ServiceException {
+        validatePositive(id);
         try {
             productStorage.update(product, id);
         } catch (DaoException exception) {

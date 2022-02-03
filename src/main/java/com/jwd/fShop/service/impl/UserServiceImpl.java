@@ -17,6 +17,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+import static com.jwd.fShop.dao.util.ArgumentValidator.validate;
+import static com.jwd.fShop.service.util.Validator.*;
 import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 
 public class UserServiceImpl implements UserService {
@@ -33,6 +35,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<IdentifiedDTO<User>> register(String name, String password, Role role) throws ServiceException {
+        validateUsername(name);
+        validatePassword(password);
+
         String hashedPassword = Hasher.hash(password);
         UserFilter filter = new UserFilter.Builder().
                 setUserSubName(name).
@@ -64,6 +69,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<IdentifiedDTO<User>> authorize(String name, String password) throws ServiceException {
+        validateUsername(name);
+        validatePassword(password);
+
         String hashedPassword = Hasher.hash(password);
         UserFilter filter = new UserFilter.Builder().
                 setUserSubName(name).
@@ -87,6 +95,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<IdentifiedDTO<User>> changeRole(int userId, int role) throws ServiceException {
+        validatePositive(userId);
         User user = new User.Builder().
                 setRole(role).
                 build();
@@ -95,6 +104,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<IdentifiedDTO<User>> changePassword(int userId, String password) throws ServiceException {
+        validatePassword(password);
+        validatePositive(userId);
         String hashedPassword = Hasher.hash(password);
         User user = new User.Builder().
                 setHashedPassword(hashedPassword).
@@ -104,6 +115,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<IdentifiedDTO<User>> changeName(int userId, String username) throws ServiceException {
+        validateUsername(username);
+        validatePositive(userId);
         Optional<IdentifiedDTO<User>> user;
         User UserWithUpdateFields = new User.Builder().
                 setName(username).
@@ -112,10 +125,10 @@ public class UserServiceImpl implements UserService {
                 setUserSubName(username).
                 fullName(true).
                 build();
-        try{
-            if(userDao.get(filter).isEmpty()){
+        try {
+            if (userDao.get(filter).isEmpty()) {
                 user = updateAndGetUserInternal(userId, UserWithUpdateFields);
-            }else {
+            } else {
                 throw new ServiceException(createExceptionMessage("Such name has already exists."));
             }
         } catch (DaoException exception) {
@@ -126,6 +139,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<IdentifiedDTO<User>> getById(int id) throws ServiceException {
+        validatePositive(id);
         Optional<IdentifiedDTO<User>> spotted = Optional.empty();
         UserFilter filter = new UserFilter.Builder().
                 setId(id).
@@ -143,6 +157,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<IdentifiedDTO<User>> getPage(UserFilter filter, int page) throws ServiceException {
+        validate(filter);
+        validatePositive(page);
         List<IdentifiedDTO<User>> users;
         try {
             users = userDao.getSet(filter, (page - 1) * pageSize, pageSize);
@@ -154,13 +170,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int getPagesQuantity(UserFilter filter) throws ServiceException {
+        validate(filter);
         int totalValue;
         try {
             totalValue = userDao.getQuantity(filter);
         } catch (DaoException exception) {
             throw new ServiceException(createExceptionMessage(), exception);
         }
-        return (totalValue+pageSize-1) / pageSize;
+        return (totalValue + pageSize - 1) / pageSize;
     }
 
     private Optional<IdentifiedDTO<User>> updateAndGetUserInternal(int userId, User user) throws ServiceException {

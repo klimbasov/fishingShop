@@ -13,22 +13,22 @@
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8"/>
     <link rel="stylesheet" type="text/css" href="resources/css/stylesheets.css">
 </head>
-<fmt:setBundle basename = "locale/locale" var = "orderLang"/>
+<fmt:setBundle basename="locale/locale" var="orderLang"/>
 <div class="search" id="search">
     <ul>
         <li>
             <form method="post">
                 <input type="hidden" name="command" value="order"/>
-                <button type='submit'><fmt:message key = "label.order" bundle = "${orderLang}"/></button>
+                <button type='submit'><fmt:message key="label.order" bundle="${orderLang}"/></button>
             </form>
         </li>
         <span>
-            <fmt:message key = "label.order" bundle = "${orderLang}"/> ${requestScope.totalPrice} $
+            <fmt:message key="label.order" bundle="${orderLang}"/> ${requestScope.totalPrice} $
         </span>
         <li>
             <form method="post">
                 <input type="hidden" name="command" value="emptyBasket"/>
-                <button type='submit'><fmt:message key = "label.cancel" bundle = "${orderLang}"/></button>
+                <button type='submit'><fmt:message key="label.cancel" bundle="${orderLang}"/></button>
             </form>
         </li>
     </ul>

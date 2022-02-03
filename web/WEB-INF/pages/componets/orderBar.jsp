@@ -13,17 +13,17 @@
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8"/>
     <link rel="stylesheet" type="text/css" href="resources/css/stylesheets.css">
 </head>
-<fmt:setBundle basename = "locale/locale" var = "orderLang"/>
+<fmt:setBundle basename="locale/locale" var="orderLang"/>
 <div class="search" id="search">
     <ul>
         <span>
-            <fmt:message key = "label.order_id" bundle = "${orderLang}"/>: ${requestScope.order.id}
+            <fmt:message key="label.order_id" bundle="${orderLang}"/>: ${requestScope.order.id}
         </span>
         <span>
-            <fmt:message key = "label.orderingDate" bundle = "${orderLang}"/>: ${requestScope.order.DTO.orderingDate}
+            <fmt:message key="label.orderingDate" bundle="${orderLang}"/>: ${requestScope.order.DTO.orderingDate}
         </span>
         <span>
-            <fmt:message key = "label.order" bundle = "${orderLang}"/> ${requestScope.totalPrice} $
+            <fmt:message key="label.order" bundle="${orderLang}"/> ${requestScope.totalPrice} $
         </span>
     </ul>
 </div>

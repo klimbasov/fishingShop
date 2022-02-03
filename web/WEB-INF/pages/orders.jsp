@@ -12,7 +12,7 @@
 <head>
     <title>fShop</title>
     <c:set var="navigationCommand" value="orders" scope="request"/>
-<%--    <c:set var="additionalParameter" value="id" scope="request"/>--%>
+    <%--    <c:set var="additionalParameter" value="id" scope="request"/>--%>
 </head>
 <body>
 <jsp:include page="componets/header.jsp"/>

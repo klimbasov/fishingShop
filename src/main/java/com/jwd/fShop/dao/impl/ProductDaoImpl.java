@@ -92,7 +92,7 @@ public class ProductDaoImpl implements ProductDao {
 
     private static List<IdentifiedDTO<Product>> getSelectedProducts(final PreparedStatement preparedStatement) throws SQLException {
         List<IdentifiedDTO<Product>> products = new LinkedList<>();
-        try(ResultSet resultSet = preparedStatement.executeQuery()){
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 products.add(new IdentifiedDTO<>(
                         resultSet.getInt(ProductSqlNames.ID_COLUMN_NAME),

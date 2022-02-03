@@ -17,19 +17,19 @@
 <body>
 <jsp:include page="componets/header.jsp"/>
 <jsp:include page="componets/message.jsp"/>
-<fmt:setBundle basename = "locale/locale" var = "lang"/>
+<fmt:setBundle basename="locale/locale" var="lang"/>
 <div class="registration_block">
-    <FORM id="registrationForm" method="post" class="registration" >
+    <FORM id="registrationForm" method="post" class="registration">
         <div>
-            <span><fmt:message key = "label.username" bundle = "${lang}"/></span>
+            <span><fmt:message key="label.username" bundle="${lang}"/></span>
             <input type="text" size="40" name="username" autocomplete="off" spellcheck="false">
         </div>
         <div>
-            <span><fmt:message key = "label.password" bundle = "${lang}"/></span>
+            <span><fmt:message key="label.password" bundle="${lang}"/></span>
             <input type="text" size="40" name="password" autocomplete="off" spellcheck="false">
         </div>
         <input type="hidden" name="command" value="signUp"/>
-        <button type="submit"><fmt:message key = "label.singUp" bundle = "${lang}"/></button>
+        <button type="submit"><fmt:message key="label.singUp" bundle="${lang}"/></button>
     </FORM>
 </div>
 

@@ -6,12 +6,12 @@ import com.jwd.fShop.controller.constant.Attributes;
 import com.jwd.fShop.controller.constant.Messages;
 import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
-import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.AttributeSetter;
 import com.jwd.fShop.controller.util.ParameterParser;
 import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Product;
 import com.jwd.fShop.domain.Role;
+import com.jwd.fShop.exception.InvalidArgumentException;
 import com.jwd.fShop.service.ProductService;
 import com.jwd.fShop.service.exception.ServiceException;
 import com.jwd.fShop.service.serviceHolder.ServiceHolder;
@@ -59,7 +59,7 @@ public class ShowBasket extends AbstractCommand implements Command {
                 for (Map.Entry<Integer, Integer> entry : basket.entrySet()) {
                     Optional<IdentifiedDTO<Product>> stored = productService.getById(entry.getKey());
                     int orderedPieces = entry.getValue();
-                    if(stored.isPresent()){
+                    if (stored.isPresent()) {
                         totalPrice += stored.get().getDTO().getPrice() * orderedPieces;
                         if (skipCounter == 0 && addCounter < PAGE_SIZE) {
                             products.add(
@@ -88,7 +88,7 @@ public class ShowBasket extends AbstractCommand implements Command {
                 ServiceException |
                 InvalidArgumentException |
                 ServletException exception) {
-            throw new CommandException(createExceptionMessage(), exception);
+            exceptionHandler(resp, createExceptionMessage(), exception);
         }
     }
 }

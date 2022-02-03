@@ -17,26 +17,27 @@
 </head>
 <body>
 <jsp:include page="componets/header.jsp"/>
-<fmt:setBundle basename = "locale/locale" var = "lang"/>
+<jsp:include page="componets/message.jsp"/>
+<fmt:setBundle basename="locale/locale" var="lang"/>
 <div class="center">
     <div class="block">
         <c:if test="${sessionScope.userId == requestScope.id}">
             <form method="post" class="form-inline">
-                <label><fmt:message key = "label.change_user.name" bundle = "${lang}"/></label>
+                <label><fmt:message key="label.change_user.name" bundle="${lang}"/></label>
                 <input type="hidden" name="command" value="changeUsername">
                 <input type="text" size="40" name="username" autocomplete="off" spellcheck="false">
-                <button type="submit"><fmt:message key = "label.apply" bundle = "${lang}"/></button>
+                <button type="submit"><fmt:message key="label.apply" bundle="${lang}"/></button>
             </form>
         </c:if>
         <c:if test="${sessionScope.userId != requestScope.id && sessionScope.role.alias == 'admin'}">
             <form method="post" class="form-inline">
-                <label><fmt:message key = "label.change_user.role" bundle = "${lang}"/></label>
+                <label><fmt:message key="label.change_user.role" bundle="${lang}"/></label>
                 <select name="role">
-                    <option value="2"><fmt:message key = "label.user" bundle = "${lang}"/></option>
-                    <option value="8"><fmt:message key = "label.admin" bundle = "${lang}"/></option>
+                    <option value="2"><fmt:message key="label.user" bundle="${lang}"/></option>
+                    <option value="8"><fmt:message key="label.admin" bundle="${lang}"/></option>
                 </select>
                 <input type="hidden" name="command" value="changeRole">
-                <button type="submit"><fmt:message key = "label.apply" bundle = "${lang}"/></button>
+                <button type="submit"><fmt:message key="label.apply" bundle="${lang}"/></button>
             </form>
         </c:if>
     </div>

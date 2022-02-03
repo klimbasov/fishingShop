@@ -1,0 +1,12 @@
+<taglib>
+    <tlib-version>1.0</tlib-version>
+    <jsp-version>2.0</jsp-version>
+    <short-name>custom</short-name>
+    <uri>custom</uri>
+
+    <tag>
+        <name>errorCode</name>
+        <tag-class>com.jwd.fShop.controller.tag.ErrorCode</tag-class>
+        <body-content>empty</body-content>
+    </tag>
+</taglib>

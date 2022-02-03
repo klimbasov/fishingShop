@@ -5,8 +5,8 @@ import com.jwd.fShop.controller.command.impl.AbstractCommand;
 import com.jwd.fShop.controller.constant.RedirectionPaths;
 import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
-import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.domain.Role;
+import com.jwd.fShop.exception.InvalidArgumentException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -26,8 +26,8 @@ public class SignOut extends AbstractCommand implements Command {
 
             req.getSession().invalidate();
             resp.sendRedirect(RedirectionPaths.TO_INDEX);
-        } catch (IOException | AccessViolationException | InvalidArgumentException e) {
-            throw new CommandException(createExceptionMessage(), e);
+        } catch (IOException | AccessViolationException | InvalidArgumentException exception) {
+            exceptionHandler(resp, createExceptionMessage(), exception);
         }
     }
 }

@@ -1,7 +1,5 @@
 package com.jwd.fShop.domain;
 
-import org.apache.logging.log4j.util.Strings;
-
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Objects;
@@ -61,7 +59,7 @@ public class User {
         User user = (User) obj;
 
         return Objects.equals(this.name, user.name)
-                && isNull(this.hashedPassword)? user.hashedPassword==null : this.hashedPassword.equals(user.hashedPassword)
+                && isNull(this.hashedPassword) ? user.hashedPassword == null : this.hashedPassword.equals(user.hashedPassword)
                 && Objects.equals(this.role, user.role)
                 && Objects.equals(this.registrationDate, user.registrationDate)
                 && Objects.equals(this.registrationTime, user.registrationTime);

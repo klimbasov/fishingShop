@@ -35,7 +35,7 @@ public class ChangeLocale extends AbstractCommand implements Command {
 
             resp.sendRedirect(req.getHeader("Referer"));
         } catch (AccessViolationException | IOException exception) {
-            throw new CommandException(createExceptionMessage(),exception);
+            exceptionHandler(resp, createExceptionMessage(), exception);
         }
     }
 }

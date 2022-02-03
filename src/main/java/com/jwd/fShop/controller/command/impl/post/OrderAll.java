@@ -8,10 +8,10 @@ import com.jwd.fShop.controller.constant.Messages;
 import com.jwd.fShop.controller.constant.RedirectionPaths;
 import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
-import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.AttributeSetter;
 import com.jwd.fShop.domain.ProductBunch;
 import com.jwd.fShop.domain.Role;
+import com.jwd.fShop.exception.InvalidArgumentException;
 import com.jwd.fShop.service.OrderService;
 import com.jwd.fShop.service.exception.ServiceException;
 import com.jwd.fShop.service.serviceHolder.ServiceHolder;
@@ -51,8 +51,8 @@ public class OrderAll extends AbstractCommand implements Command {
                 AttributeSetter.setMessage(session, Messages.ORDERING_FAULT_EMPTY_BASkET);
             }
             resp.sendRedirect(RedirectionPaths.TO_INDEX);
-        } catch (ServiceException | IOException | AccessViolationException exception) {
-            throw new CommandException(createExceptionMessage(),exception);
+        } catch (IOException | AccessViolationException | ServiceException | InvalidArgumentException exception) {
+            exceptionHandler(resp, createExceptionMessage(), exception);
         }
     }
 

@@ -5,11 +5,11 @@ import com.jwd.fShop.controller.command.impl.AbstractCommand;
 import com.jwd.fShop.controller.constant.Attributes;
 import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
-import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.ParameterParser;
 import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Role;
 import com.jwd.fShop.domain.User;
+import com.jwd.fShop.exception.InvalidArgumentException;
 import com.jwd.fShop.service.UserService;
 import com.jwd.fShop.service.exception.ServiceException;
 import com.jwd.fShop.service.serviceHolder.ServiceHolder;
@@ -36,17 +36,19 @@ public class ShowUser extends AbstractCommand implements Command {
             int id = ParameterParser.parseInt(req.getParameter("id"));
             Optional<IdentifiedDTO<User>> user = userService.getById(id);
 
-            if(user.isPresent()){
+            if (user.isPresent()) {
                 req.setAttribute(Attributes.ATTRIBUTE_USER, user.get());
                 req.setAttribute(Attributes.ATTRIBUTE_ROLE, Role.getRole(user.get().getDTO().getRole()).getAlias());
                 req.getRequestDispatcher("WEB-INF/pages/profile.jsp").forward(req, resp);
+            } else {
+                exceptionHandler(resp, HttpServletResponse.SC_NOT_FOUND, createExceptionMessage());
             }
         } catch (IOException |
                 ServiceException |
                 ServletException |
                 AccessViolationException |
                 InvalidArgumentException exception) {
-            throw new CommandException(createExceptionMessage(), exception);
+            exceptionHandler(resp, createExceptionMessage(), exception);
         }
     }
 }

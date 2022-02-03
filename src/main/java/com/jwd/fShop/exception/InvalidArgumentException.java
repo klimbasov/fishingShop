@@ -1,4 +1,4 @@
-package com.jwd.fShop.controller.exception;
+package com.jwd.fShop.exception;
 
 public class InvalidArgumentException extends RuntimeException {
 

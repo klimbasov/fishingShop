@@ -34,7 +34,7 @@ public class OrderDaoImpl implements OrderDao {
         try {
             this.connectionPool = ConnectionPool.getInstance(path);
         } catch (ConnectionPoolException e) {
-            throw new FatalDaoException(createExceptionMessage(),e);
+            throw new FatalDaoException(createExceptionMessage(), e);
         }
     }
 
@@ -105,11 +105,11 @@ public class OrderDaoImpl implements OrderDao {
 
 
         } catch (SQLException | ConnectionWrapperException exception) {
-            throw new DaoException(createExceptionMessage(),exception);
+            throw new DaoException(createExceptionMessage(), exception);
         }
 
         IdentifiedDTO<Order> dto = null;
-        if(nonNull(order)){
+        if (nonNull(order)) {
             dto = new IdentifiedDTO<>(id, order);
         }
         return Optional.ofNullable(dto);
@@ -131,14 +131,14 @@ public class OrderDaoImpl implements OrderDao {
                     orders.add(
                             new IdentifiedDTO<>(resultSet.getInt(UsersOrdersSqlNames.ID_COLUMN_NAME),
                                     new Order.Builder().
-                                        setUserId(userId).
-                                        setOrderingDate(resultSet.getDate(UsersOrdersSqlNames.ORDERING_DATE_COLUMN_NAME)).
-                                    build())
+                                            setUserId(userId).
+                                            setOrderingDate(resultSet.getDate(UsersOrdersSqlNames.ORDERING_DATE_COLUMN_NAME)).
+                                            build())
                     );
                 }
             }
         } catch (SQLException | ConnectionWrapperException exception) {
-            throw new DaoException(createExceptionMessage(),exception);
+            throw new DaoException(createExceptionMessage(), exception);
         }
         return orders;
     }

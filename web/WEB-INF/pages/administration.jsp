@@ -16,14 +16,14 @@
 </head>
 <body>
 <jsp:include page="componets/header.jsp"/>
-<fmt:setBundle basename = "locale/locale" var = "lang"/>
+<fmt:setBundle basename="locale/locale" var="lang"/>
 <form class="barStyle" method="get">
     <input type="hidden" name="command_get" value="users"/>
-    <button type='submit'><fmt:message key = "label.users" bundle = "${lang}"/></button>
+    <button type='submit'><fmt:message key="label.users" bundle="${lang}"/></button>
 </form>
 <form class="barStyle" method="get">
     <input type="hidden" name="command_get" value="addProduct"/>
-    <button type='submit'><fmt:message key = "label.add_product" bundle = "${lang}"/></button>
+    <button type='submit'><fmt:message key="label.add_product" bundle="${lang}"/></button>
 </form>
 </body>
 </html>

@@ -4,12 +4,12 @@ public class IdentifiedDTO<T> {
     private final int id;
     private final T DTO;
 
-    public IdentifiedDTO(int id, T dto){
+    public IdentifiedDTO(int id, T dto) {
         this.id = id;
         this.DTO = dto;
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 

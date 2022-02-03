@@ -6,10 +6,10 @@ import com.jwd.fShop.controller.constant.Attributes;
 import com.jwd.fShop.controller.constant.RedirectionPaths;
 import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
-import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.ParameterParser;
 import com.jwd.fShop.domain.Product;
 import com.jwd.fShop.domain.Role;
+import com.jwd.fShop.exception.InvalidArgumentException;
 import com.jwd.fShop.service.ProductService;
 import com.jwd.fShop.service.TypeService;
 import com.jwd.fShop.service.exception.FatalServiceException;
@@ -56,13 +56,13 @@ public class AddProduct extends AbstractCommand implements Command {
             req.getSession().setAttribute(Attributes.ATTRIBUTE_MESSAGE, "Product saved successfully");
             resp.sendRedirect(RedirectionPaths.TO_ADD_PRODUCT);
         } catch (AccessViolationException | IOException | FatalServiceException exception) {
-            throw new CommandException(createExceptionMessage(), exception);
+            exceptionHandler(resp, createExceptionMessage(), exception);
         } catch (ServiceException | InvalidArgumentException exception) {
             req.getSession().setAttribute(Attributes.ATTRIBUTE_MESSAGE, "Product was not saved.");
             try {
                 resp.sendRedirect(RedirectionPaths.TO_ADD_PRODUCT);
             } catch (IOException e) {
-                throw new CommandException(createExceptionMessage(), exception);
+                exceptionHandler(resp, createExceptionMessage(), exception);
             }
         }
     }

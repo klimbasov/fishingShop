@@ -4,11 +4,11 @@ import com.jwd.fShop.controller.command.Command;
 import com.jwd.fShop.controller.command.impl.AbstractCommand;
 import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
-import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.ParameterParser;
 import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Product;
 import com.jwd.fShop.domain.Role;
+import com.jwd.fShop.exception.InvalidArgumentException;
 import com.jwd.fShop.service.ProductService;
 import com.jwd.fShop.service.exception.ServiceException;
 import com.jwd.fShop.service.serviceHolder.ServiceHolder;
@@ -35,11 +35,11 @@ public class ShowProduct extends AbstractCommand implements Command {
             int id = ParameterParser.parseInt(req.getParameter("id"));
             ProductService productService = ServiceHolder.getInstance().getProductService();
             Optional<IdentifiedDTO<Product>> product = productService.getById(id);
-            if(product.isPresent()){
+            if (product.isPresent()) {
                 req.setAttribute("product", product.get());
                 req.getRequestDispatcher("WEB-INF/pages/product.jsp").forward(req, resp);
-            }else {
-                throw new CommandException(createExceptionMessage());
+            } else {
+                exceptionHandler(resp, HttpServletResponse.SC_NOT_FOUND, createExceptionMessage());
             }
 
         } catch (IOException |
@@ -47,7 +47,7 @@ public class ShowProduct extends AbstractCommand implements Command {
                 ServiceException |
                 InvalidArgumentException |
                 ServletException exception) {
-            throw new CommandException(createExceptionMessage(), exception);
+            exceptionHandler(resp, createExceptionMessage(), exception);
         }
     }
 }

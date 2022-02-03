@@ -6,11 +6,11 @@ import com.jwd.fShop.controller.constant.Messages;
 import com.jwd.fShop.controller.constant.RedirectionPaths;
 import com.jwd.fShop.controller.exception.AccessViolationException;
 import com.jwd.fShop.controller.exception.CommandException;
-import com.jwd.fShop.controller.exception.InvalidArgumentException;
 import com.jwd.fShop.controller.util.AttributeSetter;
 import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Role;
 import com.jwd.fShop.domain.User;
+import com.jwd.fShop.exception.InvalidArgumentException;
 import com.jwd.fShop.service.UserService;
 import com.jwd.fShop.service.exception.ServiceException;
 import com.jwd.fShop.service.serviceHolder.ServiceHolder;
@@ -57,7 +57,7 @@ public class SignUp extends AbstractCommand implements Command {
             }
 
         } catch (IOException | AccessViolationException | ServiceException | InvalidArgumentException exception) {
-            throw new CommandException(createExceptionMessage(), exception);
+            exceptionHandler(resp, createExceptionMessage(), exception);
         }
     }
 }

@@ -17,4 +17,5 @@ public class Attributes {
     public static final String ATTRIBUTE_PRODUCT = "product";
     public static final String ATTRIBUTE_USER = "user";
     public static final String ATTRIBUTE_TOTAL_PRICE = "totalPrice";
+    public static final String ATTRIBUTE_ERROR_CODE = "totalPrice";
 }
