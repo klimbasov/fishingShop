@@ -33,7 +33,7 @@ public class Product {
         return productType;
     }
 
-    public Boolean getVisible() {
+    public Boolean getVisibility() {
         return visible;
     }
 

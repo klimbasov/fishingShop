@@ -44,7 +44,6 @@ public class ShowBasket extends AbstractCommand implements Command {
             validateRole(req, resp);
 
             HttpSession session = req.getSession();
-            ProductService productService = ServiceHolder.getInstance().getProductService();
             List<IdentifiedDTO<Product>> products = new LinkedList<>();
             Map<Integer, Integer> basket = (Map<Integer, Integer>) session.getAttribute(Attributes.ATTRIBUTE_BASKET);
             int page = ParameterParser.parseInt(req.getParameter("page"), 1);
@@ -53,29 +52,7 @@ public class ShowBasket extends AbstractCommand implements Command {
 
             if (nonNull(basket)) {
                 pageAmount = basket.size() / PAGE_SIZE + (basket.size() % PAGE_SIZE == 0 ? 0 : 1);
-
-                int skipCounter = (page - 1) * PAGE_SIZE;
-                int addCounter = 0;
-                for (Map.Entry<Integer, Integer> entry : basket.entrySet()) {
-                    Optional<IdentifiedDTO<Product>> stored = productService.getById(entry.getKey());
-                    int orderedPieces = entry.getValue();
-                    if (stored.isPresent()) {
-                        totalPrice += stored.get().getDTO().getPrice() * orderedPieces;
-                        if (skipCounter == 0 && addCounter < PAGE_SIZE) {
-                            products.add(
-                                    new IdentifiedDTO<>(
-                                            stored.get().getId(),
-                                            new Product.Builder(stored.get().getDTO()).
-                                                    setQuantity(orderedPieces).
-                                                    build()
-                                    )
-                            );
-                            ++addCounter;
-                        } else {
-                            --skipCounter;
-                        }
-                    }
-                }
+                totalPrice = fillPageGetTotalPrice(products, basket, page);
             } else {
                 session.setAttribute(Attributes.ATTRIBUTE_MESSAGE, Messages.EMPTY_BASKET);
             }
@@ -90,5 +67,33 @@ public class ShowBasket extends AbstractCommand implements Command {
                 ServletException exception) {
             exceptionHandler(resp, createExceptionMessage(), exception);
         }
+    }
+
+    private float fillPageGetTotalPrice(List<IdentifiedDTO<Product>> products, Map<Integer, Integer> basket, int page) throws ServiceException {
+        ProductService productService = ServiceHolder.getInstance().getProductService();
+        float totalPrice = 0;
+        int skipCounter = (page - 1) * PAGE_SIZE;
+        int addCounter = 0;
+        for (Map.Entry<Integer, Integer> entry : basket.entrySet()) {
+            Optional<IdentifiedDTO<Product>> stored = productService.getById(entry.getKey());
+            int orderedPieces = entry.getValue();
+            if (stored.isPresent()) {
+                totalPrice += stored.get().getDTO().getPrice() * orderedPieces;
+                if (skipCounter == 0 && addCounter < PAGE_SIZE) {
+                    products.add(
+                            new IdentifiedDTO<>(
+                                    stored.get().getId(),
+                                    new Product.Builder(stored.get().getDTO()).
+                                            setQuantity(orderedPieces).
+                                            build()
+                            )
+                    );
+                    ++addCounter;
+                } else {
+                    --skipCounter;
+                }
+            }
+        }
+        return totalPrice;
     }
 }

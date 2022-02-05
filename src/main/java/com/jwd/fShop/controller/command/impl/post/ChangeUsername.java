@@ -28,13 +28,12 @@ public class ChangeUsername extends AbstractCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws CommandException {
         int id = 0;
-        String username;
 
         try {
             validate(req, resp);
 
             id = ParameterParser.parseInt(req.getParameter("id"));
-            username = req.getParameter("username");
+            String username = req.getParameter("username");
 
             ServiceHolder.getInstance().getUserService().changeName(id, username);
             resp.sendRedirect(RedirectionPaths.TO_PROFILE + "&id=" + id);

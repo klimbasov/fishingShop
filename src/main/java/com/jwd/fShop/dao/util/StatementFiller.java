@@ -16,7 +16,7 @@ public class StatementFiller {
         preparedStatement.setFloat(2, product.getPrice());
         preparedStatement.setInt(3, product.getQuantity());
         preparedStatement.setInt(4, product.getProductType());
-        preparedStatement.setBoolean(5, product.getVisible());
+        preparedStatement.setBoolean(5, product.getVisibility());
     }
 
     public static void setLimitedSelectParams(PreparedStatement preparedStatement, ProductFilter productFilter, int offset, int size) throws SQLException {

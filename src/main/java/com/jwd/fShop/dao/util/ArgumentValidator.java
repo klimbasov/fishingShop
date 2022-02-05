@@ -49,7 +49,7 @@ public class ArgumentValidator {
                 || isNull(product.getPrice())
                 || isNull(product.getQuantity())
                 || isNull(product.getProductType())
-                || isNull(product.getVisible())) {
+                || isNull(product.getVisibility())) {
             throw new IllegalArgumentException(ExceptionMessages.PARTIALLY_INITIALIZED);
         }
     }

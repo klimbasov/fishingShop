@@ -102,7 +102,7 @@ public class ProductDaoImpl implements ProductDao {
                 preparedStatement.setFloat(5 * counter + 2, product.getPrice());
                 preparedStatement.setInt(5 * counter + 3, product.getQuantity());
                 preparedStatement.setInt(5 * counter + 4, product.getProductType());
-                preparedStatement.setBoolean(5 * counter + 5, product.getVisible());
+                preparedStatement.setBoolean(5 * counter + 5, product.getVisibility());
                 counter++;
             }
 

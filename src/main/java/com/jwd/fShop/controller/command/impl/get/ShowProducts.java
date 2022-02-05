@@ -48,16 +48,7 @@ public class ShowProducts extends AbstractCommand implements Command {
             int pageAmount;
 
             ProductFilter.Builder builder = new ProductFilter.Builder();
-            if (nonNull(session)) {
-                Role role = (Role) session.getAttribute(Attributes.ATTRIBUTE_ROLE);
-                if (nonNull(role)) {
-                    if (role == Role.USER) {
-                        builder.setVisibility(true);
-                    }
-                }
-            } else {
-                builder.setVisibility(true);
-            }
+            setVisibility(session, builder);
             ProductFilter filter = builder.
                     setName(subName).
                     setPriceRange(lowPrice, highPrice).
@@ -74,6 +65,21 @@ public class ShowProducts extends AbstractCommand implements Command {
             req.getRequestDispatcher("WEB-INF/pages/products.jsp").forward(req, resp);
         } catch (IOException | AccessViolationException | ServiceException | InvalidArgumentException | ServletException exception) {
             exceptionHandler(resp, createExceptionMessage(), exception);
+        }
+    }
+
+    private void setVisibility(HttpSession session, ProductFilter.Builder builder) {
+        boolean restrictVisibility = true;
+        if (nonNull(session)) {
+            Role role = (Role) session.getAttribute(Attributes.ATTRIBUTE_ROLE);
+            if (nonNull(role)) {
+                if (role == Role.ADMIN) {
+                    restrictVisibility = false;
+                }
+            }
+        }
+        if(restrictVisibility){
+            builder.setVisibility(true);
         }
     }
 }

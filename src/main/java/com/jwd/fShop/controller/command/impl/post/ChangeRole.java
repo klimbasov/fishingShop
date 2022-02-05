@@ -28,14 +28,13 @@ public class ChangeRole extends AbstractCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws CommandException {
         int id = 0;
-        int newRole;
         HttpSession session = req.getSession();
 
         try {
             validateRole(req, resp);
 
             id = ParameterParser.parseInt(req.getParameter("id"));
-            newRole = ParameterParser.parseInt(req.getParameter("role"));
+            int newRole = ParameterParser.parseInt(req.getParameter("role"));
 
             ServiceHolder.getInstance().getUserService().changeRole(id, newRole);
             resp.sendRedirect(RedirectionPaths.TO_USER + "&id=" + id);

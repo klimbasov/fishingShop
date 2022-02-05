@@ -54,10 +54,10 @@
                     <c:if test="${sessionScope.role !=null && sessionScope.role.alias == 'admin'}">
                         <li>
                             <div class='product_info name'>
-                                <c:if test="${requestScope.product.DTO.visible}">
+                                <c:if test="${requestScope.product.DTO.visibility}">
                                     <span><fmt:message key="label.visibility.visible" bundle="${lang}"/></span>
                                 </c:if>
-                                <c:if test="${!requestScope.product.DTO.visible}">
+                                <c:if test="${!requestScope.product.DTO.visibility}">
                                     <span><fmt:message key="label.visibility.invisible" bundle="${lang}"/></span>
                                 </c:if>
                             </div>

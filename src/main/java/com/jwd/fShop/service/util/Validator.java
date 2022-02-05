@@ -11,7 +11,7 @@ import static java.util.Objects.isNull;
 
 public class Validator {
     private static final Pattern NAME_PATTERN = Pattern.compile("\\p{Alpha}\\p{Alnum}{3,29}");
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("\\p{Alnum}{8,30}");
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("\\p{Alnum}{3,30}");
 
     public static void validate(Product product) {
         if (isNull(product)) {
@@ -21,7 +21,7 @@ public class Validator {
                 isNull(product.getQuantity()) &&
                 isNull(product.getPrice()) &&
                 isNull(product.getProductType()) &&
-                isNull(product.getVisible())) {
+                isNull(product.getVisibility())) {
             throw new InvalidArgumentException(ExceptionMessages.PARTIALLY_INITIALIZED);
         }
     }
