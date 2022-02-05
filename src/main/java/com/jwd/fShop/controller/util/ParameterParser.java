@@ -1,7 +1,10 @@
 package com.jwd.fShop.controller.util;
 
+import com.jwd.fShop.controller.constant.ExceptionMessages;
 import com.jwd.fShop.exception.InvalidArgumentException;
+import com.jwd.fShop.util.ExceptionMessageCreator;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 import static java.util.Objects.nonNull;
 
 public class ParameterParser {
@@ -18,9 +21,9 @@ public class ParameterParser {
         try {
             return Integer.parseInt(parameter);
         } catch (NumberFormatException e) {
-            throw new InvalidArgumentException("Invalid string format.", e);
+            throw new InvalidArgumentException(createExceptionMessage(ExceptionMessages.INVALID_PARAMETER_VALUE), e);
         } catch (NullPointerException e) {
-            throw new InvalidArgumentException("Argument was null", e);
+            throw new InvalidArgumentException(createExceptionMessage(ExceptionMessages.NULL_ARGUMENT), e);
         }
     }
 
@@ -37,9 +40,9 @@ public class ParameterParser {
         try {
             return Float.parseFloat(parameter);
         } catch (NumberFormatException e) {
-            throw new InvalidArgumentException("Invalid string format.", e);
+            throw new InvalidArgumentException(createExceptionMessage(ExceptionMessages.INVALID_PARAMETER_VALUE), e);
         } catch (NullPointerException e) {
-            throw new InvalidArgumentException("Argument was null", e);
+            throw new InvalidArgumentException(createExceptionMessage(ExceptionMessages.NULL_ARGUMENT), e);
         }
     }
 

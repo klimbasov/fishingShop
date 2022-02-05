@@ -41,7 +41,7 @@ public class FrontController extends HttpServlet {
             if (nonNull(command)) {
                 command.execute(req, resp);
             } else {
-                throw new CommandException(ExceptionMessages.COMMAND_NOT_FOUND);
+                generateCommandNotFound(resp);
             }
         } catch (CommandException exception) {
             exceptionHandler(req, resp, exception);
@@ -56,11 +56,16 @@ public class FrontController extends HttpServlet {
             if (nonNull(command)) {
                 command.execute(req, resp);
             } else {
-                throw new CommandException(ExceptionMessages.COMMAND_NOT_FOUND);
+                generateCommandNotFound(resp);
             }
         } catch (CommandException exception) {
             exceptionHandler(req, resp, exception);
         }
+    }
+
+    private void generateCommandNotFound(HttpServletResponse response) throws CommandException {
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        throw new CommandException(ExceptionMessages.COMMAND_NOT_FOUND);
     }
 
     private void exceptionHandler(HttpServletRequest req, HttpServletResponse resp, Exception exception) throws ServletException {

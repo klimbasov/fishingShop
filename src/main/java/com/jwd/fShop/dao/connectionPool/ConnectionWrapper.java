@@ -2,10 +2,13 @@ package com.jwd.fShop.dao.connectionPool;
 
 import com.jwd.fShop.dao.exception.ConnectionWrapperException;
 import com.jwd.fShop.dao.exception.DaoException;
+import com.jwd.fShop.util.ExceptionMessageCreator;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 
 public class ConnectionWrapper implements AutoCloseable {
     private final Connection connection;
@@ -34,7 +37,7 @@ public class ConnectionWrapper implements AutoCloseable {
         try {
             return connection.prepareStatement(sql);
         } catch (SQLException exception) {
-            throw new ConnectionWrapperException(exception);
+            throw new ConnectionWrapperException(createExceptionMessage(),exception);
         }
     }
 

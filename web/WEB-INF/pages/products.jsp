@@ -13,6 +13,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8"/>
     <title>fShop</title>
+    <c:set var="command_name" value="products" scope="request"/>
     <c:set var="navigationCommand" value="products" scope="request"/>
 </head>
 <body>

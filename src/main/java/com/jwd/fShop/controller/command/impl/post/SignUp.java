@@ -56,8 +56,15 @@ public class SignUp extends AbstractCommand implements Command {
                 resp.sendRedirect(RedirectionPaths.TO_SING_UP);
             }
 
-        } catch (IOException | AccessViolationException | ServiceException | InvalidArgumentException exception) {
+        } catch (IOException | AccessViolationException exception) {
             exceptionHandler(resp, createExceptionMessage(), exception);
+        }catch (ServiceException | InvalidArgumentException exception) {
+            AttributeSetter.setMessage(req.getSession(), Messages.SIGN_UP_PARAMETERS_SETTING_FAULT);
+            try {
+                resp.sendRedirect(RedirectionPaths.TO_SING_UP);
+            } catch (IOException e) {
+                exceptionHandler(resp, createExceptionMessage(), exception);
+            }
         }
     }
 }

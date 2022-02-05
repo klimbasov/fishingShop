@@ -41,7 +41,7 @@ public class ChangeUsername extends AbstractCommand implements Command {
         } catch (AccessViolationException | IOException exception) {
             exceptionHandler(resp, createExceptionMessage(), exception);
         } catch (ServiceException | InvalidArgumentException exception) {
-            AttributeSetter.setMessage(req.getSession(), Messages.USERNAME_CHANGING_FAULT);
+            AttributeSetter.setMessage(req.getSession(), Messages.USERNAME_SETTING_FAULT);
             try {
                 resp.sendRedirect(RedirectionPaths.TO_CHANGE_USER + "&id=" + id);
             } catch (IOException e) {

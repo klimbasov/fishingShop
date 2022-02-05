@@ -1,5 +1,6 @@
 package com.jwd.fShop.dao.impl;
 
+import com.jwd.fShop.controller.constant.ExceptionMessages;
 import com.jwd.fShop.dao.UserDao;
 import com.jwd.fShop.dao.connectionPool.ConnectionPool;
 import com.jwd.fShop.dao.connectionPool.ConnectionWrapper;
@@ -101,7 +102,7 @@ public class UserDaoImpl implements UserDao {
         validate(id);
 
         if (isNull(user)) {
-            throw new IllegalArgumentException(createExceptionMessage(" user was null"));
+            throw new IllegalArgumentException(createExceptionMessage(ExceptionMessages.NULL_ARGUMENT));
         }
 
         try (ConnectionWrapper connectionWrapper = new ConnectionWrapper(connectionPool);

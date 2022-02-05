@@ -1,5 +1,6 @@
 package com.jwd.fShop.service.impl;
 
+import com.jwd.fShop.controller.constant.ExceptionMessages;
 import com.jwd.fShop.dao.UserDao;
 import com.jwd.fShop.dao.daoHolder.DaoHolder;
 import com.jwd.fShop.dao.exception.DaoException;
@@ -129,10 +130,10 @@ public class UserServiceImpl implements UserService {
             if (userDao.get(filter).isEmpty()) {
                 user = updateAndGetUserInternal(userId, UserWithUpdateFields);
             } else {
-                throw new ServiceException(createExceptionMessage("Such name has already exists."));
+                throw new ServiceException(createExceptionMessage(ExceptionMessages.USERNAME_COLLISION));
             }
         } catch (DaoException exception) {
-            throw new ServiceException(createExceptionMessage("Fail on requesting users."));
+            throw new ServiceException(createExceptionMessage(), exception);
         }
         return user;
     }

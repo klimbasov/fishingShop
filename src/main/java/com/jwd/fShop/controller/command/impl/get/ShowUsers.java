@@ -35,16 +35,17 @@ public class ShowUsers extends AbstractCommand implements Command {
         try {
             validateRole(req, resp);
 
-            String subUsername = req.getParameter("subUsername");
+            String subName = req.getParameter("subName");
             UserService userService = ServiceHolder.getInstance().getUserService();
             UserFilter filter = new UserFilter.Builder().
-                    setUserSubName(subUsername).
+                    setUserSubName(subName).
                     build();
             int pageAmount = userService.getPagesQuantity(filter);
             int page = ParameterParser.parseInt(req.getParameter("page"), 1);
             List<IdentifiedDTO<User>> users = userService.getPage(filter, page);
 
             AttributeSetter.setPageNavigation(req, page, pageAmount, RANGE);
+            req.setAttribute("subName", subName);
             req.setAttribute("users", users);
             req.getRequestDispatcher("WEB-INF/pages/users.jsp").forward(req, resp);
         } catch (IOException |

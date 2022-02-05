@@ -1,11 +1,14 @@
 package com.jwd.fShop.dao.util;
 
+import com.jwd.fShop.controller.constant.ExceptionMessages;
 import com.jwd.fShop.dao.constant.*;
 import com.jwd.fShop.dao.exception.DaoException;
 import com.jwd.fShop.domain.ProductFilter;
 import com.jwd.fShop.domain.User;
 import com.jwd.fShop.domain.UserFilter;
+import com.jwd.fShop.util.ExceptionMessageCreator;
 
+import static com.jwd.fShop.util.ExceptionMessageCreator.createExceptionMessage;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -70,7 +73,7 @@ public class QueryFactory {
         public static String getUpdateSQL(final User user) throws DaoException {
             String sql = null;
             if (isNull(user)) {
-                throw new DaoException("in generateUpdateStatement(List<String>, List<String>) : some arguments are null.");
+                throw new DaoException(createExceptionMessage(ExceptionMessages.NULL_ARGUMENT));
             }
 
             if (nonNull(user.getName())) {

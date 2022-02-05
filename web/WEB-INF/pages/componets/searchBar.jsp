@@ -18,8 +18,8 @@
     <ul>
         <li>
             <form id='searchForm' method="get">
-                <input type="hidden" name="command_get" value="products"/>
-                <input name='subName' type='text'>
+                <input type="hidden" name="command_get" value="${requestScope.command_name}"/>
+                <input name='subName' type='text' value="${requestScope.subName}">
                 <button type='submit'><fmt:message key="label.search" bundle="${searchPageLang}"/></button>
             </form>
             <form id='filterForm' method="post">

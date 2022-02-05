@@ -12,5 +12,8 @@ public class Messages {
     public static final String PRODUCT_NOT_FOUND = "There is no such product.";
     public static final String PRODUCT_CHANGING_SUCCESS = "Product changed successfully";
     public static final String PRODUCT_CHANGING_FAULT = "Some parameters had invalid value. Product was not changed.";
+    public static final String SIGN_IN_PARAMETERS_SETTING_FAULT = "Such account dose not exist or password or username do not match the required pattern. Check signature carefully.";
+    public static final String SIGN_UP_PARAMETERS_SETTING_FAULT = "Password or username do not match the required pattern. Check signature carefully.";
+    public static final String USERNAME_SETTING_FAULT = "Username can not be changed to required variant. Check signature carefully.";
 
 }
