@@ -2,6 +2,7 @@ package com.jwd.fShop.service;
 
 import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Product;
+import com.jwd.fShop.domain.ProductBunch;
 import com.jwd.fShop.domain.ProductFilter;
 import com.jwd.fShop.service.exception.ServiceException;
 
@@ -29,7 +30,15 @@ public interface ProductService {
      * @throws ServiceException if some kind of exception occurred while execution or invalid argument was passed.
      *                          Usually warps cause exception.
      */
-    Optional<IdentifiedDTO<Product>> getById(int id) throws ServiceException;
+    Optional<IdentifiedDTO<Product>> getByBunches(int id) throws ServiceException;
+    /**
+     * Used to get a List of products of the specified ids.
+     * @param productBunches product bunches list. Ids' used to spot product, quantities replace the ones received from database
+     * @return List of identified products that have been spotted.
+     * @throws ServiceException if some kind of exception occurred while execution or invalid argument was passed.
+     *                          Usually warps cause exception.
+     */
+    List<IdentifiedDTO<Product>> getByBunches(List<ProductBunch> productBunches) throws ServiceException;
 
     /**
      * @param product product to save. Product instance should have all initialized fields exclude <code>id</code>

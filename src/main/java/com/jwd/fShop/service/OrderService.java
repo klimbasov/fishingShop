@@ -55,4 +55,26 @@ public interface OrderService {
      *                          Usually warps cause exception.
      */
     int getPageQuantity(int userId) throws ServiceException;
+
+    /**
+     * Used to get a range of {@link ProductBunch} of specified Order. Size of the range depends on implementation of the service.
+     *
+     * @param order instance, holding ordered products
+     * @param page   ordinal number of the page
+     * @return <code>List</code> of <code>ProductBrunch</code>s. If there is no orders to the
+     * specified <code>page</code>, <code>List</code> will be empty
+     * @throws ServiceException if some kind of exception occurred while execution or invalid argument was passed.
+     *                          Usually warps cause exception.
+     */
+    List<ProductBunch> getOrderedProductsPage(Order order, int page) throws ServiceException;
+
+    /**
+     * Used to get available pages quantity to the specified order
+     *
+     * @param order instance, holding ordered products
+     * @return how many pages are available for the product
+     * @throws ServiceException if some kind of exception occurred while execution or invalid argument was passed.
+     *                          Usually warps cause exception.
+     */
+    int getOrderedProductsPageQuantity(Order order) throws ServiceException;
 }

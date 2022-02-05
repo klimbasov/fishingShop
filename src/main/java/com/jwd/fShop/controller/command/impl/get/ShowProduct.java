@@ -38,7 +38,7 @@ public class ShowProduct extends AbstractCommand implements Command {
 
             int id = ParameterParser.parseInt(req.getParameter("id"));
             ProductService productService = ServiceHolder.getInstance().getProductService();
-            Optional<IdentifiedDTO<Product>> product = productService.getById(id);
+            Optional<IdentifiedDTO<Product>> product = productService.getByBunches(id);
             if (product.isPresent()) {
                 checkAccess(req.getSession(false), product.get().getDTO());
                 req.setAttribute("product", product.get());
@@ -58,15 +58,15 @@ public class ShowProduct extends AbstractCommand implements Command {
 
     private void checkAccess(HttpSession session, Product dto) throws AccessViolationException {
         boolean actualVisibility = dto.getVisibility();
-        boolean allowedVisibility = true;
         if (nonNull(session) && actualVisibility==false) {
             Role role = (Role) session.getAttribute(Attributes.ATTRIBUTE_ROLE);
+            boolean hasAccessToInvisible = false;
             if (nonNull(role)) {
                 if (role == Role.ADMIN) {
-                    allowedVisibility = false;
+                    hasAccessToInvisible = true;
                 }
             }
-            if(allowedVisibility != false){
+            if(hasAccessToInvisible == false){
                 throw new AccessViolationException(ExceptionMessages.ACCESS_VIOLATION);
             }
         }

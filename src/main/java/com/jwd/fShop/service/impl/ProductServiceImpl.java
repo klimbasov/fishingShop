@@ -5,10 +5,12 @@ import com.jwd.fShop.dao.daoHolder.DaoHolder;
 import com.jwd.fShop.dao.exception.DaoException;
 import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Product;
+import com.jwd.fShop.domain.ProductBunch;
 import com.jwd.fShop.domain.ProductFilter;
 import com.jwd.fShop.service.ProductService;
 import com.jwd.fShop.service.exception.ServiceException;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,7 +67,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<IdentifiedDTO<Product>> getById(int id) throws ServiceException {
+    public Optional<IdentifiedDTO<Product>> getByBunches(int id) throws ServiceException {
         Optional<IdentifiedDTO<Product>> product = Optional.empty();
         ProductFilter filter;
 
@@ -81,6 +83,23 @@ public class ProductServiceImpl implements ProductService {
             throw new ServiceException(createExceptionMessage(), exception);
         }
         return product;
+    }
+
+    @Override
+    public List<IdentifiedDTO<Product>> getByBunches(List<ProductBunch> productBunches) throws ServiceException {
+        int[] ids = productBunches.stream().mapToInt(ProductBunch::getProductId).toArray();
+        int[] quantities = productBunches.stream().mapToInt(ProductBunch::getQuantity).toArray();
+        validatePositive(ids);
+        validatePositive(quantities);
+
+        List<IdentifiedDTO<Product>> products = new LinkedList<>();
+        for (ProductBunch bunch : productBunches){
+            getByBunches(bunch.getProductId()).ifPresent(dto -> products.add(new IdentifiedDTO<>(
+                    dto.getId(),
+                    new Product.Builder(dto.getDTO()).setQuantity(bunch.getQuantity()).build()
+            )));
+        }
+        return products;
     }
 
     @Override

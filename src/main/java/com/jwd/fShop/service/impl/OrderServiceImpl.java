@@ -5,6 +5,7 @@ import com.jwd.fShop.dao.daoHolder.DaoHolder;
 import com.jwd.fShop.dao.exception.DaoException;
 import com.jwd.fShop.domain.IdentifiedDTO;
 import com.jwd.fShop.domain.Order;
+import com.jwd.fShop.domain.Product;
 import com.jwd.fShop.domain.ProductBunch;
 import com.jwd.fShop.service.OrderService;
 import com.jwd.fShop.service.exception.ServiceException;
@@ -12,7 +13,9 @@ import com.jwd.fShop.service.exception.ServiceException;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.Instant;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Optional;
 
 import static com.jwd.fShop.service.util.Validator.validate;
@@ -91,5 +94,29 @@ public class OrderServiceImpl implements OrderService {
             throw new ServiceException(createExceptionMessage(), exception);
         }
         return (totalValue + pageSize - 1) / pageSize;
+    }
+
+    @Override
+    public List<ProductBunch> getOrderedProductsPage(Order order, int page) {
+        validate(order);
+        validatePositive(page);
+
+        List<ProductBunch> productBunches = order.getProductBunchList();
+        List<ProductBunch> productBunchesPage = new LinkedList<>();
+        int offset = (page - 1) * pageSize;
+        if (offset < productBunches.size()) {
+            ListIterator<ProductBunch> productBunchListIterator = productBunches.listIterator(offset);
+            int counter = 0;
+            while (productBunchListIterator.hasNext() && counter++ < pageSize) {
+                productBunchesPage.add(productBunchListIterator.next());
+            }
+        }
+        return productBunchesPage;
+    }
+
+    @Override
+    public int getOrderedProductsPageQuantity(Order order) {
+        validate(order);
+        return (order.getProductBunchList().size()+pageSize-1)/pageSize;
     }
 }

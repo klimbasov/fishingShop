@@ -75,7 +75,7 @@ public class ShowBasket extends AbstractCommand implements Command {
         int skipCounter = (page - 1) * PAGE_SIZE;
         int addCounter = 0;
         for (Map.Entry<Integer, Integer> entry : basket.entrySet()) {
-            Optional<IdentifiedDTO<Product>> stored = productService.getById(entry.getKey());
+            Optional<IdentifiedDTO<Product>> stored = productService.getByBunches(entry.getKey());
             int orderedPieces = entry.getValue();
             if (stored.isPresent()) {
                 totalPrice += stored.get().getDTO().getPrice() * orderedPieces;

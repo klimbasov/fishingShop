@@ -33,7 +33,7 @@ public class ShowChangeProduct extends AbstractCommand implements Command {
 
             int id = ParameterParser.parseInt(req.getParameter("id"));
             String[] types = ServiceHolder.getInstance().getTypeService().getNames();
-            Optional<IdentifiedDTO<Product>> product = ServiceHolder.getInstance().getProductService().getById(id);
+            Optional<IdentifiedDTO<Product>> product = ServiceHolder.getInstance().getProductService().getByBunches(id);
             if (product.isPresent()) {
                 req.setAttribute(Attributes.ATTRIBUTE_TYPE_NAMES, types);
                 req.setAttribute("product", product.get());
