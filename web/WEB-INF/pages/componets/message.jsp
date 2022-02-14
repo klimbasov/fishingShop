@@ -12,7 +12,9 @@
 <body>
 <c:if test="${sessionScope.message != null}">
     <div class="message">
-        <span>${sessionScope.message}</span>
+        <span>
+                <c:out value="${sessionScope.message}"/>
+        </span>
     </div>
 </c:if>
 <c:remove var="message" scope="session"/>

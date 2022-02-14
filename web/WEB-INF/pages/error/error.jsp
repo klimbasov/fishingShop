@@ -21,7 +21,7 @@
 <p class="error">
     Error <ex:errorCode/>
 </p>
-<jsp:include page="../componets/message.jsp"/>
+<%--<jsp:include page="../componets/message.jsp"/>--%>
 <fmt:setLocale value="en"/>
 <fmt:setBundle basename="locale/locale" var="lang"/>
 

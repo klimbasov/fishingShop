@@ -22,9 +22,6 @@
         <span>
             <fmt:message key="label.orderingDate" bundle="${orderLang}"/>: ${requestScope.order.DTO.orderingDate}
         </span>
-        <span>
-            <fmt:message key="label.order" bundle="${orderLang}"/> ${requestScope.totalPrice} $
-        </span>
     </ul>
 </div>
 </html>

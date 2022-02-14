@@ -23,7 +23,7 @@
             </form>
         </li>
         <span>
-            <fmt:message key="label.order" bundle="${orderLang}"/> ${requestScope.totalPrice} $
+            <fmt:message key="label.order" bundle="${orderLang}"/> <c:out value="${requestScope.totalPrice}"/> $
         </span>
         <li>
             <form method="post">

@@ -32,7 +32,9 @@
                             <span><fmt:message key="label.profile.name" bundle="${lang}"/></span>
                         </div>
                         <div class='product_info value'>
-                            <span>${requestScope.user.DTO.name}</span>
+                            <span>
+                                <c:out value="${requestScope.user.DTO.name}"/>
+                            </span>
                         </div>
                     </li>
                     <li>
@@ -40,7 +42,9 @@
                             <span><fmt:message key="label.profile.role" bundle="${lang}"/></span>
                         </div>
                         <div class='product_info value'>
-                            <span>${requestScope.role}</span>
+                            <span>
+                                <c:out value="${requestScope.role}"/>
+                            </span>
                         </div>
                     </li>
                     <li>
@@ -48,7 +52,9 @@
                             <span><fmt:message key="label.profile.registration_date" bundle="${lang}"/></span>
                         </div>
                         <div class='product_info value'>
-                            <span>${requestScope.user.DTO.registrationDate}</span>
+                            <span>
+                                <c:out value="${requestScope.user.DTO.registrationDate}"/>
+                            </span>
                         </div>
                     </li>
                     <li>
@@ -56,7 +62,9 @@
                             <span><fmt:message key="label.profile.registration_time" bundle="${lang}"/></span>
                         </div>
                         <div class='product_info value'>
-                            <span>${requestScope.user.DTO.registrationTime}</span>
+                            <span>
+                                <c:out value="${requestScope.user.DTO.registrationTime}"/>
+                            </span>
                         </div>
                     </li>
                 </ul>

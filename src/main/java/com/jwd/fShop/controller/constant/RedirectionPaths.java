@@ -1,7 +1,7 @@
 package com.jwd.fShop.controller.constant;
 
 public class RedirectionPaths {
-    private static final String URI = "frontTest_Web?command_get=";
+    private static final String URI = "?command_get=";
 
     public static final String TO_INDEX = URI + CommandsAlias.Get.TO_INDEX;
     public static final String TO_PRODUCTS = URI + CommandsAlias.Get.TO_PRODUCTS;

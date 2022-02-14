@@ -11,20 +11,20 @@
 <html>
 <fmt:setBundle basename="locale/locale" var="userPageLang"/>
 <ul class="product_list" id="list">
-    <c:forEach var="order" items="${requestScope.orders}">
+    <c:forEach var="user" items="${requestScope.orders}">
         <li>
             <div class='product_list info_group'>
                 <div class='product_list info_slot'>
-                    <a class='product_href' href="?command_get=order&id=${order.id}">
+                    <a class='product_href' href="?command_get=order&id=${user.id}">
                         <span class='product_text'>
-                                ${order.id}
+                                ${user.id}
                         </span>
                     </a>
                 </div>
                 <div>
                         <span class='product_list quantity'>
                                 <fmt:message key="label.ordering_date"
-                                             bundle="${userPageLang}"/>: ${order.DTO.orderingDate}
+                                             bundle="${userPageLang}"/>: ${user.DTO.orderingDate}
                         </span>
                 </div>
             </div>

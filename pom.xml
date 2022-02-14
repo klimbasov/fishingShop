@@ -5,8 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>frontTest</artifactId>
+    <artifactId>fShop</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <url>fShop</url>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

@@ -11,32 +11,32 @@
 <html>
 <fmt:setBundle basename="locale/locale" var="userPageLang"/>
 <ul class="product_list" id="list">
-    <c:forEach var="order" items="${requestScope.users}">
+    <c:forEach var="user" items="${requestScope.users}">
         <li>
 
             <div class='product_list info_group'>
                 <div class='product_list info_slot'>
-                    <a class='product_href' href="?command_get=user&id=${order.id}">
+                    <a class='product_href' href="?command_get=user&id=${user.id}">
                         <span class='product_text'>
-                                ${order.DTO.name}
+                                <c:out value="${user.DTO.name}"/>
                         </span>
                     </a>
                 </div>
                 <div>
                         <span class='product_list quantity'>
                                 <fmt:message key="label.profile.registration_date"
-                                             bundle="${userPageLang}"/>: ${order.DTO.registrationDate}
+                                             bundle="${userPageLang}"/>: ${user.DTO.registrationDate}
                         </span>
                 </div>
                 <div>
                         <span class='product_list quantity'>
                                 <fmt:message key="label.profile.registration_time"
-                                             bundle="${userPageLang}"/>: ${order.DTO.registrationTime}
+                                             bundle="${userPageLang}"/>: ${user.DTO.registrationTime}
                         </span>
                 </div>
                 <div>
                         <span class='product_list quantity'>
-                                <fmt:message key="label.profile.role" bundle="${userPageLang}"/>: ${order.DTO.role}
+                                <fmt:message key="label.profile.role" bundle="${userPageLang}"/>: ${user.DTO.role}
                         </span>
                 </div>
             </div>

@@ -18,18 +18,18 @@
                 <div class='product_list info_slot'>
                     <a class='product_href' href="?command_get=product&id=${product.id}">
                         <span class='product_text'>
-                                ${product.DTO.name}
+                                <c:out value="${product.DTO.name}"/>
                         </span>
                     </a>
                 </div>
                 <div>
                         <span class='product_list quantity'>
-                                ${product.DTO.quantity}  <fmt:message key="label.piece" bundle="${userPageLang}"/>
+                                <c:out value="${product.DTO.quantity}"/>  <fmt:message key="label.piece" bundle="${userPageLang}"/>
                         </span>
                 </div>
                 <div>
                         <span class='product_list price'>
-                                ${product.DTO.price} $
+                                <c:out value="${product.DTO.price}"/> $
                         </span>
                 </div>
                 <c:if test="${sessionScope.role.alias == 'admin'}">

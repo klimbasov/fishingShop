@@ -22,9 +22,9 @@
                 <input name='subName' type='text' value="${requestScope.subName}">
                 <button type='submit'><fmt:message key="label.search" bundle="${searchPageLang}"/></button>
             </form>
-            <form id='filterForm' method="post">
-                <button type='button'><fmt:message key="label.filter" bundle="${searchPageLang}"/></button>
-            </form>
+<%--            <form id='filterForm' method="post">--%>
+<%--                <button type='button'><fmt:message key="label.filter" bundle="${searchPageLang}"/></button>--%>
+<%--            </form>--%>
         </li>
     </ul>
 </div>

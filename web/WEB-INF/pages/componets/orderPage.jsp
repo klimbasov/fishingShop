@@ -17,17 +17,17 @@
             <div class='product_list info_group'>
                 <div>
                         <span class='product_text'>
-                                ${product.name}
+                                <c:out value="${product.name}"/>
                         </span>
                 </div>
                 <div>
                         <span class='product_list quantity'>
-                                ${product.quantity}  <fmt:message key="label.piece" bundle="${userPageLang}"/>
+                                <c:out value="${product.quantity}"/>  <fmt:message key="label.piece" bundle="${userPageLang}"/>
                         </span>
                 </div>
                 <div>
                         <span class='product_list price'>
-                                ${product.price} $
+                                <c:out value="${product.price}"/> $
                         </span>
                 </div>
 
